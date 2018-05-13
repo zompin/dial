@@ -1,0 +1,31 @@
+.bookmarks {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15px 0 0 15px;
+}
+
+.bookmark {
+  flex: 1 1 auto;
+  margin: 0 15px 15px 0;
+  border: 1px solid #000;
+  padding: 15px;
+  position: relative;
+
+  &__title {
+
+  }
+
+  &__link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  &__edit {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+}

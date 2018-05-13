@@ -1,0 +1,14 @@
+{
+
+  "manifest_version": 2,
+  "name": "Dial",
+  "version": "0.0.1",
+
+  "description": "Dial addon like a feather",
+
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+
+  "permissions": ["bookmarks", "history"]
+}
