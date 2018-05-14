@@ -10,9 +10,9 @@ const AddPopup = ({
     onAdd,
 }) => (
     <Popup show={show} onClose={onClose}>
-        <div>Добавить вкладку</div>
-        <Input name="title_add" value={values.title_add} onChange={onChange} placeholder="Title" />
+        <div className="popup__header">Добавить вкладку</div>
         <Input name="url_add" value={values.url_add} onChange={onChange} placeholder="URL" />
+        <Input name="title_add" value={values.title_add} onChange={onChange} placeholder="Title" />
         <button onClick={onAdd}>+</button>
     </Popup>
 );

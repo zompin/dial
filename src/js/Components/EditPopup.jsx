@@ -10,9 +10,9 @@ const EditPopup = ({
     onEdit,
 }) => (
     <Popup show={show} onClose={onClose}>
-        <div>Редактировать</div>
-        <Input name="title_edit" value={values.title_edit} onChange={onChange} placeholder="Title" />
+        <div className="popup__header">Редактировать</div>
         <Input name="url_edit" value={values.url_edit} onChange={onChange} placeholder="URL" />
+        <Input name="title_edit" value={values.title_edit} onChange={onChange} placeholder="Title" />
         <button onClick={onEdit}>edit</button>
     </Popup>
 );

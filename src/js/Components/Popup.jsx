@@ -3,7 +3,7 @@ import XButton from './XButton';
 
 class Popup extends Component {
     close = (e) => {
-        if (e.target.classList.contains('popup_close')) {
+        if (e.target.dataset.action === 'close') {
             this.props.onClose();
         }
     };
@@ -24,16 +24,16 @@ class Popup extends Component {
 
     render() {
         const { children, show} = this.props;
-        const classList = ['popup', 'popup_close'];
+        const classList = ['popup'];
 
         if (!show) {
             classList.push('popup_hidden');
         }
 
         return (
-            <div className={classList.join(' ')} onClick={this.close}>
+            <div className={classList.join(' ')} onClick={this.close} data-action="close">
                 <div className="popup__inner">
-                    <XButton onClick={this.close} />
+                    <XButton onClick={this.close} action="close" className="popup" />
                     { children }
                 </div>
             </div>

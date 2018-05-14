@@ -3,8 +3,7 @@ let MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
 module.exports = env => {
-    let { production } = env;
-    let development = !production;
+    let { development } = env;
 
     return {
         entry: {

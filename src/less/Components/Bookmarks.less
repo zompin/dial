@@ -5,14 +5,36 @@
 }
 
 .bookmark {
-  flex: 1 1 auto;
+  flex-basis: 25%;
   margin: 0 15px 15px 0;
-  border: 1px solid #000;
   padding: 15px;
   position: relative;
+  background-color: @primary;
+  color: @background;
+
+  &__inner {
+    padding-bottom: 100%;
+  }
 
   &__title {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
+  &__url {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__link {
@@ -25,7 +47,7 @@
 
   &__edit {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    top: 0;
+    left: 0;
   }
 }

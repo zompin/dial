@@ -19,7 +19,7 @@
     "webpack": "^4.7.0"
   },
   "scripts": {
-    "start": "webpack-cli --mode development",
+    "start": "webpack-cli --mode development --env.development",
     "build": "webpack-cli --mode production --env.production"
   }
 }

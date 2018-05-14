@@ -116,7 +116,6 @@ class App extends Component {
                 const { title, url } = bookmark[0];
                 this.onChange('title_edit', title);
                 this.onChange('url_edit', url);
-                console.log(this.state, bookmark)
             })
             .catch(this.errorHandler);
     };
