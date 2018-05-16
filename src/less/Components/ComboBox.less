@@ -2,13 +2,34 @@
   position: relative;
 
   &__list {
+    background-color: @background;
     position: absolute;
     top: 100%;
     right: 0;
     left: 0;
+    z-index: 2;
+    font-size: 16px;
+    max-height: 300px;
+    overflow-y: auto;
   }
 }
 
 .combobox-item {
+  opacity: 0.8;
+  cursor: pointer;
+  user-select: none;
+  padding: 15px;
 
+  &:hover,
+  &_active {
+    opacity: 1;
+  }
+
+  &__url,
+  &__title{
+    max-height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }

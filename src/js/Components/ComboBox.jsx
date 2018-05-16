@@ -24,7 +24,8 @@ class ComboBox extends Component {
           {
             items.map(i => (
               <div className="combobox-item" key={i.id} data-id={i.id} onClick={this.onComboSelect}>
-                {i.url} - {i.title}
+                <div className="combobox-item__url">{i.url}</div>
+                <div className="combobox-item__title">{i.title}</div>
               </div>
             ))
           }

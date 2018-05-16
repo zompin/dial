@@ -20,6 +20,7 @@ class App extends Component {
     isEditPopupVisible: false,
     values: {},
     editBookmarkId: '',
+    historyItems: [],
   };
 
   getBookmarks = () => {
@@ -49,20 +50,27 @@ class App extends Component {
       .catch(this.errorHandler);
   };
 
+  getHistoryItems = (value) => {
+    const { historyApi } = this;
+
+    historyApi.search({
+      text: value,
+      maxResults: 10,
+    })
+      .then(items => this.setState({ historyItems: items }))
+      .catch(this.errorHandler);
+  };
+
   onChange = (name, value) => {
     const values = Object.assign({}, this.state.values, {[name]: value});
-    const { historyApi } = this;
+
+    if (name === 'url_add') {
+      this.getHistoryItems(value);
+    }
 
     this.setState({
       values,
     });
-
-    historyApi.search({
-        text: value,
-        maxResults: 10,
-    })
-        .then((t) => console.log(t))
-        .catch(this.errorHandler);
   };
 
   onDelete = (id) => {
@@ -164,15 +172,27 @@ class App extends Component {
       values,
       isAddPopupVisible,
       isEditPopupVisible,
+      historyItems,
     } = this.state;
 
     return (
       <div>
         <ControlPanel onAdd={showAddPopup}/>
         <BookmarksList bookmarks={bookmarks} onDelete={this.onDelete} onEdit={showEditPopup}/>
-        <AddPopup show={isAddPopupVisible} onClose={hideAddPopup} onChange={onChange} values={values} onAdd={onAdd}/>
-        <EditPopup show={isEditPopupVisible} onClose={hideEditPopup} onChange={onChange} values={values}
-                   onEdit={onEdit}/>
+        <AddPopup
+          show={isAddPopupVisible}
+          onClose={hideAddPopup}
+          onChange={onChange}
+          values={values}
+          onAdd={onAdd}
+          historyItems={historyItems}
+        />
+        <EditPopup
+          show={isEditPopupVisible}
+          onClose={hideEditPopup}
+          onChange={onChange}
+          values={values}
+          onEdit={onEdit}/>
       </div>
     );
   }
