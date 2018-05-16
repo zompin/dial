@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class Input extends Component {
   onChange = (e) => {
@@ -9,7 +9,7 @@ class Input extends Component {
   };
 
   render() {
-    const {value, placeholder, name} = this.props;
+    const {value, placeholder, name, className, onKeyDown} = this.props;
     const placeHolderClasslist = ['input__placeholder'];
 
     if (!value) {
@@ -17,9 +17,9 @@ class Input extends Component {
     }
 
     return (
-      <div className="input">
+      <div className={`input input_${className}`}>
         <div className={placeHolderClasslist.join(' ')}>{placeholder}</div>
-        <input className="input__value" value={value || ''} name={name} onChange={this.onChange}/>
+        <input className="input__value" value={value || ''} name={name} onChange={this.onChange} onKeyDown={onKeyDown} />
       </div>
     );
   }

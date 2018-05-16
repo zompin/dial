@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.bookmarksApi = props.browser.bookmarks;
-    // this.historyApi = props.browser.history;
+    this.historyApi = props.browser.history;
   }
 
   state = {
@@ -51,18 +51,18 @@ class App extends Component {
 
   onChange = (name, value) => {
     const values = Object.assign({}, this.state.values, {[name]: value});
-    // const { historyApi } = this;
+    const { historyApi } = this;
 
     this.setState({
       values,
     });
 
-    // historyApi.search({
-    //     text: value,
-    //     maxResults: 10,
-    // })
-    //     .then((t) => console.log(t))
-    //     .catch(this.errorHandler);
+    historyApi.search({
+        text: value,
+        maxResults: 10,
+    })
+        .then((t) => console.log(t))
+        .catch(this.errorHandler);
   };
 
   onDelete = (id) => {
