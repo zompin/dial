@@ -7,15 +7,30 @@ import ComboBox from './ComboBox';
 const AddPopup = ({
   show,
   onClose,
-  onChange,
   values,
-  onAdd,
+  onChange,
   historyItems,
+  onComboItemSelect,
+  onAdd,
 }) => (
   <Popup show={show} onClose={onClose}>
     <div className="popup__header">Добавить вкладку</div>
-    <ComboBox name="url_add" value={values.url_add} placeholder="URL" onInputChange={onChange} items={historyItems} />
-    <Input name="title_add" value={values.title_add} onChange={onChange} placeholder="Title" className="popup" />
+    <ComboBox
+      name="url_add"
+      value={values.url_add}
+      placeholder="URL"
+      onInputChange={onChange}
+      items={historyItems}
+      onComboItemSelect={onComboItemSelect}
+      className="popup"
+    />
+    <Input
+      name="title_add"
+      value={values.title_add}
+      onChange={onChange}
+      placeholder="Title"
+      className="popup"
+    />
     <button onClick={onAdd}>+</button>
   </Popup>
 );
@@ -27,6 +42,7 @@ AddPopup.propTypes = {
   values: PropTypes.shape().isRequired,
   onAdd: PropTypes.func.isRequired,
   historyItems: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  onComboItemSelect: PropTypes.func.isRequired,
 };
 
 AddPopup.defaultProps = {

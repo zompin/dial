@@ -53,19 +53,27 @@ class App extends Component {
   getHistoryItems = (value) => {
     const { historyApi } = this;
 
-    historyApi.search({
-      text: value,
-      maxResults: 10,
-    })
-      .then(items => this.setState({ historyItems: items }))
-      .catch(this.errorHandler);
+    if (value) {
+      historyApi.search({
+        text: value,
+        maxResults: 10,
+      })
+        .then(items => this.setState({ historyItems: items }))
+        .catch(this.errorHandler);
+    } else {
+      this.setState({ historyItems: [] });
+    }
   };
 
-  onChange = (name, value) => {
+  onChange = (name, value, noSearch) => {
     const values = Object.assign({}, this.state.values, {[name]: value});
 
-    if (name === 'url_add') {
+    if (name === 'url_add' && !noSearch) {
       this.getHistoryItems(value);
+    } else {
+      this.setState({
+        historyItems: [],
+      });
     }
 
     this.setState({
@@ -78,6 +86,22 @@ class App extends Component {
     bookmarksApi.remove(id)
       .then(this.getBookmarks)
       .catch(this.errorHandler);
+  };
+
+  onComboItemSelect = (id) => {
+    const { historyItems, values } = this.state;
+    const item = historyItems.find(i => i.id === id);
+    const newValues = {};
+
+    if (item) {
+      newValues.url_add = item.url;
+      newValues.title_add = item.title;
+
+      this.setState({
+        values: Object.assign({}, values, newValues),
+        historyItems: [],
+      });
+    }
   };
 
   showAddPopup = () => {
@@ -186,6 +210,7 @@ class App extends Component {
           values={values}
           onAdd={onAdd}
           historyItems={historyItems}
+          onComboItemSelect={this.onComboItemSelect}
         />
         <EditPopup
           show={isEditPopupVisible}

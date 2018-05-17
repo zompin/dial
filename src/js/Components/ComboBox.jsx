@@ -10,14 +10,19 @@ class ComboBox extends Component {
   };
 
   onComboSelect = (e) => {
-    console.log(e)
+    const { onComboItemSelect } = this.props;
+    const { id } = e.currentTarget.dataset;
+
+    if (onComboItemSelect) {
+      onComboItemSelect(id);
+    }
   };
 
   render() {
-    const { name, value, placeholder, onInputChange, items } = this.props;
+    const { name, value, placeholder, onInputChange, items, className } = this.props;
 
     return (
-      <div className="combobox">
+      <div className={`combobox combobox_${className}`}>
         <Input name={name} value={value} placeholder={placeholder} onChange={onInputChange} />
 
         <div className="combobox__list">
