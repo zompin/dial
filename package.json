@@ -26,6 +26,7 @@
   },
   "scripts": {
     "start": "webpack-cli --mode development --env.development",
-    "build": "webpack-cli --mode production --env.production"
+    "build": "webpack-cli --mode production --env.production",
+    "pack": "rm -f build/* && npm run build && zip build/dial-$(date +%y%m%d).zip index.html manifest.json dist/ -r"
   }
 }
