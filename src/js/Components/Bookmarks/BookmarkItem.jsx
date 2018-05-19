@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import XButton from '../XButton';
+import EditButton from '../EditButton';
 
 const BookmarkItem = ({
   url,
@@ -16,9 +17,7 @@ const BookmarkItem = ({
       <div className="bookmark__url">{url}</div>
       <a className="bookmark__link" href={url} />
       <XButton onClick={onDelete} className="bookmark" />
-      <button className="bookmark__edit" onClick={onEdit}>
-        edit
-      </button>
+      <EditButton onClick={onEdit} className="bookmark" />
     </div>
   </div>
 );

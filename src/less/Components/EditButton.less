@@ -1,0 +1,117 @@
+.edit-button {
+  .button;
+
+  &_bookmark {
+    position: absolute;
+    top: 0;
+    right: 40px;
+  }
+
+  &__l {
+    position: absolute;
+    height: 20px;
+    width: 2px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: #bbb;
+
+    &:before {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #bbb;
+      transition: background-color 0.15s, height 0.15s 0.15s;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: -2px;
+      height: 6px;
+      width: 6px;
+      background-color: #bbb;
+      border-radius: 50%;
+      transition: background-color 0.15s, transform 0.15s 0.15s;
+    }
+
+    &_1 {
+      left: 10px;
+
+      &:before {
+        height: 10px;
+      }
+
+      &:after {
+        bottom: 7px;
+      }
+    }
+
+    &_2 {
+      left: 0;
+      right: 0;
+
+      &:before {
+        height: 14px;
+      }
+
+      &:after {
+        bottom: 11px;
+      }
+    }
+
+    &_3 {
+      right: 10px;
+
+      &:before {
+        height: 6px;
+      }
+
+      &:after {
+        bottom: 3px;
+      }
+    }
+  }
+
+  &:hover &__l {
+    &:before {
+      background-color: #000;
+    }
+
+    &:after {
+      background-color: #000;
+    }
+
+    &_1 {
+      &:before {
+        height: 4px;
+      }
+
+      &:after {
+        transform: translateY(6px);
+      }
+    }
+
+    &_2 {
+      &:before {
+        height: 9px;
+      }
+
+      &:after {
+        transform: translateY(6px);
+      }
+    }
+
+    &_3 {
+      &:before {
+        height: 16px;
+      }
+
+      &:after {
+        transform: translateY(-10px);
+      }
+    }
+  }
+}
