@@ -8,19 +8,26 @@ const BookmarkItem = ({
   title,
   onDelete,
   onEdit,
-}) => (
-  <div className="bookmark">
-    <div className="bookmark__inner">
-      <div className="bookmark__title">
-        {title}
-      </div>
-      <div className="bookmark__url">{url}</div>
-      <a className="bookmark__link" href={url} />
+}) => {
+  const urlPosStart = url.indexOf('//');
+  const urlPosEnd = url.indexOf('/', urlPosStart + 2);
+  const filteredUrl = url.substring(urlPosStart + 2, urlPosEnd);
+
+  return (
+    <div className="bookmark">
+      <a className="bookmark__link" href={url}>
+        <div className="bookmark__title">
+          {title}
+        </div>
+        <div className="bookmark__url">
+          {filteredUrl}
+        </div>
+      </a>
       <XButton onClick={onDelete} className="bookmark" />
       <EditButton onClick={onEdit} className="bookmark" />
     </div>
-  </div>
-);
+  );
+}
 
 BookmarkItem.propTypes = {
   url: PropTypes.string.isRequired,
