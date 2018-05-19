@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Input from './Input';
 
 class ComboBox extends Component {
-  state = {
-    isComboListVisible: false,
-  };
-  onKeyDown = () => {
-
-  };
-
   onComboSelect = (e) => {
     const { onComboItemSelect } = this.props;
     const { id } = e.currentTarget.dataset;
@@ -19,7 +13,14 @@ class ComboBox extends Component {
   };
 
   render() {
-    const { name, value, placeholder, onInputChange, items, className } = this.props;
+    const {
+      name,
+      value,
+      placeholder,
+      onInputChange,
+      items,
+      className,
+    } = this.props;
 
     return (
       <div className={`combobox combobox_${className}`}>
@@ -39,5 +40,20 @@ class ComboBox extends Component {
     );
   }
 }
+
+ComboBox.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  onInputChange: PropTypes.func.isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  className: PropTypes.string,
+  onComboItemSelect: PropTypes.func.isRequired,
+};
+
+ComboBox.defaultProps = {
+  value: '',
+  className: '',
+};
 
 export default ComboBox;

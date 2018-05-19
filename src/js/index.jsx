@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {render} from 'react-dom';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
 import BookmarksList from './Components/Bookmarks/BookmarksList';
 import ControlPanel from './Components/ControlPanel';
 import AddPopup from './Components/AddPopup';
@@ -24,21 +24,19 @@ class App extends Component {
   };
 
   getBookmarks = () => {
-    let {bookmarksApi} = this;
+    let { bookmarksApi } = this;
 
     this.setState({
       bookmarksLoaded: false,
     });
 
-    bookmarksApi.getChildren("unfiled_____")
-      .then(bookmarks => {
-        return bookmarks.find(b => b.title === 'Dial' && b.type === 'folder');
-      })
-      .then(dialFolder => {
+    bookmarksApi.getChildren('unfiled_____')
+      .then(bookmarks => bookmarks.find(b => b.title === 'Dial' && b.type === 'folder'))
+      .then((dialFolder) => {
         if (!dialFolder) {
           return bookmarksApi.create({
             title: 'Dial',
-            parentId: 'unfiled_____'
+            parentId: 'unfiled_____',
           });
         }
 
@@ -46,7 +44,7 @@ class App extends Component {
 
         return bookmarksApi.getChildren(dialFolder.id);
       })
-      .then(bookmarks => this.setState({bookmarks, bookmarksLoaded: true}))
+      .then(bookmarks => this.setState({ bookmarks, bookmarksLoaded: true }))
       .catch(this.errorHandler);
   };
 
@@ -82,7 +80,7 @@ class App extends Component {
   };
 
   onDelete = (id) => {
-    let {bookmarksApi} = this;
+    let { bookmarksApi } = this;
     bookmarksApi.remove(id)
       .then(this.getBookmarks)
       .catch(this.errorHandler);
@@ -106,7 +104,7 @@ class App extends Component {
 
   showAddPopup = () => {
     this.setState({
-      isAddPopupVisible: true
+      isAddPopupVisible: true,
     });
   };
 
@@ -117,8 +115,8 @@ class App extends Component {
   };
 
   onAdd = () => {
-    const {bookmarksApi, folder} = this;
-    const {url_add, title_add} = this.state.values;
+    const { bookmarksApi, folder } = this;
+    const { url_add, title_add } = this.state.values;
 
     bookmarksApi.create({
       parentId: folder.id,
@@ -144,8 +142,8 @@ class App extends Component {
     });
 
     bookmarksApi.get(editBookmarkId)
-      .then(bookmark => {
-        const {title, url} = bookmark[0];
+      .then((bookmark) => {
+        const { title, url } = bookmark[0];
         this.onChange('title_edit', title);
         this.onChange('url_edit', url);
       })
@@ -159,8 +157,8 @@ class App extends Component {
   };
 
   onEdit = () => {
-    const {editBookmarkId, values: {title_edit, url_edit}} = this.state;
-    const {bookmarksApi} = this;
+    const { editBookmarkId, values: { title_edit, url_edit } } = this.state;
+    const { bookmarksApi } = this;
 
     bookmarksApi.update(editBookmarkId, {
       title: title_edit,
@@ -182,7 +180,7 @@ class App extends Component {
   };
 
   render() {
-    let {
+    const {
       onChange,
       showAddPopup,
       hideAddPopup,
@@ -191,7 +189,7 @@ class App extends Component {
       hideEditPopup,
       onEdit,
     } = this;
-    let {
+    const {
       bookmarks,
       values,
       isAddPopupVisible,
@@ -201,8 +199,8 @@ class App extends Component {
 
     return (
       <div>
-        <ControlPanel onAdd={showAddPopup}/>
-        <BookmarksList bookmarks={bookmarks} onDelete={this.onDelete} onEdit={showEditPopup}/>
+        <ControlPanel onAdd={showAddPopup} />
+        <BookmarksList bookmarks={bookmarks} onDelete={this.onDelete} onEdit={showEditPopup} />
         <AddPopup
           show={isAddPopupVisible}
           onClose={hideAddPopup}
@@ -217,10 +215,11 @@ class App extends Component {
           onClose={hideEditPopup}
           onChange={onChange}
           values={values}
-          onEdit={onEdit}/>
+          onEdit={onEdit}
+        />
       </div>
     );
   }
 }
 
-render(<App browser={browser}/>, document.getElementById('root'));
+render(<App browser={browser} />, document.getElementById('root'));
