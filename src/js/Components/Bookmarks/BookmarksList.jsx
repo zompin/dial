@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import BookmarksItem from './BookmarkItem';
+import BookmarkAdd from './BookmarkAdd';
 
-const BookmarksList = ({ bookmarks, onDelete, onEdit }) => (
+const BookmarksList = ({
+  bookmarks,
+  onDelete,
+  onEdit,
+  onAdd,
+}) => (
   <div className="bookmarks">
     {
       !!bookmarks.length &&
@@ -17,6 +23,10 @@ const BookmarksList = ({ bookmarks, onDelete, onEdit }) => (
         ))
     }
     {
+      !!bookmarks.length &&
+        <BookmarkAdd onAdd={onAdd} />
+    }
+    {
       !bookmarks.length &&
       <div>Не закладок</div>
     }
@@ -27,6 +37,7 @@ BookmarksList.propTypes = {
   bookmarks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
 };
 
 export default BookmarksList;

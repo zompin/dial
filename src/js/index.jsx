@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import BookmarksList from './Components/Bookmarks/BookmarksList';
-import ControlPanel from './Components/ControlPanel';
 import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
 import Dialog from './Components/Dialog';
@@ -24,7 +23,7 @@ class App extends Component {
     editBookmarkId: '',
     historyItems: [],
     dialogMessage: '',
-    dialogAcceptCallback: null,
+    dialogAcceptCallback: () => {},
   };
 
   getBookmarks = () => {
@@ -176,6 +175,8 @@ class App extends Component {
   hideDialog = () => {
     this.setState({
       isDialogVisible: false,
+      dialogMessage: '',
+      dialogAcceptCallback: () => {},
     });
   };
 
@@ -227,8 +228,12 @@ class App extends Component {
 
     return (
       <div>
-        <ControlPanel onAdd={showAddPopup} />
-        <BookmarksList bookmarks={bookmarks} onDelete={onDelete} onEdit={showEditPopup} />
+        <BookmarksList
+          bookmarks={bookmarks}
+          onDelete={onDelete}
+          onEdit={showEditPopup}
+          onAdd={showAddPopup}
+        />
         <AddPopup
           show={isAddPopupVisible}
           onClose={hideAddPopup}
