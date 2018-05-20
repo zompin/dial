@@ -4,6 +4,9 @@
   "name": "Dial",
   "version": "0.0.4",
 
+  "author": "Ilya Altukhov",
+  "homepage_url": "https://github.com/zompin/dial",
+
   "description": "Dial addon like a feather",
 
   "chrome_url_overrides": {
