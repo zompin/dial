@@ -4,6 +4,7 @@ import BookmarksList from './Components/Bookmarks/BookmarksList';
 import ControlPanel from './Components/ControlPanel';
 import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
+import Dialog from './Components/Dialog';
 import '../less/style.less';
 
 class App extends Component {
@@ -18,9 +19,12 @@ class App extends Component {
     bookmarksLoaded: false,
     isAddPopupVisible: false,
     isEditPopupVisible: false,
+    isDialogVisible: false,
     values: {},
     editBookmarkId: '',
     historyItems: [],
+    dialogMessage: '',
+    dialogAcceptCallback: null,
   };
 
   getBookmarks = () => {
@@ -80,10 +84,15 @@ class App extends Component {
   };
 
   onDelete = (id) => {
-    let { bookmarksApi } = this;
-    bookmarksApi.remove(id)
-      .then(this.getBookmarks)
-      .catch(this.errorHandler);
+    const { bookmarksApi } = this;
+    const message = 'Вы действительно хотите удалить закладку?';
+    const callback = () => {
+      bookmarksApi.remove(id)
+        .then(this.getBookmarks)
+        .catch(this.errorHandler);
+    };
+
+    this.showDialog(message, callback);
   };
 
   onComboItemSelect = (id) => {
@@ -134,7 +143,7 @@ class App extends Component {
   };
 
   showEditPopup = (editBookmarkId) => {
-    const {bookmarksApi} = this;
+    const { bookmarksApi } = this;
 
     this.setState({
       isEditPopupVisible: true,
@@ -153,6 +162,20 @@ class App extends Component {
   hideEditPopup = () => {
     this.setState({
       isEditPopupVisible: false,
+    });
+  };
+
+  showDialog = (message, callback) => {
+    this.setState({
+      isDialogVisible: true,
+      dialogMessage: message,
+      dialogAcceptCallback: callback,
+    });
+  };
+
+  hideDialog = () => {
+    this.setState({
+      isDialogVisible: false,
     });
   };
 
@@ -188,19 +211,24 @@ class App extends Component {
       showEditPopup,
       hideEditPopup,
       onEdit,
+      onDelete,
+      hideDialog,
     } = this;
     const {
       bookmarks,
       values,
       isAddPopupVisible,
       isEditPopupVisible,
+      isDialogVisible,
       historyItems,
+      dialogMessage,
+      dialogAcceptCallback,
     } = this.state;
 
     return (
       <div>
         <ControlPanel onAdd={showAddPopup} />
-        <BookmarksList bookmarks={bookmarks} onDelete={this.onDelete} onEdit={showEditPopup} />
+        <BookmarksList bookmarks={bookmarks} onDelete={onDelete} onEdit={showEditPopup} />
         <AddPopup
           show={isAddPopupVisible}
           onClose={hideAddPopup}
@@ -216,6 +244,12 @@ class App extends Component {
           onChange={onChange}
           values={values}
           onEdit={onEdit}
+        />
+        <Dialog
+          show={isDialogVisible}
+          onClose={hideDialog}
+          onAccept={dialogAcceptCallback}
+          message={dialogMessage}
         />
       </div>
     );

@@ -27,7 +27,7 @@ const BookmarkItem = ({
       <EditButton onClick={onEdit} className="bookmark" />
     </div>
   );
-}
+};
 
 BookmarkItem.propTypes = {
   url: PropTypes.string.isRequired,
