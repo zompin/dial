@@ -4,6 +4,7 @@ import BookmarksList from './Components/Bookmarks/BookmarksList';
 import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
 import Dialog from './Components/Dialog';
+import Preloader from './Components/Preloader';
 import '../less/style.less';
 
 class App extends Component {
@@ -224,10 +225,12 @@ class App extends Component {
       historyItems,
       dialogMessage,
       dialogAcceptCallback,
+      bookmarksLoaded,
     } = this.state;
 
     return (
       <div>
+        <Preloader show={!bookmarksLoaded} />
         <BookmarksList
           bookmarks={bookmarks}
           onDelete={onDelete}

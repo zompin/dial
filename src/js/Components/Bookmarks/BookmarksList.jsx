@@ -26,10 +26,6 @@ const BookmarksList = ({
       !!bookmarks.length &&
         <BookmarkAdd onAdd={onAdd} />
     }
-    {
-      !bookmarks.length &&
-      <div>Не закладок</div>
-    }
   </div>
 );
 
