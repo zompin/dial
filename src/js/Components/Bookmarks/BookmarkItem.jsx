@@ -3,6 +3,16 @@ import PropTypes from 'prop-types';
 import XButton from '../XButton';
 import EditButton from '../EditButton';
 
+const colors = [
+  '#a83252',
+  '#3e4a41',
+  '#fe7e18',
+  '#41516b',
+  '#d41137',
+  '#53b0bd',
+  '#015e7a',
+];
+
 const BookmarkItem = ({
   url,
   title,
@@ -12,15 +22,18 @@ const BookmarkItem = ({
   const urlPosStart = url.indexOf('//');
   const urlPosEnd = url.indexOf('/', urlPosStart + 2);
   const filteredUrl = url.substring(urlPosStart + 2, urlPosEnd);
+  const colorIndex = [].reduce.call(filteredUrl, (acc, ch) => ch.charCodeAt(0) + acc, 0) % colors.length;
 
   return (
-    <div className="bookmark">
+    <div className="bookmark" style={{ backgroundColor: colors[colorIndex] }}>
       <a className="bookmark__link" href={url}>
         <div className="bookmark__title">
           {title}
         </div>
         <div className="bookmark__url">
-          {filteredUrl}
+          <div className="bookmark__url-inner">
+            {filteredUrl}
+          </div>
         </div>
       </a>
       <XButton onClick={onDelete} className="bookmark" />

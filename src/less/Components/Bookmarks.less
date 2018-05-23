@@ -30,16 +30,26 @@
   margin: 0 15px 15px 0;
   padding: 15px;
   position: relative;
-  background-color: @primary;
-  color: @background;
+  color: #fff;
   height: 150px;
   border-radius: 4px;
   font-size: 12px;
   box-shadow: 0 0 3px;
   transition: box-shadow 0.3s;
+  overflow: hidden;
+
+  .edit-button,
+  .x-button {
+    transition: transform 0.3s 0.7s;
+  }
 
   &:hover {
     box-shadow: 0 0 5px;
+
+    .edit-button,
+    .x-button {
+      transform: translateX(-80px);
+    }
   }
 
   &__title {
@@ -55,13 +65,19 @@
   &__url {
     position: absolute;
     top: 0;
-    right: 15px;
+    right: 0;
     bottom: 0;
-    left: 15px;
-    text-align: center;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &-inner {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 15px;
+    }
   }
 
   &__link {
@@ -127,3 +143,4 @@
     }
   }
 }
+
