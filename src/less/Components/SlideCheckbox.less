@@ -1,0 +1,30 @@
+.slide-checkbox {
+  width: 40px;
+  height: 20px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  margin: 30px;
+  border: 1px solid @GRAY;
+
+  &__input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  &__slider {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+    background-color: @GRAY;
+  }
+}

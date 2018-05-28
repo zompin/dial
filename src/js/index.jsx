@@ -5,6 +5,7 @@ import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
 import Dialog from './Components/Dialog';
 import Preloader from './Components/Preloader';
+import SlideCheckbox from './Components/SlideCheckbox';
 import '../less/style.less';
 
 class App extends Component {
@@ -230,6 +231,7 @@ class App extends Component {
 
     return (
       <div>
+        <SlideCheckbox />
         <Preloader show={!bookmarksLoaded} />
         <BookmarksList
           bookmarks={bookmarks}
