@@ -14,7 +14,7 @@
     top: 0;
     bottom: 0;
     margin: auto;
-    background-color: @BUTTON_PRIMARY_COLOR;
+    background-color: @WHITE;
 
     &:before {
       content: '';
@@ -22,7 +22,7 @@
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: @BUTTON_PRIMARY_COLOR;
+      background-color: @WHITE;
       transition: background-color 0.15s, height 0.15s 0.15s;
     }
 
@@ -32,7 +32,7 @@
       left: -2px;
       height: 6px;
       width: 6px;
-      background-color: @BUTTON_PRIMARY_COLOR;
+      background-color: @WHITE;
       border-radius: 50%;
       transition: background-color 0.15s, transform 0.15s 0.15s;
     }
@@ -77,11 +77,11 @@
 
   &:hover &__l {
     &:before {
-      background-color: @BUTTON_SLAVE_COLOR;
+      background-color: @GRAY;
     }
 
     &:after {
-      background-color: @BUTTON_SLAVE_COLOR;
+      background-color: @GRAY;
     }
 
     &_1 {

@@ -7,10 +7,12 @@
     right: -80px;
   }
 
-  &_popup {
-    position: absolute;
-    top: 0;
-    right: 0;
+  &_popup &__l {
+    background-color: @BLACK;
+
+    &:before {
+      background-color: @GRAY;
+    }
   }
 
   &__l {
@@ -22,7 +24,7 @@
     margin: auto;
     width: 2px;
     height: 28px;
-    background-color: @BUTTON_SLAVE_COLOR;
+    background-color: @GRAY;
     overflow: hidden;
 
     &:before {
@@ -32,7 +34,7 @@
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: @BUTTON_PRIMARY_COLOR;
+      background-color: @WHITE;
     }
 
     &_1 {
@@ -50,6 +52,12 @@
         transition: transform 0.15s;
       }
     }
+  }
+
+  &_popup {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   &:hover &__l:before {
