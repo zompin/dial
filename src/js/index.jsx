@@ -69,7 +69,7 @@ class App extends Component {
   };
 
   onChange = (name, value, noSearch) => {
-    const values = Object.assign({}, this.state.values, {[name]: value});
+    const values = Object.assign({}, this.state.values, { [name]: value });
 
     if (name === 'url_add' && !noSearch) {
       this.getHistoryItems(value);
@@ -231,7 +231,7 @@ class App extends Component {
 
     return (
       <div>
-        <SlideCheckbox />
+        <SlideCheckbox name="isFrozen" checked={values.isFrozen} onChange={onChange} />
         <Preloader show={!bookmarksLoaded} />
         <BookmarksList
           bookmarks={bookmarks}
