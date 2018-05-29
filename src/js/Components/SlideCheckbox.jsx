@@ -8,7 +8,7 @@ const SlideCheckbox = ({
   className,
 }) => (
   <div className={`slide-checkbox slide-checkbox_${className}`}>
-    <input className="slide-checkbox__input" type="checkbox" checked={checked} onClick={() => onChange(name, !checked)} />
+    <input className="slide-checkbox__input" type="checkbox" checked={checked} onChange={() => onChange(name, !checked)} />
     <div className="slide-checkbox__slider" />
   </div>
 );

@@ -18,6 +18,7 @@ const BookmarkItem = ({
   title,
   onDelete,
   onEdit,
+  isEditable,
 }) => {
   const urlPosStart = url.indexOf('//');
   const urlPosEnd = url.indexOf('/', urlPosStart + 2);
@@ -36,8 +37,13 @@ const BookmarkItem = ({
           </div>
         </div>
       </a>
-      <XButton onClick={onDelete} className="bookmark" />
-      <EditButton onClick={onEdit} className="bookmark" />
+      {
+        isEditable &&
+        <div>
+          <XButton onClick={onDelete} className="bookmark" />
+          <EditButton onClick={onEdit} className="bookmark" />
+        </div>
+      }
     </div>
   );
 };
@@ -47,6 +53,7 @@ BookmarkItem.propTypes = {
   title: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
+  isEditable: PropTypes.bool.isRequired,
 };
 
 export default BookmarkItem;

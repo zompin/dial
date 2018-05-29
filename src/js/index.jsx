@@ -21,7 +21,9 @@ class App extends Component {
     isAddPopupVisible: false,
     isEditPopupVisible: false,
     isDialogVisible: false,
-    values: {},
+    values: {
+      isEditable: false,
+    },
     editBookmarkId: '',
     historyItems: [],
     dialogMessage: '',
@@ -231,13 +233,14 @@ class App extends Component {
 
     return (
       <div>
-        <SlideCheckbox name="isFrozen" checked={values.isFrozen} onChange={onChange} />
+        <SlideCheckbox name="isEditable" checked={values.isEditable} onChange={onChange} />
         <Preloader show={!bookmarksLoaded} />
         <BookmarksList
           bookmarks={bookmarks}
           onDelete={onDelete}
           onEdit={showEditPopup}
           onAdd={showAddPopup}
+          isEditable={values.isEditable}
         />
         <AddPopup
           show={isAddPopupVisible}
