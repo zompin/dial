@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Popup from './Popup';
+import { hideDialog } from '../Actions/Popup';
 
 const Dialog = ({
   show,
@@ -22,4 +24,16 @@ Dialog.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-export default Dialog;
+function mapStateToProps(state) {
+  return {
+    show: state.Popup.isDialogVisible,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onClose: () => dispatch(hideDialog()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dialog);

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { showAddPopup } from '../../Actions/Popup';
 
 const BookmarkAdd = ({ onAdd }) => (
   <button className="bookmark-add" onClick={onAdd}>
@@ -12,4 +14,10 @@ BookmarkAdd.propTypes = {
   onAdd: PropTypes.func.isRequired,
 };
 
-export default BookmarkAdd;
+function mapDispatchToProps(dispatch) {
+  return {
+    onAdd: () => dispatch(showAddPopup()),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(BookmarkAdd);

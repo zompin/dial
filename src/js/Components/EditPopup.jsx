@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Popup from './Popup';
 import Input from './Input';
+import { hideEditPopup } from '../Actions/Popup';
 
 const EditPopup = ({
   show,
@@ -30,4 +32,16 @@ EditPopup.defaultProps = {
   show: false,
 };
 
-export default EditPopup;
+function mapStateToProps(state) {
+  return {
+    show: state.Popup.isEditPopupVisible,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onClose: () => dispatch(hideEditPopup()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPopup);

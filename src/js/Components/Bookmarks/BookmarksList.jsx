@@ -7,7 +7,6 @@ const BookmarksList = ({
   bookmarks,
   onDelete,
   onEdit,
-  onAdd,
   isEditable,
 }) => (
   <div className="bookmarks">
@@ -26,7 +25,7 @@ const BookmarksList = ({
     }
     {
       !!bookmarks.length && isEditable &&
-        <BookmarkAdd onAdd={onAdd} />
+        <BookmarkAdd />
     }
   </div>
 );
@@ -35,7 +34,6 @@ BookmarksList.propTypes = {
   bookmarks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
-  onAdd: PropTypes.func.isRequired,
   isEditable: PropTypes.bool.isRequired,
 };
 

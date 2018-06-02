@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 import BookmarksList from './Components/Bookmarks/BookmarksList';
 import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
 import Dialog from './Components/Dialog';
 import Preloader from './Components/Preloader';
 import SlideCheckbox from './Components/SlideCheckbox';
+
+import store from './Reducers';
+
 import '../less/style.less';
 
 class App extends Component {
@@ -18,9 +22,6 @@ class App extends Component {
   state = {
     bookmarks: [],
     bookmarksLoaded: false,
-    isAddPopupVisible: false,
-    isEditPopupVisible: false,
-    isDialogVisible: false,
     values: {
       isEditable: false,
     },
@@ -114,18 +115,6 @@ class App extends Component {
     }
   };
 
-  showAddPopup = () => {
-    this.setState({
-      isAddPopupVisible: true,
-    });
-  };
-
-  hideAddPopup = () => {
-    this.setState({
-      isAddPopupVisible: false,
-    });
-  };
-
   onAdd = () => {
     const { bookmarksApi, folder } = this;
     const { url_add, title_add } = this.state.values;
@@ -149,7 +138,6 @@ class App extends Component {
     const { bookmarksApi } = this;
 
     this.setState({
-      isEditPopupVisible: true,
       editBookmarkId,
     });
 
@@ -162,25 +150,11 @@ class App extends Component {
       .catch(this.errorHandler);
   };
 
-  hideEditPopup = () => {
-    this.setState({
-      isEditPopupVisible: false,
-    });
-  };
-
   showDialog = (message, callback) => {
     this.setState({
       isDialogVisible: true,
       dialogMessage: message,
       dialogAcceptCallback: callback,
-    });
-  };
-
-  hideDialog = () => {
-    this.setState({
-      isDialogVisible: false,
-      dialogMessage: '',
-      dialogAcceptCallback: () => {},
     });
   };
 
@@ -210,21 +184,14 @@ class App extends Component {
   render() {
     const {
       onChange,
-      showAddPopup,
-      hideAddPopup,
       onAdd,
       showEditPopup,
-      hideEditPopup,
       onEdit,
       onDelete,
-      hideDialog,
     } = this;
     const {
       bookmarks,
       values,
-      isAddPopupVisible,
-      isEditPopupVisible,
-      isDialogVisible,
       historyItems,
       dialogMessage,
       dialogAcceptCallback,
@@ -232,39 +199,34 @@ class App extends Component {
     } = this.state;
 
     return (
-      <div>
-        <SlideCheckbox name="isEditable" checked={values.isEditable} onChange={onChange} />
-        <Preloader show={!bookmarksLoaded} />
-        <BookmarksList
-          bookmarks={bookmarks}
-          onDelete={onDelete}
-          onEdit={showEditPopup}
-          onAdd={showAddPopup}
-          isEditable={values.isEditable}
-        />
-        <AddPopup
-          show={isAddPopupVisible}
-          onClose={hideAddPopup}
-          onChange={onChange}
-          values={values}
-          onAdd={onAdd}
-          historyItems={historyItems}
-          onComboItemSelect={this.onComboItemSelect}
-        />
-        <EditPopup
-          show={isEditPopupVisible}
-          onClose={hideEditPopup}
-          onChange={onChange}
-          values={values}
-          onEdit={onEdit}
-        />
-        <Dialog
-          show={isDialogVisible}
-          onClose={hideDialog}
-          onAccept={dialogAcceptCallback}
-          message={dialogMessage}
-        />
-      </div>
+      <Provider store={store} >
+        <div>
+          <SlideCheckbox name="isEditable" checked={values.isEditable} onChange={onChange} />
+          <Preloader show={!bookmarksLoaded} />
+          <BookmarksList
+            bookmarks={bookmarks}
+            onDelete={onDelete}
+            onEdit={showEditPopup}
+            isEditable={values.isEditable}
+          />
+          <AddPopup
+            onChange={onChange}
+            values={values}
+            onAdd={onAdd}
+            historyItems={historyItems}
+            onComboItemSelect={this.onComboItemSelect}
+          />
+          <EditPopup
+            onChange={onChange}
+            values={values}
+            onEdit={onEdit}
+          />
+          <Dialog
+            onAccept={dialogAcceptCallback}
+            message={dialogMessage}
+          />
+        </div>
+      </Provider>
     );
   }
 }

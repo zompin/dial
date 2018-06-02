@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Popup from './Popup';
 import Input from './Input';
 import ComboBox from './ComboBox';
+import { hideAddPopup } from '../Actions/Popup';
 
 const AddPopup = ({
   show,
@@ -49,4 +51,16 @@ AddPopup.defaultProps = {
   show: false,
 };
 
-export default AddPopup;
+function mapStateToProps(state) {
+  return {
+    show: state.Popup.isAddPopupVisible,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onClose: () => dispatch(hideAddPopup()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddPopup);
