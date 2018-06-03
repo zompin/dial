@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cs from 'classnames';
 
@@ -13,4 +14,10 @@ Preloader.propTypes = {
   show: PropTypes.bool.isRequired,
 };
 
-export default Preloader;
+function mapStateToProps(state) {
+  return {
+    show: !state.Bookmarks.isBookmarksLoaded,
+  };
+}
+
+export default connect(mapStateToProps)(Preloader);

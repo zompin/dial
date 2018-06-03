@@ -24,9 +24,11 @@ Dialog.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps({ Popup }) {
   return {
-    show: state.Popup.isDialogVisible,
+    show: Popup.isDialogVisible,
+    onAccept: Popup.dialogAcceptCallback,
+    message: Popup.dialogMessage,
   };
 }
 

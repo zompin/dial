@@ -8,32 +8,28 @@ import {
 } from '../Constants';
 
 export const showAddPopup = () => ({
-  // isAddPopupVisible: true,
   type: SHOW_ADD_POPUP,
 });
 
 export const hideAddPopup = () => ({
-  // isAddPopupVisible: false,
   type: HIDE_ADD_POPUP,
 });
 
-
-export const showEditPopup = () => ({
-  // isEditPopupVisible: true,
+export const showEditPopup = (onAccept, message) => ({
+  payload: { onAccept, message },
   type: SHOW_EDIT_POPUP,
 });
 
 export const hideEditPopup = () => ({
-  // isEditPopupVisible: false,
   type: HIDE_EDIT_POPUP,
 });
 
-export const showDialog = () => ({
-  // isDialogVisible: true,
+export const showDialog = (onAccept, message) => ({
   type: SHOW_DIALOG,
+  onAccept,
+  message,
 });
 
 export const hideDialog = () => ({
-  // isDialogVisible: false,
   type: HIDE_DIALOG,
 });

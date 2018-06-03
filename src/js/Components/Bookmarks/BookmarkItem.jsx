@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import XButton from '../XButton';
 import EditButton from '../EditButton';
+import { showDialog, showEditPopup } from '../../Actions/Popup';
+import { removeBookmark, getBookmark } from '../../Actions/Bookmarks';
 
 const colors = [
   '#a83252',
@@ -14,9 +17,11 @@ const colors = [
 ];
 
 const BookmarkItem = ({
+  id,
   url,
   title,
   onDelete,
+  removeBookmark,
   onEdit,
   isEditable,
 }) => {
@@ -40,8 +45,8 @@ const BookmarkItem = ({
       {
         isEditable &&
         <div>
-          <XButton onClick={onDelete} className="bookmark" />
-          <EditButton onClick={onEdit} className="bookmark" />
+          <XButton onClick={() => { onDelete(() => { removeBookmark(id); }); }} className="bookmark" />
+          <EditButton onClick={() => onEdit(id)} className="bookmark" />
         </div>
       }
     </div>
@@ -56,4 +61,15 @@ BookmarkItem.propTypes = {
   isEditable: PropTypes.bool.isRequired,
 };
 
-export default BookmarkItem;
+function mapDispatchToProps(dispatch) {
+  return {
+    removeBookmark: id => dispatch(removeBookmark(id)),
+    onDelete: (onAccept, message) => dispatch(showDialog(onAccept, message)),
+    onEdit: (id) => {
+      dispatch(getBookmark(id));
+      dispatch(showEditPopup());
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(BookmarkItem);

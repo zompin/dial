@@ -11,6 +11,8 @@ const initState = {
   isAddPopupVisible: false,
   isEditPopupVisible: false,
   isDialogVisible: false,
+  dialogMessage: '',
+  dialogAcceptCallback: () => {},
 };
 
 const PopupReducer = (state = initState, action) => {
@@ -24,7 +26,11 @@ const PopupReducer = (state = initState, action) => {
     case HIDE_EDIT_POPUP:
       return Object.assign({}, state, { isEditPopupVisible: false });
     case SHOW_DIALOG:
-      return Object.assign({}, state, { isDialogVisible: true });
+      return Object.assign({}, state, {
+        isDialogVisible: true,
+        dialogMessage: action.message,
+        dialogAcceptCallback: action.onAccept,
+      });
     case HIDE_DIALOG:
       return Object.assign({}, state, { isDialogVisible: false });
     default: return state;
