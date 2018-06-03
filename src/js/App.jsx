@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import BookmarksList from './Components/Bookmarks/BookmarksList';
 import AddPopup from './Components/AddPopup';
@@ -14,11 +15,11 @@ class App extends Component {
   }
 
   render() {
-    const { isEditable, toggleBookmarks } = this.props;
+    const { isEditable, toggleEditable } = this.props;
 
     return (
       <div>
-        <SlideCheckbox name="isEditable" checked={isEditable} onChange={toggleBookmarks} />
+        <SlideCheckbox name="isEditable" checked={isEditable} onChange={toggleEditable} />
         <Preloader />
         <BookmarksList />
         <AddPopup />
@@ -29,6 +30,12 @@ class App extends Component {
   }
 }
 
+App.propTypes = {
+  isEditable: PropTypes.bool.isRequired,
+  getBookmarks: PropTypes.func.isRequired,
+  toggleEditable: PropTypes.func.isRequired,
+};
+
 function mapStateToProps(state) {
   return {
     isEditable: state.Bookmarks.isBookmarksEditable,
@@ -38,7 +45,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getBookmarks: () => dispatch(getBookmarks()),
-    toggleBookmarks: () => dispatch({ type: 'BOOKMARKS_TOGGLE' }),
+    toggleEditable: () => dispatch(toggleBookmarks()),
   };
 }
 

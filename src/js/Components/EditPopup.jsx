@@ -12,6 +12,17 @@ class EditPopup extends Component {
     title: '',
   };
 
+  componentWillReceiveProps({ bookmark }) {
+    const { url, title } = bookmark;
+
+    if (url && title) {
+      this.setState({
+        url,
+        title,
+      });
+    }
+  }
+
   onChange = (name, value) => {
     this.setState({
       [name]: value,
@@ -26,26 +37,10 @@ class EditPopup extends Component {
     onClose();
   };
 
-  componentWillReceiveProps({ bookmark }) {
-    const { url, title } = bookmark;
-
-    if (url && title) {
-      this.setState({
-        url,
-        title,
-      });
-    }
-  }
-
   render() {
-    const {
-      props,
-      state,
-      onChange,
-      onEdit,
-    } = this;
-    const { show, onClose } = props;
-    const { url, title } = state;
+    const { onChange, onEdit } = this;
+    const { show, onClose } = this.props;
+    const { url, title } = this.state;
 
     return (
       <Popup show={show} onClose={onClose}>
@@ -58,17 +53,12 @@ class EditPopup extends Component {
   }
 }
 
-// EditPopup.propTypes = {
-//   show: PropTypes.bool,
-//   onClose: PropTypes.func.isRequired,
-//   onChange: PropTypes.func.isRequired,
-//   values: PropTypes.shape().isRequired,
-//   onEdit: PropTypes.func.isRequired,
-// };
-//
-// EditPopup.defaultProps = {
-//   show: false,
-// };
+EditPopup.propTypes = {
+  show: PropTypes.bool.isRequired,
+  bookmark: PropTypes.shape().isRequired,
+  onClose: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+};
 
 function mapStateToProps(state) {
   return {

@@ -45,7 +45,14 @@ const BookmarkItem = ({
       {
         isEditable &&
         <div>
-          <XButton onClick={() => { onDelete(() => { removeBookmark(id); }); }} className="bookmark" />
+          <XButton
+            onClick={
+              () => {
+                onDelete(() => { removeBookmark(id); }, 'Вы действительно зотите удалить закладку');
+              }
+            }
+            className="bookmark"
+          />
           <EditButton onClick={() => onEdit(id)} className="bookmark" />
         </div>
       }
@@ -54,9 +61,11 @@ const BookmarkItem = ({
 };
 
 BookmarkItem.propTypes = {
+  id: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
+  removeBookmark: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   isEditable: PropTypes.bool.isRequired,
 };

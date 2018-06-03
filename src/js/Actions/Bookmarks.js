@@ -26,8 +26,6 @@ export const setBookmarks = (bookmarks, bookmarksFolder) => ({
 export const getBookmarks = () => (
   (dispatch) => {
     let dialFolder;
-    dispatch(requestBookmarks());
-
     browser.bookmarks.getChildren('unfiled_____')
       .then(bookmarks => bookmarks.find(b => b.title === 'Dial' && b.type === 'folder'))
       .then((folder) => {

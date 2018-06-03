@@ -24,11 +24,13 @@ Dialog.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-function mapStateToProps({ Popup }) {
+function mapStateToProps(state) {
+  const { isDialogVisible, dialogAcceptCallback, dialogMessage } = state.Popup;
+
   return {
-    show: Popup.isDialogVisible,
-    onAccept: Popup.dialogAcceptCallback,
-    message: Popup.dialogMessage,
+    show: isDialogVisible,
+    onAccept: dialogAcceptCallback,
+    message: dialogMessage,
   };
 }
 
