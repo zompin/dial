@@ -1,4 +1,4 @@
-import { HISTORY_REQUEST_GET, HISTORY_REQUEST_SUCCESS } from '../Constants';
+import { HISTORY_REQUEST_GET, HISTORY_REQUEST_SUCCESS } from '../ActionTypes';
 
 export const requestHistory = () => ({
   type: HISTORY_REQUEST_GET,

@@ -4,7 +4,7 @@ import {
   BOOKMARKS_REQUEST_SUCCESS,
   BOOKMARK_REQUEST_SUCCESS,
   BOOKMARK_CLEAN,
-} from '../Constants';
+} from '../ActionTypes';
 
 const initState = {
   bookmarks: [],

@@ -7,7 +7,7 @@ import {
   BOOKMARK_REMOVE_REQUEST,
   BOOKMARK_REQUEST_SUCCESS,
   BOOKMARK_CLEAN,
-} from '../Constants';
+} from '../ActionTypes';
 
 export const toggleBookmarks = () => ({
   type: BOOKMARKS_TOGGLE,

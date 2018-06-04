@@ -8,14 +8,16 @@ import Dialog from './Components/Dialog';
 import Preloader from './Components/Preloader';
 import SlideCheckbox from './Components/SlideCheckbox';
 import { getBookmarks, toggleBookmarks } from './Actions/Bookmarks';
+import { getStorage } from './Actions/Storage';
 
 class App extends Component {
   componentDidMount() {
     this.props.getBookmarks();
+    this.props.getStorage();
   }
 
   render() {
-    const { isEditable, toggleEditable } = this.props;
+    const { isEditable, toggleEditable, storage } = this.props;
 
     return (
       <div>
@@ -39,6 +41,7 @@ App.propTypes = {
 function mapStateToProps(state) {
   return {
     isEditable: state.Bookmarks.isBookmarksEditable,
+    storage: state.Storage,
   };
 }
 
@@ -46,6 +49,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getBookmarks: () => dispatch(getBookmarks()),
     toggleEditable: () => dispatch(toggleBookmarks()),
+    getStorage: () => dispatch(getStorage()),
   };
 }
 

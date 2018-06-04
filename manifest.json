@@ -13,5 +13,11 @@
     "newtab": "index.html"
   },
 
-  "permissions": ["bookmarks", "history"]
+  "applications": {
+    "gecko": {
+      "id": "{855d4770-0f5d-494f-84e0-7407f154fa6c}"
+    }
+  },
+
+  "permissions": ["bookmarks", "history", "storage"]
 }

@@ -5,7 +5,7 @@ import {
   HIDE_EDIT_POPUP,
   SHOW_DIALOG,
   HIDE_DIALOG,
-} from '../Constants';
+} from '../ActionTypes';
 
 export const showAddPopup = () => ({
   type: SHOW_ADD_POPUP,

@@ -5,7 +5,7 @@ import {
   HIDE_EDIT_POPUP,
   SHOW_DIALOG,
   HIDE_DIALOG,
-} from '../Constants';
+} from '../ActionTypes';
 
 const initState = {
   isAddPopupVisible: false,
