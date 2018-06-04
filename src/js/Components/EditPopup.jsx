@@ -45,7 +45,7 @@ class EditPopup extends Component {
     return (
       <Popup show={show} onClose={onClose}>
         <div className="popup__header">Редактировать</div>
-        <Input name="url" value={url} onChange={onChange} placeholder="URL" className="popup" />
+        <Input name="url" value={url} onChange={onChange} placeholder="URL" className="popup" focus={show} />
         <Input name="title" value={title} onChange={onChange} placeholder="Title" className="popup" />
         <button onClick={onEdit}>edit</button>
       </Popup>

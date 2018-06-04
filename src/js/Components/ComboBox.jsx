@@ -20,11 +20,18 @@ class ComboBox extends Component {
       onInputChange,
       items,
       className,
+      focus,
     } = this.props;
 
     return (
       <div className={`combobox combobox_${className}`}>
-        <Input name={name} value={value} placeholder={placeholder} onChange={onInputChange} />
+        <Input
+          name={name}
+          value={value}
+          placeholder={placeholder}
+          onChange={onInputChange}
+          focus={focus}
+        />
 
         <div className="combobox__list">
           {
@@ -49,11 +56,13 @@ ComboBox.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   className: PropTypes.string,
   onComboItemSelect: PropTypes.func.isRequired,
+  focus: PropTypes.bool,
 };
 
 ComboBox.defaultProps = {
   value: '',
   className: '',
+  focus: false,
 };
 
 export default ComboBox;

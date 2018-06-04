@@ -58,14 +58,12 @@ class AddPopup extends Component {
 
   render() {
     const {
-      props,
-      state,
       onChange,
       onComboSelect,
       onAdd,
     } = this;
-    const { show, history, onClose } = props;
-    const { title, url, showComboBox } = state;
+    const { show, history, onClose } = this.props;
+    const { title, url, showComboBox } = this.state;
 
     return (
       <Popup show={show} onClose={onClose}>
@@ -78,6 +76,7 @@ class AddPopup extends Component {
           items={showComboBox ? history : []}
           onComboItemSelect={onComboSelect}
           className="popup"
+          focus={show}
         />
         <Input
           name="title"
@@ -92,18 +91,18 @@ class AddPopup extends Component {
   }
 }
 
-// AddPopup.propTypes = {
-//   show: PropTypes.bool,
-//   onClose: PropTypes.func.isRequired,
-//   onChange: PropTypes.func.isRequired,
-//   values: PropTypes.shape().isRequired,
-//   onAdd: PropTypes.func.isRequired,
-//   historyItems: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-// };
-//
-// AddPopup.defaultProps = {
-//   show: false,
-// };
+AddPopup.propTypes = {
+  show: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  history: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  folder: PropTypes.shape(),
+  getHistory: PropTypes.func.isRequired,
+};
+
+AddPopup.defaultProps = {
+  folder: {},
+};
 
 function mapStateToProps(state) {
   return {
