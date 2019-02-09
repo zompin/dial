@@ -10,7 +10,7 @@
   "description": "Dial addon like a feather",
 
   "chrome_url_overrides": {
-    "newtab": "index.html"
+    "newtab": "index.dev.html"
   },
 
   "applications": {
@@ -19,5 +19,7 @@
     }
   },
 
-  "permissions": ["bookmarks", "history", "storage"]
+  "permissions": ["bookmarks", "history", "storage"],
+
+  "content_security_policy": "script-src 'self' https://localhost:3000 'unsafe-eval'; object-src 'self'"
 }

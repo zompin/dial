@@ -1,42 +1,74 @@
-let path = require('path');
-let MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { HotModuleReplacementPlugin, DefinePlugin } = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const autoprefixer = require('autoprefixer');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
+module.exports = (_, { mode }) => {
+  const isDevelopment = mode === 'development';
 
-module.exports = env => {
-    let { development } = env;
+  return {
+    entry: './src/js/index.jsx',
 
-    return {
-        entry: {
-            bundle: './src/js/index.jsx',
+    optimization: {
+      minimizer: [new OptimizeCSSAssetsPlugin()],
+    },
+
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].js',
+      publicPath: isDevelopment ? 'https://localhost:3000/' : '/',
+    },
+
+    resolve: {
+      extensions: ['.jsx', '.js', 'less'],
+    },
+
+    module: {
+      rules: [
+        {
+          test: /\.jsx$/,
+          loader: 'babel-loader',
         },
-
-        output: {
-            path: path.resolve(__dirname, 'dist'),
-            filename: '[name].js'
+        {
+          test: /\.less$/,
+          loaders: [
+            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+            'css-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: [autoprefixer],
+              },
+            },
+            'less-loader',
+          ],
         },
+      ],
+    },
 
-        module: {
-            rules: [{
-                test: /\.jsx$/,
-                loader: 'babel-loader'
-            }, {
-                test: /\.less$/,
-                loaders: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
-            }]
-        },
+    plugins: [
+      new DefinePlugin({
+        NODE_ENV: isDevelopment ? JSON.stringify('development') : JSON.stringify('production'),
+      }),
+      new HtmlWebpackPlugin({
+        template: './index.html',
+        hash: true,
+      }),
+      new HotModuleReplacementPlugin(),
+      new MiniCssExtractPlugin(),
+    ],
 
-        plugins: [
-            new MiniCssExtractPlugin({
-                filename: '[name].css'
-            }),
-        ],
-
-        resolve: {
-            extensions: ['.js', '.jsx', '.css', '.less'],
-        },
-
-        watch: development,
-
-        devtool: development && 'cheap-inline-module-source-map'
-    };
+    devServer: {
+      contentBase: isDevelopment ? __dirname : path.join(__dirname, 'dist'),
+      disableHostCheck: true,
+      port: 3000,
+      hot: true,
+      https: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+    },
+  };
 };

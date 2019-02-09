@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { hot } from 'react-hot-loader/root';
 import BookmarksList from './Components/Bookmarks/BookmarksList';
 import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
@@ -53,4 +54,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(hot(App));
