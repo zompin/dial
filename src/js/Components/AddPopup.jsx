@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import Popup from './Popup';
 import Input from './Input';
 import ComboBox from './ComboBox';
-import { hideAddPopup } from '../Actions/Popup';
+import Button from './ButtonDefault';
+import { hideAddPopup, disableClose, enableClose } from '../Actions/Popup';
 import { getHistory } from '../Actions/History';
 import { addBookmark } from '../Actions/Bookmarks';
 
@@ -62,8 +63,14 @@ class AddPopup extends Component {
       onComboSelect,
       onAdd,
     } = this;
-    const { show, history, onClose } = this.props;
     const { title, url, showComboBox } = this.state;
+    const {
+      show,
+      history,
+      onClose,
+      disable,
+      enable,
+    } = this.props;
 
     return (
       <Popup show={show} onClose={onClose}>
@@ -77,6 +84,8 @@ class AddPopup extends Component {
           onComboItemSelect={onComboSelect}
           className="popup"
           focus={show}
+          onShow={disable}
+          onHide={enable}
         />
         <Input
           name="title"
@@ -85,7 +94,7 @@ class AddPopup extends Component {
           placeholder="Title"
           className="popup"
         />
-        <button onClick={onAdd}>+</button>
+        <Button onClick={onAdd} primary>Добавить</Button>
       </Popup>
     );
   }
@@ -117,6 +126,8 @@ function mapDispatchToProps(dispatch) {
     onClose: () => dispatch(hideAddPopup()),
     getHistory: text => dispatch(getHistory(text)),
     onAdd: (url, title, folder) => dispatch(addBookmark(url, title, folder.id)),
+    disable: () => dispatch(disableClose()),
+    enable: () => dispatch(enableClose()),
   };
 }
 

@@ -17,6 +17,14 @@ class Input extends Component {
     onChange(name, value);
   };
 
+  onFocus = (e) => {
+    const { onFocus, name } = this.props;
+
+    if (onFocus) {
+      onFocus(e, name);
+    }
+  };
+
   render() {
     const {
       value,
@@ -38,6 +46,7 @@ class Input extends Component {
           value={value}
           name={name}
           onChange={this.onChange}
+          onFocus={this.onFocus}
           ref={(e) => { this.input = e; }}
         />
       </div>
@@ -52,12 +61,14 @@ Input.propTypes = {
   className: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   focus: PropTypes.bool,
+  onFocus: PropTypes.func,
 };
 
 Input.defaultProps = {
   value: '',
   className: '',
   focus: false,
+  onFocus: null,
 };
 
 export default Input;

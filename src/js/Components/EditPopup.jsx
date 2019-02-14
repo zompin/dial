@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Popup from './Popup';
 import Input from './Input';
+import Button from './ButtonDefault';
 import { hideEditPopup } from '../Actions/Popup';
 import { updateBookmark, cleanBookmark } from '../Actions/Bookmarks';
 
@@ -47,7 +48,7 @@ class EditPopup extends Component {
         <div className="popup__header">Редактировать</div>
         <Input name="url" value={url} onChange={onChange} placeholder="URL" className="popup" focus={show} />
         <Input name="title" value={title} onChange={onChange} placeholder="Title" className="popup" />
-        <button onClick={onEdit}>edit</button>
+        <Button onClick={onEdit} primary>Сохранить</Button>
       </Popup>
     );
   }

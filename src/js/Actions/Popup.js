@@ -5,6 +5,8 @@ import {
   HIDE_EDIT_POPUP,
   SHOW_DIALOG,
   HIDE_DIALOG,
+  POPUP_DISABLE_CLOSE,
+  POPUP_ENABLE_CLOSE,
 } from '../ActionTypes';
 
 export const showAddPopup = () => ({
@@ -32,4 +34,12 @@ export const showDialog = (onAccept, message) => ({
 
 export const hideDialog = () => ({
   type: HIDE_DIALOG,
+});
+
+export const disableClose = () => ({
+  type: POPUP_DISABLE_CLOSE,
+});
+
+export const enableClose = () => ({
+  type: POPUP_ENABLE_CLOSE,
 });

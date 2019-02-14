@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Popup from './Popup';
+import ButtonDefault from './ButtonDefault';
 import { hideDialog } from '../Actions/Popup';
 
 const Dialog = ({
@@ -12,8 +13,12 @@ const Dialog = ({
 }) => (
   <Popup show={show} onClose={onClose}>
     <div>{message}</div>
-    <button onClick={() => { onAccept(); onClose(); }}>ок</button>
-    <button onClick={onClose}>отмена</button>
+    <ButtonDefault className="button-default_popup" onClick={() => { onAccept(); onClose(); }} primary>
+      Удалить
+    </ButtonDefault>
+    <ButtonDefault className="button-default_popup" onClick={onClose}>
+      Отмена
+    </ButtonDefault>
   </Popup>
 );
 
