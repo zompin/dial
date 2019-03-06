@@ -5,6 +5,9 @@
   "extensionDescription": {
     "message": "Dial extension like a feather"
   },
+  "extensionAuthor": {
+    "message": "Ilya Altukhov"
+  },
   "removeBookmarkQuestions": {
     "message": "Do you want to remove bookmark"
   },
