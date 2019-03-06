@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Popup from './Popup';
 import ButtonDefault from './ButtonDefault';
 import { hideDialog } from '../Actions/Popup';
+import { getLocaleMessage } from '../utils';
 
 const Dialog = ({
   show,
@@ -14,10 +15,10 @@ const Dialog = ({
   <Popup show={show} onClose={onClose}>
     <div>{message}</div>
     <ButtonDefault className="button-default_popup" onClick={() => { onAccept(); onClose(); }} primary>
-      Удалить
+      {getLocaleMessage('delete')}
     </ButtonDefault>
     <ButtonDefault className="button-default_popup" onClick={onClose}>
-      Отмена
+      {getLocaleMessage('cancel')}
     </ButtonDefault>
   </Popup>
 );

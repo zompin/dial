@@ -6,6 +6,7 @@ import Input from './Input';
 import Button from './ButtonDefault';
 import { hideEditPopup } from '../Actions/Popup';
 import { updateBookmark, cleanBookmark } from '../Actions/Bookmarks';
+import { getLocaleMessage } from '../utils';
 
 class EditPopup extends Component {
   state = {
@@ -45,10 +46,27 @@ class EditPopup extends Component {
 
     return (
       <Popup show={show} onClose={onClose}>
-        <div className="popup__header">Редактировать</div>
-        <Input name="url" value={url} onChange={onChange} placeholder="URL" className="popup" focus={show} />
-        <Input name="title" value={title} onChange={onChange} placeholder="Title" className="popup" />
-        <Button onClick={onEdit} primary>Сохранить</Button>
+        <div className="popup__header">
+          {getLocaleMessage('editBookmark')}
+        </div>
+        <Input
+          name="url"
+          value={url}
+          onChange={onChange}
+          placeholder={getLocaleMessage('url')}
+          className="popup"
+          focus={show}
+        />
+        <Input
+          name="title"
+          value={title}
+          onChange={onChange}
+          placeholder={getLocaleMessage('title')}
+          className="popup"
+        />
+        <Button onClick={onEdit} primary>
+          {getLocaleMessage('save')}
+        </Button>
       </Popup>
     );
   }

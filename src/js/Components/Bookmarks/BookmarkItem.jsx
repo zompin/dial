@@ -5,6 +5,7 @@ import XButton from '../XButton';
 import EditButton from '../EditButton';
 import { showDialog, showEditPopup } from '../../Actions/Popup';
 import { removeBookmark, getBookmark } from '../../Actions/Bookmarks';
+import { getLocaleMessage } from '../../utils';
 
 const colors = [
   '#a83252',
@@ -48,7 +49,7 @@ const BookmarkItem = ({
           <XButton
             onClick={
               () => {
-                onDelete(() => { removeBookmark(id); }, 'Вы действительно зотите удалить закладку');
+                onDelete(() => { removeBookmark(id); }, getLocaleMessage('removeBookmarkQuestions'));
               }
             }
             className="bookmark"

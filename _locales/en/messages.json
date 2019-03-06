@@ -1,0 +1,35 @@
+{
+  "extensionName": {
+    "message": "Simple Dial"
+  },
+  "extensionDescription": {
+    "message": "Dial extension like a feather"
+  },
+  "removeBookmarkQuestions": {
+    "message": "Do you want to remove bookmark"
+  },
+  "addBookmark": {
+    "message": "Add new bookmark"
+  },
+  "editBookmark": {
+    "message": "Edit bookmark"
+  },
+  "url": {
+    "message": "Link"
+  },
+  "title": {
+    "message": "Title"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "delete": {
+    "message": "Remove"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "save": {
+    "message": "Save"
+  }
+}

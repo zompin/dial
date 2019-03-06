@@ -1,13 +1,14 @@
 {
 
   "manifest_version": 2,
-  "name": "Dial",
+  "name": "__MSG_extensionName__",
   "version": "0.0.7",
+  "default_locale": "en",
 
   "author": "Ilya Altukhov",
   "homepage_url": "https://github.com/zompin/dial",
 
-  "description": "Dial addon like a feather",
+  "description": "__MSG_extensionDescription__",
 
   "chrome_url_overrides": {
     "newtab": "index.dev.html"

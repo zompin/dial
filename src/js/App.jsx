@@ -13,12 +13,13 @@ import { getStorage } from './Actions/Storage';
 
 class App extends Component {
   componentDidMount() {
-    this.props.getBookmarks();
-    this.props.getStorage();
+    const { getBookmarks, getStorage } = this.props;
+    getBookmarks();
+    getStorage();
   }
 
   render() {
-    const { isEditable, toggleEditable, storage } = this.props;
+    const { isEditable, toggleEditable } = this.props;
 
     return (
       <div>
@@ -37,6 +38,7 @@ App.propTypes = {
   isEditable: PropTypes.bool.isRequired,
   getBookmarks: PropTypes.func.isRequired,
   toggleEditable: PropTypes.func.isRequired,
+  getStorage: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

@@ -10,8 +10,7 @@ const BookmarksList = ({
 }) => (
   <div className="bookmarks">
     {
-      !!bookmarks.length &&
-      bookmarks.map(b => (
+      !!bookmarks.length && bookmarks.map(b => (
         <BookmarksItem
           key={b.id}
           id={b.id}
@@ -19,11 +18,10 @@ const BookmarksList = ({
           title={b.title}
           isEditable={isEditable}
         />
-        ))
+      ))
     }
     {
-      !!bookmarks.length && isEditable &&
-        <BookmarkAdd />
+      !!bookmarks.length && isEditable && <BookmarkAdd />
     }
   </div>
 );

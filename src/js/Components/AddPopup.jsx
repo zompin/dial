@@ -8,6 +8,7 @@ import Button from './ButtonDefault';
 import { hideAddPopup, disableClose, enableClose } from '../Actions/Popup';
 import { getHistory } from '../Actions/History';
 import { addBookmark } from '../Actions/Bookmarks';
+import { getLocaleMessage } from '../utils';
 
 class AddPopup extends Component {
   state = {
@@ -74,11 +75,11 @@ class AddPopup extends Component {
 
     return (
       <Popup show={show} onClose={onClose}>
-        <div className="popup__header">Добавить вкладку</div>
+        <div className="popup__header">{getLocaleMessage('addBookmark')}</div>
         <ComboBox
           name="url"
           value={url}
-          placeholder="URL"
+          placeholder={getLocaleMessage('url')}
           onInputChange={onChange}
           items={showComboBox ? history : []}
           onComboItemSelect={onComboSelect}
@@ -91,10 +92,10 @@ class AddPopup extends Component {
           name="title"
           value={title}
           onChange={onChange}
-          placeholder="Title"
+          placeholder={getLocaleMessage('title')}
           className="popup"
         />
-        <Button onClick={onAdd} primary>Добавить</Button>
+        <Button onClick={onAdd} primary>{getLocaleMessage('add')}</Button>
       </Popup>
     );
   }

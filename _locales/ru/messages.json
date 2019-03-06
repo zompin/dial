@@ -1,0 +1,35 @@
+{
+  "extensionName": {
+    "message": "Simple Dial"
+  },
+  "extensionDescription": {
+    "message": "Простой доступ к сайтам в новой вкладке"
+  },
+  "removeBookmarkQuestions": {
+    "message": "Вы действительно хотите удалить закладку?"
+  },
+  "addBookmark": {
+    "message": "Добавить новую закладку"
+  },
+  "editBookmark": {
+    "message": "Редактировать закладку"
+  },
+  "url": {
+    "message": "Ссылка"
+  },
+  "title": {
+    "message": "Название"
+  },
+  "add": {
+    "message": "Добавить"
+  },
+  "delete": {
+    "message": "Удалить"
+  },
+  "cancel": {
+    "message": "Отмена"
+  },
+  "save": {
+    "message": "Сохранить"
+  }
+}
