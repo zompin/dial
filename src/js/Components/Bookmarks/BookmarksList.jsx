@@ -21,7 +21,7 @@ const BookmarksList = ({
       ))
     }
     {
-      !!bookmarks.length && isEditable && <BookmarkAdd />
+      (!bookmarks.length || isEditable) && <BookmarkAdd />
     }
   </div>
 );
