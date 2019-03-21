@@ -7,16 +7,6 @@ import { showDialog, showEditPopup } from '../../Actions/Popup';
 import { removeBookmark, getBookmark } from '../../Actions/Bookmarks';
 import { getLocaleMessage } from '../../utils';
 
-const colors = [
-  '#a83252',
-  '#3e4a41',
-  '#fe7e18',
-  '#41516b',
-  '#d41137',
-  '#53b0bd',
-  '#015e7a',
-];
-
 const BookmarkItem = ({
   id,
   url,
@@ -25,14 +15,14 @@ const BookmarkItem = ({
   removeBookmark,
   onEdit,
   isEditable,
+  color,
 }) => {
   const urlPosStart = url.indexOf('//');
   const urlPosEnd = url.indexOf('/', urlPosStart + 2);
   const filteredUrl = url.substring(urlPosStart + 2, urlPosEnd);
-  const colorIndex = [].reduce.call(filteredUrl, (acc, ch) => ch.charCodeAt(0) + acc, 0) % colors.length;
 
   return (
-    <div className="bookmark" style={{ backgroundColor: colors[colorIndex] }}>
+    <div className="bookmark" style={{ backgroundColor: color }}>
       <a className="bookmark__link" href={url}>
         <div className="bookmark__title">
           {title}
@@ -69,6 +59,7 @@ BookmarkItem.propTypes = {
   removeBookmark: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   isEditable: PropTypes.bool.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {

@@ -5,6 +5,32 @@ import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
 import { toggleBookmarks } from '../../Actions/Bookmarks';
 
+const getColor = (() => {
+  const colorsStore = [
+    '#a83252',
+    '#3e4a41',
+    '#fe7e18',
+    '#41516b',
+    '#d41137',
+    '#53b0bd',
+    '#015e7a',
+  ];
+  let colorsAcc = [];
+
+  return (url) => {
+    if (colorsAcc.length === 0) {
+      colorsAcc = colorsStore.slice();
+    }
+
+    const colorIndex = [].reduce.call(
+      url,
+      (acc, ch) => ch.charCodeAt(0) + acc, 0,
+    ) % colorsAcc.length;
+
+    return colorsAcc.splice(colorIndex, 1)[0];
+  };
+})();
+
 class BookmarksList extends Component {
   componentDidUpdate(prevProps) {
     const {
@@ -32,6 +58,7 @@ class BookmarksList extends Component {
               url={b.url}
               title={b.title}
               isEditable={isEditable}
+              color={getColor(b.url)}
             />
           ))
         }
