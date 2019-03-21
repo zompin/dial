@@ -5,7 +5,7 @@ import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
 import { toggleBookmarks } from '../../Actions/Bookmarks';
 
-const getColor = (() => {
+const colorGenerator = () => {
   const colorsStore = [
     '#a83252',
     '#3e4a41',
@@ -29,7 +29,7 @@ const getColor = (() => {
 
     return colorsAcc.splice(colorIndex, 1)[0];
   };
-})();
+};
 
 class BookmarksList extends Component {
   componentDidUpdate(prevProps) {
@@ -47,6 +47,7 @@ class BookmarksList extends Component {
 
   render() {
     const { bookmarks, isEditable } = this.props;
+    const getColor = colorGenerator();
 
     return (
       <div className="bookmarks">
