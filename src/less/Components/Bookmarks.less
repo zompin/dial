@@ -25,6 +25,10 @@
   }
 }
 
+.bookmarks_saturate .bookmark:not(.bookmark_hover) {
+  opacity: 0.5;
+}
+
 .bookmark {
   flex: 0 0 200px;
   margin: 0 15px 15px 0;
@@ -36,10 +40,10 @@
   font-size: 12px;
   box-shadow: 0 0 3px;
   overflow: hidden;
-  transition: transform 0.25s;
+  transition: box-shadow 0.25s, opacity 0.2s 0.05s;
 
   &:hover {
-    transform: scale(1.05);
+    box-shadow: 0 0 3px 3px #ccc;
   }
 
   .edit-button,

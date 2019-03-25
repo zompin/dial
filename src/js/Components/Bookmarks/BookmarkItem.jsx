@@ -16,13 +16,20 @@ const BookmarkItem = ({
   onEdit,
   isEditable,
   color,
+  onEnter,
+  onLeave,
 }) => {
   const urlPosStart = url.indexOf('//');
   const urlPosEnd = url.indexOf('/', urlPosStart + 2);
   const filteredUrl = url.substring(urlPosStart + 2, urlPosEnd);
 
   return (
-    <div className="bookmark" style={{ backgroundColor: color }}>
+    <div
+      className="bookmark"
+      style={{ backgroundColor: color }}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
       <a className="bookmark__link" href={url}>
         <div className="bookmark__title">
           {title}

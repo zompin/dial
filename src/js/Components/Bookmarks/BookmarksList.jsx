@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import cs from 'classnames';
 import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
 import { toggleBookmarks } from '../../Actions/Bookmarks';
@@ -39,6 +40,8 @@ const colorGenerator = () => {
 };
 
 class BookmarksList extends Component {
+  state = { saturate: false };
+
   componentDidUpdate(prevProps) {
     const {
       isEditable,
@@ -52,12 +55,37 @@ class BookmarksList extends Component {
     }
   }
 
+  onEnter = ({ target }) => {
+    const bookmark = target.closest('.bookmark');
+
+    if (bookmark) {
+      bookmark.classList.add('bookmark_hover');
+
+      this.setState({ saturate: true });
+    }
+  };
+
+  onLeave = ({ target }) => {
+    const bookmark = target.closest('.bookmark');
+
+    if (bookmark) {
+      bookmark.classList.remove('bookmark_hover');
+
+      this.setState({ saturate: false });
+    }
+  };
+
   render() {
     const { bookmarks, isEditable } = this.props;
+    const { onEnter, onLeave } = this;
+    const { saturate } = this.state;
     const getColor = colorGenerator();
 
     return (
-      <div className="bookmarks">
+      <div
+        ref={(e) => { this.list = e; }}
+        className={cs('bookmarks', { bookmarks_saturate: saturate })}
+      >
         {
           bookmarks.map(b => (
             <BookmarksItem
@@ -67,6 +95,8 @@ class BookmarksList extends Component {
               title={b.title}
               isEditable={isEditable}
               color={getColor(b.url)}
+              onEnter={onEnter}
+              onLeave={onLeave}
             />
           ))
         }
