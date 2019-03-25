@@ -16,18 +16,25 @@ const colorGenerator = () => {
     '#015e7a',
   ];
   let colorsAcc = [];
+  let prevColor = '';
 
   return (url) => {
     if (colorsAcc.length === 0) {
       colorsAcc = colorsStore.slice();
     }
 
-    const colorIndex = [].reduce.call(
+    let colorIndex = [].reduce.call(
       url,
       (acc, ch) => ch.charCodeAt(0) + acc, 0,
     ) % colorsAcc.length;
 
-    return colorsAcc.splice(colorIndex, 1)[0];
+    if (prevColor !== '' && prevColor === colorsAcc[colorIndex]) {
+      colorIndex -= 1;
+    }
+
+    [prevColor] = colorsAcc.splice(colorIndex, 1);
+
+    return prevColor;
   };
 };
 
