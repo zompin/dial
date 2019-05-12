@@ -53,13 +53,13 @@ class BookmarksList extends Component {
   }
 
   render() {
-    const { bookmarks, isEditable } = this.props;
+    const { bookmarks, isEditable, ctrl } = this.props;
     const getColor = colorGenerator();
 
     return (
       <div className="bookmarks">
         {
-          bookmarks.map(b => (
+          bookmarks.map((b, i) => (
             <BookmarksItem
               key={b.id}
               id={b.id}
@@ -67,6 +67,8 @@ class BookmarksList extends Component {
               title={b.title}
               isEditable={isEditable}
               color={getColor(b.url)}
+              index={i}
+              ctrl={ctrl}
             />
           ))
         }
@@ -83,6 +85,7 @@ BookmarksList.propTypes = {
   isEditable: PropTypes.bool.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   toggleBookmarks: PropTypes.func.isRequired,
+  ctrl: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -90,6 +93,7 @@ function mapStateToProps(state) {
     bookmarks: state.Bookmarks.bookmarks,
     isEditable: state.Bookmarks.isBookmarksEditable,
     isLoaded: state.Bookmarks.isBookmarksLoaded,
+    ctrl: state.App.ctrl,
   };
 }
 

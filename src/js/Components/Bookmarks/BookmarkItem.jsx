@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import cs from 'classnames';
 import XButton from '../XButton';
 import EditButton from '../EditButton';
 import { showDialog, showEditPopup } from '../../Actions/Popup';
@@ -16,6 +17,8 @@ const BookmarkItem = ({
   onEdit,
   isEditable,
   color,
+  index,
+  ctrl,
 }) => {
   const urlPosStart = url.indexOf('//');
   const urlPosEnd = url.indexOf('/', urlPosStart + 2);
@@ -50,6 +53,12 @@ const BookmarkItem = ({
           <EditButton onClick={() => onEdit(id)} className="bookmark" />
         </div>
       }
+      {
+        index < 10 &&
+        <div className={cs('bookmark__code', { bookmark__code_show: ctrl })}>
+          CTRL + {(index + 1) % 10}
+        </div>
+      }
     </div>
   );
 };
@@ -63,6 +72,7 @@ BookmarkItem.propTypes = {
   onEdit: PropTypes.func.isRequired,
   isEditable: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {

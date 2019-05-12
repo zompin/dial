@@ -4,12 +4,14 @@ import Popup from './Popup';
 import Bookmarks from './Bookmarks';
 import History from './History';
 import Storage from './Storage';
+import App from './App';
 
 const reducers = combineReducers({
   Popup,
   Bookmarks,
   History,
   Storage,
+  App,
 });
 
 export default createStore(reducers, {}, applyMiddleware(thunk));

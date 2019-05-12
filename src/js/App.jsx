@@ -10,13 +10,42 @@ import Preloader from './Components/Preloader';
 import SlideCheckbox from './Components/SlideCheckbox';
 import { getBookmarks, toggleBookmarks } from './Actions/Bookmarks';
 import { getStorage } from './Actions/Storage';
+import { ctrlDownAction, ctrlUpAction } from './Actions/App';
 
 class App extends Component {
   componentDidMount() {
     const { getBookmarks, getStorage } = this.props;
+    const { onKeyDown, onKeyUp } = this;
     getBookmarks();
     getStorage();
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
   }
+
+  componentWillUnmount() {
+    const { onKeyDown, onKeyUp } = this;
+
+    document.removeEventListener('keydown', onKeyDown);
+    document.removeEventListener('keyup', onKeyUp);
+  }
+
+  onKeyDown = ({ key }) => {
+    const { ctrlDown } = this.props;
+    console.log(key)
+
+    if (key === 'Control') {
+      ctrlDown();
+    }
+  };
+
+  onKeyUp = ({ key }) => {
+    const { ctrlUp } = this.props;
+
+    if (key === 'Control') {
+      ctrlUp();
+    }
+  };
 
   render() {
     const { isEditable, toggleEditable } = this.props;
@@ -53,6 +82,8 @@ function mapDispatchToProps(dispatch) {
     getBookmarks: () => dispatch(getBookmarks()),
     toggleEditable: () => dispatch(toggleBookmarks()),
     getStorage: () => dispatch(getStorage()),
+    ctrlDown: () => dispatch(ctrlDownAction()),
+    ctrlUp: () => dispatch(ctrlUpAction()),
   };
 }
 
