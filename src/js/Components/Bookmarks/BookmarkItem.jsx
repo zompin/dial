@@ -54,10 +54,14 @@ const BookmarkItem = ({
         </div>
       }
       {
-        index < 10 &&
-        <div className={cs('bookmark__code', { bookmark__code_show: ctrl })}>
-          CTRL + {(index + 1) % 10}
-        </div>
+        index < 10 && (
+          <div
+            className={cs('bookmark__code', { bookmark__code_show: ctrl })}
+            style={{ backgroundColor: color }}
+          >
+            {`CTRL + ${(index + 1) % 10}`}
+          </div>
+        )
       }
     </div>
   );
