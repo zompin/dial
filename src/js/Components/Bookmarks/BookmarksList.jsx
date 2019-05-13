@@ -52,6 +52,29 @@ class BookmarksList extends Component {
     }
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.numberPress);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.numberPress);
+  }
+
+  numberPress = ({ key }) => {
+    const { bookmarks } = this.props;
+    const keyPerformed = +key;
+
+    if (typeof keyPerformed !== 'number') {
+      return;
+    }
+
+    if (!bookmarks[keyPerformed - 1] || !bookmarks[keyPerformed - 1].url) {
+      return;
+    }
+
+    location.href = bookmarks[keyPerformed - 1].url;
+  };
+
   render() {
     const { bookmarks, isEditable, ctrl } = this.props;
     const getColor = colorGenerator();

@@ -77,6 +77,7 @@ BookmarkItem.propTypes = {
   isEditable: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  ctrl: PropTypes.bool.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {

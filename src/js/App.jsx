@@ -32,7 +32,6 @@ class App extends Component {
 
   onKeyDown = ({ key }) => {
     const { ctrlDown } = this.props;
-    console.log(key)
 
     if (key === 'Control') {
       ctrlDown();
