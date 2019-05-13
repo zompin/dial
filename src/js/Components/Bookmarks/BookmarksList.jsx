@@ -61,10 +61,10 @@ class BookmarksList extends Component {
   }
 
   numberPress = ({ key }) => {
-    const { bookmarks } = this.props;
+    const { bookmarks, ctrl } = this.props;
     const keyPerformed = +key;
 
-    if (typeof keyPerformed !== 'number') {
+    if (typeof keyPerformed !== 'number' || !ctrl) {
       return;
     }
 
