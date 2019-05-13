@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npx webpack-dev-server --mode development",
     "build": "npx webpack --mode production",
-    "pack": "rm -rf dist/* && cp -r _locales dist && node prepareManifest.js && npm run build && cd dist && zip -r dial-$(date +%y%m%d).zip manifest.json index.html main.js main.css _locales/*"
+    "pack": "rm -rf dist/* && cp -r _locales dist && node prepareManifest.js && npm run build && cd dist && zip -r dial-$(date +%y%m%d).zip manifest.json index.html main.js main.css _locales/**"
   },
   "dependencies": {
     "autoprefixer": "^9.1.3",
