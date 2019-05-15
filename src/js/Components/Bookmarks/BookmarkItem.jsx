@@ -18,7 +18,6 @@ const BookmarkItem = ({
   isEditable,
   color,
   index,
-  ctrl,
 }) => {
   const urlPosStart = url.indexOf('//');
   const urlPosEnd = url.indexOf('/', urlPosStart + 2);
@@ -56,8 +55,7 @@ const BookmarkItem = ({
       {
         index < 10 && (
           <div
-            className={cs('bookmark__code', { bookmark__code_show: ctrl })}
-            style={{ backgroundColor: color }}
+            className="bookmark__code"
           >
             {`CTRL + ${(index + 1) % 10}`}
           </div>
@@ -77,7 +75,6 @@ BookmarkItem.propTypes = {
   isEditable: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  ctrl: PropTypes.bool.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {

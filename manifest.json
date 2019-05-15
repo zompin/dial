@@ -20,6 +20,59 @@
     }
   },
 
+  "commands": {
+    "bookmark-1": {
+      "suggested_key": {
+        "default": "Ctrl+1"
+      }
+    },
+    "bookmark-2": {
+      "suggested_key": {
+        "default": "Ctrl+2"
+      }
+    },
+    "bookmark-3": {
+      "suggested_key": {
+        "default": "Ctrl+3"
+      }
+    },
+    "bookmark-4": {
+      "suggested_key": {
+        "default": "Ctrl+4"
+      }
+    },
+    "bookmark-5": {
+      "suggested_key": {
+        "default": "Ctrl+5"
+      }
+    },
+    "bookmark-6": {
+      "suggested_key": {
+        "default": "Ctrl+6"
+      }
+    },
+    "bookmark-7": {
+      "suggested_key": {
+        "default": "Ctrl+7"
+      }
+    },
+    "bookmark-8": {
+      "suggested_key": {
+        "default": "Ctrl+8"
+      }
+    },
+    "bookmark-9": {
+      "suggested_key": {
+        "default": "Ctrl+9"
+      }
+    },
+    "bookmark-0": {
+      "suggested_key": {
+        "default": "Ctrl+0"
+      }
+    }
+  },
+
   "permissions": ["bookmarks", "history", "storage"],
 
   "content_security_policy": "script-src 'self' https://localhost:3000 'unsafe-eval'; object-src 'self'"

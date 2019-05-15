@@ -53,30 +53,49 @@ class BookmarksList extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener('keydown', this.numberPress);
+    browser.commands.onCommand.addListener(this.numberPress);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.numberPress);
+    browser.commands.onCommand.removeListener(this.numberPress);
   }
 
-  numberPress = ({ key }) => {
-    const { bookmarks, ctrl } = this.props;
-    const keyPerformed = +key;
+  numberPress = (command) => {
+    const { bookmarks } = this.props;
 
-    if (typeof keyPerformed !== 'number' || !ctrl) {
+    if (command.indexOf('-') === -1) {
       return;
     }
 
-    if (!bookmarks[keyPerformed - 1] || !bookmarks[keyPerformed - 1].url) {
+    const pieces = command.split('-');
+    const numberString = pieces[1];
+
+    if (!numberString) {
       return;
     }
 
-    location.href = bookmarks[keyPerformed - 1].url;
+    let number = +numberString;
+
+    if (typeof number !== 'number') {
+      return;
+    }
+
+    if (number === 0) {
+      number = 9;
+    } else {
+      number -= 1;
+    }
+
+
+    if (!bookmarks[number] || !bookmarks[number].url) {
+      return;
+    }
+
+    location.href = bookmarks[number].url;
   };
 
   render() {
-    const { bookmarks, isEditable, ctrl } = this.props;
+    const { bookmarks, isEditable } = this.props;
     const getColor = colorGenerator();
 
     return (
@@ -91,7 +110,6 @@ class BookmarksList extends Component {
               isEditable={isEditable}
               color={getColor(b.url)}
               index={i}
-              ctrl={ctrl}
             />
           ))
         }
@@ -108,7 +126,6 @@ BookmarksList.propTypes = {
   isEditable: PropTypes.bool.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   toggleBookmarks: PropTypes.func.isRequired,
-  ctrl: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -116,7 +133,6 @@ function mapStateToProps(state) {
     bookmarks: state.Bookmarks.bookmarks,
     isEditable: state.Bookmarks.isBookmarksEditable,
     isLoaded: state.Bookmarks.isBookmarksLoaded,
-    ctrl: state.App.ctrl,
   };
 }
 
