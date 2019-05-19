@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Popup from './Popup';
 import Input from './Input';
 import Button from './ButtonDefault';
-import { hideEditPopup } from '../Actions/Popup';
+import { hidePopupAction } from '../Actions/Popup';
 import { updateBookmark, cleanBookmark } from '../Actions/Bookmarks';
 import { getLocaleMessage } from '../utils';
 
@@ -45,7 +45,7 @@ class EditPopup extends Component {
     const { url, title } = this.state;
 
     return (
-      <Popup show={show} onClose={onClose}>
+      <Popup name="edit" onClose={onClose}>
         <div className="popup__header">
           {getLocaleMessage('editBookmark')}
         </div>
@@ -81,7 +81,7 @@ EditPopup.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    show: state.Popup.isEditPopupVisible,
+    show: state.Popup.show.edit || false,
     bookmark: state.Bookmarks.currentBookmark,
   };
 }
@@ -90,7 +90,7 @@ function mapDispatchToProps(dispatch) {
   return {
     onEdit: (id, url, title) => dispatch(updateBookmark(id, url, title)),
     onClose: () => {
-      dispatch(hideEditPopup());
+      dispatch(hidePopupAction('edit'));
       dispatch(cleanBookmark());
     },
   };

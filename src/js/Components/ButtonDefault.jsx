@@ -22,8 +22,12 @@ const ButtonDefault = ({
 ButtonDefault.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired,
   primary: PropTypes.bool,
+
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string,
+  ]).isRequired,
 };
 
 ButtonDefault.defaultProps = {

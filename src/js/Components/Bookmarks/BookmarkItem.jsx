@@ -1,19 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import cs from 'classnames';
 import XButton from '../XButton';
 import EditButton from '../EditButton';
-import { showDialog, showEditPopup } from '../../Actions/Popup';
-import { removeBookmark, getBookmark } from '../../Actions/Bookmarks';
-import { getLocaleMessage } from '../../utils';
+import { showPopupAction } from '../../Actions/Popup';
+import { getBookmark } from '../../Actions/Bookmarks';
 
 const BookmarkItem = ({
   id,
   url,
   title,
   onDelete,
-  removeBookmark,
   onEdit,
   isEditable,
   color,
@@ -39,18 +36,15 @@ const BookmarkItem = ({
         </div>
       </a>
       {
-        isEditable &&
-        <div>
-          <XButton
-            onClick={
-              () => {
-                onDelete(() => { removeBookmark(id); }, getLocaleMessage('removeBookmarkQuestions'));
-              }
-            }
-            className="bookmark"
-          />
-          <EditButton onClick={() => onEdit(id)} className="bookmark" />
-        </div>
+        isEditable && (
+          <div>
+            <XButton
+              onClick={() => onDelete(id)}
+              className="bookmark"
+            />
+            <EditButton onClick={() => onEdit(id)} className="bookmark" />
+          </div>
+        )
       }
       {
         index < 10 && (
@@ -70,7 +64,6 @@ BookmarkItem.propTypes = {
   url: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
-  removeBookmark: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   isEditable: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,
@@ -79,11 +72,9 @@ BookmarkItem.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    removeBookmark: id => dispatch(removeBookmark(id)),
-    onDelete: (onAccept, message) => dispatch(showDialog(onAccept, message)),
     onEdit: (id) => {
       dispatch(getBookmark(id));
-      dispatch(showEditPopup());
+      dispatch(showPopupAction('edit'));
     },
   };
 }

@@ -5,9 +5,9 @@ import Popup from './Popup';
 import Input from './Input';
 import ComboBox from './ComboBox';
 import Button from './ButtonDefault';
-import { hideAddPopup, disableClose, enableClose } from '../Actions/Popup';
 import { getHistory } from '../Actions/History';
 import { addBookmark } from '../Actions/Bookmarks';
+import { hidePopupAction, disableCloseAction, enableCloseAction } from '../Actions/Popup';
 import { getLocaleMessage } from '../utils';
 
 class AddPopup extends Component {
@@ -33,11 +33,11 @@ class AddPopup extends Component {
   };
 
   onAdd = () => {
-    const { onAdd, folder, onClose } = this.props;
+    const { onAdd, folder, hidePopup } = this.props;
     const { url, title } = this.state;
 
     onAdd(url, title, folder);
-    onClose();
+    hidePopup('add');
 
     this.setState({
       url: '',
@@ -68,13 +68,13 @@ class AddPopup extends Component {
     const {
       show,
       history,
-      onClose,
-      disable,
-      enable,
+      disableClose,
+      enableClose,
     } = this.props;
+    const onEnableClose = () => setTimeout(enableClose, 100);
 
     return (
-      <Popup show={show} onClose={onClose}>
+      <Popup name="add">
         <div className="popup__header">{getLocaleMessage('addBookmark')}</div>
         <ComboBox
           name="url"
@@ -85,8 +85,8 @@ class AddPopup extends Component {
           onComboItemSelect={onComboSelect}
           className="popup"
           focus={show}
-          onShow={disable}
-          onHide={enable}
+          onShow={disableClose}
+          onHide={onEnableClose}
         />
         <Input
           name="title"
@@ -103,7 +103,6 @@ class AddPopup extends Component {
 
 AddPopup.propTypes = {
   show: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
   onAdd: PropTypes.func.isRequired,
   history: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   folder: PropTypes.shape(),
@@ -116,7 +115,7 @@ AddPopup.defaultProps = {
 
 function mapStateToProps(state) {
   return {
-    show: state.Popup.isAddPopupVisible,
+    show: state.Popup.show.add || false,
     folder: state.Bookmarks.bookmarksFolder,
     history: state.History.history,
   };
@@ -124,11 +123,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onClose: () => dispatch(hideAddPopup()),
     getHistory: text => dispatch(getHistory(text)),
     onAdd: (url, title, folder) => dispatch(addBookmark(url, title, folder.id)),
-    disable: () => dispatch(disableClose()),
-    enable: () => dispatch(enableClose()),
+    hidePopup: () => dispatch(hidePopupAction('add')),
+    enableClose: () => dispatch(enableCloseAction()),
+    disableClose: () => dispatch(disableCloseAction()),
   };
 }
 

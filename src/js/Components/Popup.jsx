@@ -1,47 +1,94 @@
 import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cs from 'classnames';
 import XButton from './XButton';
+import { hidePopupAction } from '../Actions/Popup';
+
+const modals = document.createElement('div');
+modals.id = 'modals';
+document.body.appendChild(modals);
 
 class Popup extends Component {
-  componentWillMount() {
-    document.addEventListener('keydown', this.onEsc, false);
+  constructor(props) {
+    super(props);
+    this.el = document.createElement('div');
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.onEsc);
+    modals.appendChild(this.el);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onEsc);
+    modals.removeChild(this.el);
   }
 
   onEsc = (e) => {
     if (e.keyCode === 27) {
-      this.props.onClose();
+      this.close();
     }
   };
 
-  close = (e) => {
-    if (e.target.dataset.action === 'close') {
-      this.props.onClose();
+  close = () => {
+    const { name, hidePopup } = this.props;
+
+    hidePopup(name);
+  };
+
+  coverClick = ({ target }) => {
+    const { onClose } = this.props;
+
+    if (!target.dataset || !target.dataset.action) {
+      return;
     }
+
+    if (target.dataset.action !== 'close') {
+      return;
+    }
+
+    if (onClose) {
+      onClose();
+    }
+
+    this.close();
   };
 
   render() {
-    const { children, show } = this.props;
+    const { children, show, name } = this.props;
 
-    return (
-      <div className={cs('popup', { popup_hidden: !show })} onClick={this.close} data-action="close">
+    return createPortal(
+      <div
+        onClick={this.coverClick}
+        className={cs('popup', { popup_hidden: !show[name] })}
+        data-action="close"
+      >
         <div className="popup__inner">
           <XButton onClick={this.close} action="close" className="popup" />
           {children}
         </div>
-      </div>
+      </div>,
+      this.el,
     );
   }
 }
 
 Popup.propTypes = {
+  show: PropTypes.shape().isRequired,
+  hidePopup: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.element).isRequired,
-  show: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
 };
 
-export default Popup;
+Popup.defaultProps = {
+  onClose: null,
+};
+
+const mapStateToProps = state => ({
+  show: state.Popup.show,
+});
+
+export default connect(mapStateToProps, { hidePopup: hidePopupAction })(Popup);

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
-import { toggleBookmarks } from '../../Actions/Bookmarks';
+import AskDeletePopup from '../AskDeletePopup';
+import { toggleBookmarks, removeBookmark } from '../../Actions/Bookmarks';
+import { hidePopupAction, showPopupAction } from '../../Actions/Popup';
 
 const colorGenerator = () => {
   const colorsStore = [
@@ -39,6 +41,14 @@ const colorGenerator = () => {
 };
 
 class BookmarksList extends Component {
+  state = {
+    bookmarkForDelete: '',
+  };
+
+  componentDidMount() {
+    browser.commands.onCommand.addListener(this.numberPress);
+  }
+
   componentDidUpdate(prevProps) {
     const {
       isEditable,
@@ -50,10 +60,6 @@ class BookmarksList extends Component {
     if (isLoaded && !prevProps.isLoaded && !isEditable && !bookmarks.length) {
       toggleBookmarks();
     }
-  }
-
-  componentDidMount() {
-    browser.commands.onCommand.addListener(this.numberPress);
   }
 
   componentWillUnmount() {
@@ -94,9 +100,42 @@ class BookmarksList extends Component {
     location.href = bookmarks[number].url;
   };
 
+  showDeletePopup = (bookmarkForDelete) => {
+    const { showPopup } = this.props;
+
+    showPopup('ask-delete');
+
+    this.setState({
+      bookmarkForDelete,
+    });
+  };
+
+  onDelete = () => {
+    const { hidePopup, removeBookmark } = this.props;
+    const { bookmarkForDelete } = this.state;
+
+    hidePopup('ask-delete');
+    removeBookmark(bookmarkForDelete);
+
+    this.setState({
+      bookmarkForDelete: '',
+    });
+  };
+
+  onCancel = () => {
+    const { hidePopup } = this.props;
+
+    hidePopup('ask-delete');
+
+    this.setState({
+      bookmarkForDelete: '',
+    });
+  };
+
   render() {
     const { bookmarks, isEditable } = this.props;
     const getColor = colorGenerator();
+    const { showDeletePopup, onDelete, onCancel } = this;
 
     return (
       <div className="bookmarks">
@@ -110,12 +149,14 @@ class BookmarksList extends Component {
               isEditable={isEditable}
               color={getColor(b.url)}
               index={i}
+              onDelete={showDeletePopup}
             />
           ))
         }
         {
           isEditable && <BookmarkAdd />
         }
+        <AskDeletePopup onDelete={onDelete} onCancel={onCancel} />
       </div>
     );
   }
@@ -136,4 +177,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { toggleBookmarks })(BookmarksList);
+export default connect(mapStateToProps, {
+  toggleBookmarks,
+  removeBookmark,
+  hidePopup: hidePopupAction,
+  showPopup: showPopupAction,
+})(BookmarksList);

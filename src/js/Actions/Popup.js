@@ -1,45 +1,24 @@
 import {
-  SHOW_ADD_POPUP,
-  HIDE_ADD_POPUP,
-  SHOW_EDIT_POPUP,
-  HIDE_EDIT_POPUP,
-  SHOW_DIALOG,
-  HIDE_DIALOG,
   POPUP_DISABLE_CLOSE,
   POPUP_ENABLE_CLOSE,
+  POPUP_SHOW,
+  POPUP_HIDE,
 } from '../ActionTypes';
 
-export const showAddPopup = () => ({
-  type: SHOW_ADD_POPUP,
-});
-
-export const hideAddPopup = () => ({
-  type: HIDE_ADD_POPUP,
-});
-
-export const showEditPopup = (onAccept, message) => ({
-  payload: { onAccept, message },
-  type: SHOW_EDIT_POPUP,
-});
-
-export const hideEditPopup = () => ({
-  type: HIDE_EDIT_POPUP,
-});
-
-export const showDialog = (onAccept, message) => ({
-  type: SHOW_DIALOG,
-  onAccept,
-  message,
-});
-
-export const hideDialog = () => ({
-  type: HIDE_DIALOG,
-});
-
-export const disableClose = () => ({
+export const disableCloseAction = () => ({
   type: POPUP_DISABLE_CLOSE,
 });
 
-export const enableClose = () => ({
+export const enableCloseAction = () => ({
   type: POPUP_ENABLE_CLOSE,
+});
+
+export const showPopupAction = name => ({
+  type: POPUP_SHOW,
+  name,
+});
+
+export const hidePopupAction = name => ({
+  type: POPUP_HIDE,
+  name,
 });

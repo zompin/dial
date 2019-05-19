@@ -5,17 +5,14 @@ import { hot } from 'react-hot-loader/root';
 import BookmarksList from './Components/Bookmarks/BookmarksList';
 import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
-import Dialog from './Components/Dialog';
 import Preloader from './Components/Preloader';
 import SlideCheckbox from './Components/SlideCheckbox';
 import { getBookmarks, toggleBookmarks } from './Actions/Bookmarks';
-import { getStorage } from './Actions/Storage';
 
 class App extends Component {
   componentDidMount() {
-    const { getBookmarks, getStorage } = this.props;
+    const { getBookmarks } = this.props;
     getBookmarks();
-    getStorage();
   }
 
   render() {
@@ -28,7 +25,6 @@ class App extends Component {
         <BookmarksList />
         <AddPopup />
         <EditPopup />
-        <Dialog />
       </div>
     );
   }
@@ -38,7 +34,6 @@ App.propTypes = {
   isEditable: PropTypes.bool.isRequired,
   getBookmarks: PropTypes.func.isRequired,
   toggleEditable: PropTypes.func.isRequired,
-  getStorage: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -48,12 +43,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getBookmarks: () => dispatch(getBookmarks()),
-    toggleEditable: () => dispatch(toggleBookmarks()),
-    getStorage: () => dispatch(getStorage()),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(hot(App));
+export default connect(mapStateToProps, { getBookmarks, toggleEditable: toggleBookmarks })(hot(App));

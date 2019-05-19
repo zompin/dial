@@ -4,6 +4,8 @@ import cs from 'classnames';
 import Input from './Input';
 
 class ComboBox extends Component {
+  popupOpenFlag = false;
+
   state = {
     open: false,
   };
@@ -15,16 +17,49 @@ class ComboBox extends Component {
     document.addEventListener('keydown', onEsc);
   }
 
-  componentDidUpdate(prevProps) {
-    const { items, onHide } = this.props;
+  shouldComponentUpdate(prevProps, prevState) {
+    const { items, value } = this.props;
+    const { open } = this.state;
+    const { items: prevItems, value: prevValue } = prevProps;
+    const { prevOpen } = prevState.open;
+    const notEqual = items.length === prevItems.length && !items.reduce((acc, _, index) => (
+      items[index].id === prevItems[index].id && acc
+    ), true);
 
-    if (!onHide) {
+    if (value !== prevValue) {
+      return true;
+    }
+
+    if (items.length !== prevItems.length) {
+      return true;
+    }
+
+    return open !== prevOpen || notEqual;
+  }
+
+  componentDidUpdate() {
+    const {
+      value,
+      items,
+      onHide,
+      onShow,
+    } = this.props;
+    const { open } = this.state;
+    const popupOpenFlagCurrent = open && !!items.length && !!value;
+
+    if (popupOpenFlagCurrent === this.popupOpenFlag) {
       return;
     }
 
-    if (prevProps.items.length !== 0 && items.length === 0) {
+    if (onHide && !popupOpenFlagCurrent) {
       onHide();
     }
+
+    if (onShow && popupOpenFlagCurrent) {
+      onShow();
+    }
+
+    this.popupOpenFlag = popupOpenFlagCurrent;
   }
 
   componentWillUnmount() {
@@ -58,27 +93,15 @@ class ComboBox extends Component {
   };
 
   onShow = () => {
-    const { onShow } = this.props;
-
     this.setState({
       open: true,
     });
-
-    if (onShow) {
-      onShow();
-    }
   };
 
   onHide = () => {
-    const { onHide } = this.props;
-
     this.setState({
       open: false,
     });
-
-    if (onHide) {
-      onHide();
-    }
   };
 
   onEsc = (e) => {

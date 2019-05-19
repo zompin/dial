@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Popup from './Popup';
 import ButtonDefault from './ButtonDefault';
-import { hideDialog } from '../Actions/Popup';
+import { hidePopupAction } from '../Actions/Popup';
 import { getLocaleMessage } from '../utils';
 
 const Dialog = ({
-  show,
   onClose,
   onAccept,
   message,
 }) => (
-  <Popup show={show} onClose={onClose}>
+  <Popup name="dialog" onClose={onClose}>
     <div>{message}</div>
     <ButtonDefault className="button-default_popup" onClick={() => { onAccept(); onClose(); }} primary>
       {getLocaleMessage('delete')}
@@ -24,17 +23,15 @@ const Dialog = ({
 );
 
 Dialog.propTypes = {
-  show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
-  const { isDialogVisible, dialogAcceptCallback, dialogMessage } = state.Popup;
+  const { dialogAcceptCallback, dialogMessage } = state.Popup;
 
   return {
-    show: isDialogVisible,
     onAccept: dialogAcceptCallback,
     message: dialogMessage,
   };
@@ -42,7 +39,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onClose: () => dispatch(hideDialog()),
+    onClose: () => dispatch(hidePopupAction('dialog')),
   };
 }
 

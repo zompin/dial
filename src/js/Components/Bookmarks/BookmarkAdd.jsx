@@ -1,23 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { showAddPopup } from '../../Actions/Popup';
+import { showPopupAction } from '../../Actions/Popup';
 
-const BookmarkAdd = ({ onAdd }) => (
-  <button className="bookmark-add" onClick={onAdd}>
+const BookmarkAdd = ({ showPopup }) => (
+  <button className="bookmark-add" onClick={() => showPopup('add')}>
     <div className="bookmark-add__l bookmark-add__l_1" />
     <div className="bookmark-add__l bookmark-add__l_2" />
   </button>
 );
 
 BookmarkAdd.propTypes = {
-  onAdd: PropTypes.func.isRequired,
+  showPopup: PropTypes.func.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onAdd: () => dispatch(showAddPopup()),
-  };
-}
-
-export default connect(null, mapDispatchToProps)(BookmarkAdd);
+export default connect(null, { showPopup: showPopupAction })(BookmarkAdd);
