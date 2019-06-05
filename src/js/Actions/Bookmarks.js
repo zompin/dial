@@ -23,24 +23,50 @@ export const setBookmarks = (bookmarks, bookmarksFolder) => ({
   bookmarksFolder,
 });
 
+const getRootFolder = async () => {
+  const rootBookmarks = await browser.bookmarks.getChildren('unfiled_____');
+  let dialFolder = rootBookmarks.find(b => b.title === 'Dial' && b.type === 'folder');
+
+  if (!dialFolder) {
+    dialFolder = await browser.bookmarks.create({
+      title: 'Dial',
+      parentId: 'unfiled_____',
+    });
+  }
+
+  return dialFolder;
+};
+
+const getProfiles = async (rootFolder) => {
+  let children = await browser.bookmarks.getChildren(rootFolder.id);
+  children = children.filter(c => c.type === 'folder');
+
+  if (!children.length) {
+    const tmp = await browser.bookmarks.create({
+      title: 'Default',
+      parentId: rootFolder.id,
+    });
+
+    children.push(tmp);
+  }
+
+  return children;
+};
+
 export const getBookmarks = () => (
-  (dispatch) => {
-    let dialFolder;
-    browser.bookmarks.getChildren('unfiled_____')
-      .then(bookmarks => bookmarks.find(b => b.title === 'Dial' && b.type === 'folder'))
-      .then((folder) => {
-        if (!folder) {
-          return browser.bookmarks.create({
-            title: 'Dial',
-            parentId: 'unfiled_____',
-          });
-        }
+  async (dispatch) => {
+    const rootBookmarks = await browser.bookmarks.getChildren('unfiled_____');
+    let dialFolder = rootBookmarks.find(b => b.title === 'Dial' && b.type === 'folder');
 
-        dialFolder = folder;
+    if (!dialFolder) {
+      dialFolder = await browser.bookmarks.create({
+        title: 'Dial',
+        parentId: 'unfiled_____',
+      });
+    }
 
-        return browser.bookmarks.getChildren(folder.id);
-      })
-      .then(bookmarks => dispatch(setBookmarks(bookmarks, dialFolder)));
+    const bookmarks = await browser.bookmarks.getChildren(dialFolder.id);
+    dispatch(setBookmarks(bookmarks, dialFolder));
   }
 );
 
