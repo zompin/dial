@@ -1,7 +1,7 @@
-import { STORAGE_GET_SUCCESS, STORAGE_UPDATE_SUCCESS } from '../ActionTypes';
+import { ACTIONS } from '../constants';
 
 export const getStorageSuccess = storage => ({
-  type: STORAGE_GET_SUCCESS,
+  type: ACTIONS.STORAGE_GET_SUCCESS,
   storage,
 });
 
@@ -13,7 +13,7 @@ export const getStorage = () => (
 );
 
 export const updateStorageSuccess = () => ({
-  type: STORAGE_UPDATE_SUCCESS,
+  type: ACTIONS.STORAGE_UPDATE_SUCCESS,
 });
 
 export const updateStorage = data => (

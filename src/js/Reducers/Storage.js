@@ -1,15 +1,15 @@
-import { STORAGE_GET_SUCCESS, STORAGE_UPDATE_SUCCESS } from '../ActionTypes';
+import { ACTIONS } from '../constants';
 
 const initState = {};
 
 const StorageReducer = (state = initState, action) => {
   switch (action.type) {
-    case STORAGE_GET_SUCCESS:
-      return Object.assign({}, state, action.storage);
-    case STORAGE_UPDATE_SUCCESS:
-      return state;
-    default:
-      return state;
+  case ACTIONS.STORAGE_GET_SUCCESS:
+    return Object.assign({}, state, action.storage);
+  case ACTIONS.STORAGE_UPDATE_SUCCESS:
+    return state;
+  default:
+    return state;
   }
 };
 

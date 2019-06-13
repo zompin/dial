@@ -1,10 +1,4 @@
-import {
-  BOOKMARKS_TOGGLE,
-  BOOKMARKS_REQUEST_GET,
-  BOOKMARKS_REQUEST_SUCCESS,
-  BOOKMARK_REQUEST_SUCCESS,
-  BOOKMARK_CLEAN,
-} from '../ActionTypes';
+import { ACTIONS } from '../constants';
 
 const initState = {
   bookmarks: [],
@@ -16,24 +10,33 @@ const initState = {
 
 const BookmarksReducer = (state = initState, action) => {
   switch (action.type) {
-  case BOOKMARKS_TOGGLE:
-    return Object.assign({}, state, { isBookmarksEditable: !state.isBookmarksEditable });
-  case BOOKMARKS_REQUEST_GET:
-    return Object.assign({}, state, { isBookmarksLoaded: false });
-  case BOOKMARKS_REQUEST_SUCCESS:
-    return Object.assign(
-      {},
-      state,
-      {
-        bookmarks: action.bookmarks,
-        isBookmarksLoaded: true,
-        bookmarksFolder: action.bookmarksFolder,
-      },
-    );
-  case BOOKMARK_REQUEST_SUCCESS:
-    return Object.assign({}, state, { currentBookmark: action.bookmark });
-  case BOOKMARK_CLEAN:
-    return Object.assign({}, state, { currentBookmark: {} });
+  case ACTIONS.BOOKMARKS_TOGGLE:
+    return {
+      ...state,
+      isBookmarksEditable: !state.isBookmarksEditable,
+    };
+  case ACTIONS.BOOKMARKS_REQUEST:
+    return {
+      ...state,
+      isBookmarksLoaded: false,
+    };
+  case ACTIONS.BOOKMARKS_REQUEST_SUCCESS:
+    return {
+      ...state,
+      bookmarks: action.bookmarks,
+      isBookmarksLoaded: true,
+      bookmarksFolder: action.bookmarksFolder,
+    };
+  case ACTIONS.BOOKMARK_REQUEST_SUCCESS:
+    return {
+      ...state,
+      currentBookmark: action.bookmark,
+    };
+  case ACTIONS.BOOKMARK_CLEAN:
+    return {
+      ...state,
+      currentBookmark: {},
+    };
   default: return state;
   }
 };

@@ -1,9 +1,4 @@
-import {
-  POPUP_DISABLE_CLOSE,
-  POPUP_ENABLE_CLOSE,
-  POPUP_SHOW,
-  POPUP_HIDE,
-} from '../ActionTypes';
+import { ACTIONS } from '../constants';
 
 const initState = {
   isCloseable: true,
@@ -12,14 +7,14 @@ const initState = {
 
 const PopupReducer = (state = initState, action) => {
   switch (action.type) {
-  case POPUP_SHOW:
+  case ACTIONS.POPUP_SHOW:
     return {
       ...state,
       show: {
         [action.name]: true,
       },
     };
-  case POPUP_HIDE:
+  case ACTIONS.POPUP_HIDE:
     if (!state.isCloseable) {
       return state;
     }
@@ -30,10 +25,16 @@ const PopupReducer = (state = initState, action) => {
         [action.name]: false,
       },
     };
-  case POPUP_DISABLE_CLOSE:
-    return Object.assign({}, state, { isCloseable: false });
-  case POPUP_ENABLE_CLOSE:
-    return Object.assign({}, state, { isCloseable: true });
+  case ACTIONS.POPUP_DISABLE_CLOSE:
+    return {
+      ...state,
+      isCloseable: false,
+    };
+  case ACTIONS.POPUP_ENABLE_CLOSE:
+    return {
+      ...state,
+      isCloseable: true,
+    };
   default: return state;
   }
 };
