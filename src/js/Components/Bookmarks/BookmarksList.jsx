@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
 import AskDeletePopup from '../AskDeletePopup';
-import { toggleBookmarks, removeBookmark } from '../../Actions/Bookmarks';
+import { toggleBookmarksAction, removeBookmarkAction } from '../../Actions/Bookmarks';
 import { hidePopupAction, showPopupAction } from '../../Actions/Popup';
+import { commands } from '../../utils';
 
 const colorGenerator = () => {
   const colorsStore = [
@@ -46,7 +47,7 @@ class BookmarksList extends Component {
   };
 
   componentDidMount() {
-    browser.commands.onCommand.addListener(this.numberPress);
+    commands.onCommand.addListener(this.numberPress);
   }
 
   componentDidUpdate(prevProps) {
@@ -63,7 +64,7 @@ class BookmarksList extends Component {
   }
 
   componentWillUnmount() {
-    browser.commands.onCommand.removeListener(this.numberPress);
+    commands.onCommand.removeListener(this.numberPress);
   }
 
   numberPress = (command) => {
@@ -167,6 +168,9 @@ BookmarksList.propTypes = {
   isEditable: PropTypes.bool.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   toggleBookmarks: PropTypes.func.isRequired,
+  showPopup: PropTypes.func.isRequired,
+  hidePopup: PropTypes.func.isRequired,
+  removeBookmark: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -178,8 +182,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  toggleBookmarks,
-  removeBookmark,
+  toggleBookmarks: toggleBookmarksAction,
+  removeBookmark: removeBookmarkAction,
   hidePopup: hidePopupAction,
   showPopup: showPopupAction,
 })(BookmarksList);

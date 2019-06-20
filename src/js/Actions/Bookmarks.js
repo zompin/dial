@@ -1,25 +1,12 @@
 import { ACTIONS, TYPES, NAMES } from '../constants';
-
-export const toggleBookmarks = () => ({
-  type: ACTIONS.BOOKMARKS_TOGGLE,
-});
-
-export const requestBookmarks = () => ({
-  type: ACTIONS.BOOKMARKS_REQUEST,
-});
-
-export const setBookmarks = (bookmarks, bookmarksFolder) => ({
-  type: ACTIONS.BOOKMARKS_REQUEST_SUCCESS,
-  bookmarks,
-  bookmarksFolder,
-});
+import { bookmarks as browserBookmarks } from '../utils';
 
 const getRootFolder = async () => {
-  const rootBookmarks = await browser.bookmarks.getChildren(NAMES.ROOT_FOLDER);
+  const rootBookmarks = await browserBookmarks.getChildren(NAMES.ROOT_FOLDER);
   let dialFolder = rootBookmarks.find(b => b.title === NAMES.APP_FOLDER && b.type === TYPES.FOLDER);
 
   if (!dialFolder) {
-    dialFolder = await browser.bookmarks.create({
+    dialFolder = await browserBookmarks.create({
       title: NAMES.APP_FOLDER,
       parentId: NAMES.ROOT_FOLDER,
     });
@@ -29,11 +16,11 @@ const getRootFolder = async () => {
 };
 
 const getProfiles = async (rootFolder) => {
-  let children = await browser.bookmarks.getChildren(rootFolder.id);
+  let children = await browserBookmarks.getChildren(rootFolder.id);
   children = children.filter(c => c.type === TYPES.FOLDER);
 
   if (!children.length) {
-    const tmp = await browser.bookmarks.create({
+    const tmp = await browserBookmarks.create({
       title: NAMES.PROFILES_DEFAULT,
       parentId: rootFolder.id,
     });
@@ -44,77 +31,131 @@ const getProfiles = async (rootFolder) => {
   return children;
 };
 
-export const getBookmarks = () => (
+export const toggleBookmarksAction = () => ({
+  type: ACTIONS.BOOKMARKS_TOGGLE,
+});
+
+const bookmarksRequestAction = () => ({
+  type: ACTIONS.BOOKMARKS_REQUEST,
+});
+
+const bookmarksRequestSuccessAction = (bookmarks, bookmarksFolder) => ({
+  type: ACTIONS.BOOKMARKS_REQUEST_SUCCESS,
+  bookmarks,
+  bookmarksFolder,
+});
+
+const bookmarksRequestErrorAction = error => ({
+  type: ACTIONS.BOOKMARKS_REQUEST_ERROR,
+  error,
+});
+
+export const getBookmarksAction = () => (
   async (dispatch) => {
-    const rootBookmarks = await browser.bookmarks.getChildren(NAMES.ROOT_FOLDER);
-    let dialFolder = rootBookmarks.find(b => b.title === NAMES.APP_FOLDER && b.type === TYPES.FOLDER);
+    dispatch(bookmarksRequestAction());
 
-    if (!dialFolder) {
-      dialFolder = await browser.bookmarks.create({
-        title: NAMES.APP_FOLDER,
-        parentId: NAMES.ROOT_FOLDER,
-      });
+    try {
+      const rootFolder = await getRootFolder();
+      const bookmarks = await browserBookmarks.getChildren(rootFolder.id);
+
+      dispatch(bookmarksRequestSuccessAction(bookmarks, rootFolder));
+    } catch (e) {
+      dispatch(bookmarksRequestErrorAction(e));
     }
-
-    const bookmarks = await browser.bookmarks.getChildren(dialFolder.id);
-    dispatch(setBookmarks(bookmarks, dialFolder));
   }
 );
 
-export const requestAddBookmark = () => ({
-  type: ACTIONS.BOOKMARK_ADD_REQUEST,
+const bookmarkAddAction = () => ({
+  type: ACTIONS.BOOKMARK_ADD,
 });
 
-export const addBookmarkSuccess = () => ({
+const bookmarkAddSuccessAction = bookmark => ({
   type: ACTIONS.BOOKMARK_ADD_SUCCESS,
-});
-
-export const addBookmark = (url, title, parentId) => (
-  (dispatch) => {
-    browser.bookmarks.create({
-      type: TYPES.BOOKMARK,
-      parentId,
-      title,
-      url,
-    }).then(() => {
-      dispatch(addBookmarkSuccess());
-      dispatch(getBookmarks());
-    });
-  }
-);
-
-export const requestRemoveBookmark = () => ({
-  type: ACTIONS.BOOKMARK_REMOVE_REQUEST,
-});
-
-export const removeBookmark = bookmarkId => (
-  (dispatch) => {
-    dispatch(requestRemoveBookmark());
-    browser.bookmarks.remove(bookmarkId)
-      .then(() => {
-        dispatch(getBookmarks());
-      });
-  }
-);
-
-export const setBookmark = bookmark => ({
-  type: ACTIONS.BOOKMARK_REQUEST_SUCCESS,
   bookmark,
 });
 
-export const getBookmark = bookmarkId => (
-  dispatch => browser.bookmarks.get(bookmarkId)
-    .then(bookmark => dispatch(setBookmark(bookmark[0])))
+const bookmarkAddError = error => ({
+  type: ACTIONS.BOOKMARK_ADD_ERROR,
+  error,
+});
+
+export const addBookmarkAction = (url, title, parentId) => (
+  async (dispatch) => {
+    dispatch(bookmarkAddAction());
+
+    try {
+      const bookmark = await browserBookmarks.create({
+        type: TYPES.BOOKMARK,
+        parentId,
+        title,
+        url,
+      });
+
+      dispatch(bookmarkAddSuccessAction(bookmark));
+    } catch (e) {
+      dispatch(bookmarkAddError(e));
+    }
+  }
 );
 
-export const updateBookmark = (id, url, title) => (
-  dispatch => browser.bookmarks.update(id, {
-    url,
-    title,
-  })
-    .then(() => dispatch(getBookmarks()))
+const bookmarkRemoveAction = () => ({
+  type: ACTIONS.BOOKMARK_REMOVE,
+});
+
+const bookmarkRemoveSuccessAction = id => ({
+  type: ACTIONS.BOOKMARK_REMOVE_SUCCESS,
+  id,
+});
+
+const bookmarkRemoveErrorAction = error => ({
+  type: ACTIONS.BOOKMARK_REMOVE_ERROR,
+  error,
+});
+
+export const removeBookmarkAction = bookmarkId => (
+  async (dispatch) => {
+    dispatch(bookmarkRemoveAction());
+
+    try {
+      await browserBookmarks.remove(bookmarkId);
+      dispatch(bookmarkRemoveSuccessAction(bookmarkId));
+    } catch (e) {
+      dispatch(bookmarkRemoveErrorAction());
+    }
+  }
 );
 
-export const cleanBookmark = () => ({
+const bookmarkUpdateAction = () => ({
+  type: ACTIONS.BOOKMARK_UPDATE,
+});
+
+const bookmarkUpdateSuccessAction = bookmark => ({
+  type: ACTIONS.BOOKMARK_UPDATE_SUCCESS,
+  bookmark,
+});
+
+const bookmarkUpdateErrorAction = error => ({
+  type: ACTIONS.BOOKMARK_UPDATE_ERROR,
+  error,
+});
+
+export const updateBookmarkAction = (id, url, title) => (
+  async (dispatch) => {
+    dispatch(bookmarkUpdateAction());
+
+    try {
+      const bookmark = await browserBookmarks.update(id, {
+        url,
+        title,
+      });
+
+      dispatch(bookmarkUpdateSuccessAction(bookmark));
+    } catch (e) {
+      dispatch(bookmarkUpdateErrorAction(e));
+    }
+  }
+);
+
+export const bookmarkCleanAction = () => ({
   type: ACTIONS.BOOKMARK_CLEAN,
 });

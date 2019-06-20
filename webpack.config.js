@@ -30,6 +30,7 @@ module.exports = (_, { mode }) => {
         {
           test: /\.jsx$/,
           loader: 'babel-loader',
+          exclude: path.resolve(__dirname, 'node_modules'),
         },
         {
           test: /\.less$/,

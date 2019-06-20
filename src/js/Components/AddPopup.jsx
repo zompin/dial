@@ -6,7 +6,7 @@ import Input from './Input';
 import ComboBox from './ComboBox';
 import Button from './ButtonDefault';
 import { getHistory } from '../Actions/History';
-import { addBookmark } from '../Actions/Bookmarks';
+import { addBookmarkAction } from '../Actions/Bookmarks';
 import { hidePopupAction, disableCloseAction, enableCloseAction } from '../Actions/Popup';
 import { getLocaleMessage } from '../utils';
 
@@ -36,7 +36,7 @@ class AddPopup extends Component {
     const { onAdd, folder, hidePopup } = this.props;
     const { url, title } = this.state;
 
-    onAdd(url, title, folder);
+    onAdd(url, title, folder.id);
     hidePopup('add');
 
     this.setState({
@@ -107,6 +107,9 @@ AddPopup.propTypes = {
   history: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   folder: PropTypes.shape(),
   getHistory: PropTypes.func.isRequired,
+  hidePopup: PropTypes.func.isRequired,
+  enableClose: PropTypes.func.isRequired,
+  disableClose: PropTypes.func.isRequired,
 };
 
 AddPopup.defaultProps = {
@@ -121,14 +124,10 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getHistory: text => dispatch(getHistory(text)),
-    onAdd: (url, title, folder) => dispatch(addBookmark(url, title, folder.id)),
-    hidePopup: () => dispatch(hidePopupAction('add')),
-    enableClose: () => dispatch(enableCloseAction()),
-    disableClose: () => dispatch(disableCloseAction()),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddPopup);
+export default connect(mapStateToProps, {
+  getHistory,
+  onAdd: addBookmarkAction,
+  hidePopup: hidePopupAction,
+  enableClose: enableCloseAction,
+  disableClose: disableCloseAction,
+})(AddPopup);

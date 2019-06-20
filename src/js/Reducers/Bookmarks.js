@@ -27,10 +27,26 @@ const BookmarksReducer = (state = initState, action) => {
       isBookmarksLoaded: true,
       bookmarksFolder: action.bookmarksFolder,
     };
-  case ACTIONS.BOOKMARK_REQUEST_SUCCESS:
+  case ACTIONS.BOOKMARK_ADD_SUCCESS:
     return {
       ...state,
-      currentBookmark: action.bookmark,
+      bookmarks: [...state.bookmarks, action.bookmark],
+    };
+  case ACTIONS.BOOKMARK_UPDATE_SUCCESS:
+    return {
+      ...state,
+      bookmarks: state.bookmarks.map((b) => {
+        if (b.id === action.bookmark.id) {
+          return action.bookmark;
+        }
+
+        return b;
+      }),
+    };
+  case ACTIONS.BOOKMARK_REMOVE_SUCCESS:
+    return {
+      ...state,
+      bookmarks: state.bookmarks.filter(b => b.id !== action.id),
     };
   case ACTIONS.BOOKMARK_CLEAN:
     return {

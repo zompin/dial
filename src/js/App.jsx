@@ -7,7 +7,7 @@ import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
 import Preloader from './Components/Preloader';
 import SlideCheckbox from './Components/SlideCheckbox';
-import { getBookmarks, toggleBookmarks } from './Actions/Bookmarks';
+import { getBookmarksAction, toggleBookmarksAction } from './Actions/Bookmarks';
 
 class App extends Component {
   componentDidMount() {
@@ -43,4 +43,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getBookmarks, toggleEditable: toggleBookmarks })(hot(App));
+export default connect(mapStateToProps, {
+  getBookmarks: getBookmarksAction,
+  toggleEditable: toggleBookmarksAction,
+})(hot(App));

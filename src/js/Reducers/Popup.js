@@ -13,6 +13,9 @@ const PopupReducer = (state = initState, action) => {
       show: {
         [action.name]: true,
       },
+      payload: {
+        [action.name]: action.payload,
+      },
     };
   case ACTIONS.POPUP_HIDE:
     if (!state.isCloseable) {
@@ -23,6 +26,9 @@ const PopupReducer = (state = initState, action) => {
       ...state,
       show: {
         [action.name]: false,
+      },
+      payload: {
+        [action.name]: null,
       },
     };
   case ACTIONS.POPUP_DISABLE_CLOSE:

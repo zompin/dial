@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import XButton from '../XButton';
 import EditButton from '../EditButton';
 import { showPopupAction } from '../../Actions/Popup';
-import { getBookmark } from '../../Actions/Bookmarks';
 
 const BookmarkItem = ({
   id,
@@ -73,8 +72,7 @@ BookmarkItem.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     onEdit: (id) => {
-      dispatch(getBookmark(id));
-      dispatch(showPopupAction('edit'));
+      dispatch(showPopupAction('edit', { id }));
     },
   };
 }

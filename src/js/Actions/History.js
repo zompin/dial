@@ -1,7 +1,7 @@
 import { ACTIONS } from '../constants';
 
 export const requestHistory = () => ({
-  type: ACTIONS.HISTORY_REQUEST_GET,
+  type: ACTIONS.HISTORY_REQUEST,
 });
 
 export const setHistory = history => ({

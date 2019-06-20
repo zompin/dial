@@ -8,9 +8,10 @@ export const enableCloseAction = () => ({
   type: ACTIONS.POPUP_ENABLE_CLOSE,
 });
 
-export const showPopupAction = name => ({
+export const showPopupAction = (name, payload) => ({
   type: ACTIONS.POPUP_SHOW,
   name,
+  payload,
 });
 
 export const hidePopupAction = name => ({
