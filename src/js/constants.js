@@ -36,6 +36,7 @@ export const ACTIONS = keyMirror({
   PROFILE_REMOVE: undefined,
   PROFILE_REMOVE_SUCCESS: undefined,
   PROFILE_REMOVE_ERROR: undefined,
+  PROFILE_SET: undefined,
   HISTORY_REQUEST: undefined,
   HISTORY_REQUEST_SUCCESS: undefined,
   HISTORY_REQUEST_ERROR: undefined,

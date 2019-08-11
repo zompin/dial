@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import cs from 'classnames';
 import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
 import AskDeletePopup from '../AskDeletePopup';
@@ -134,14 +135,23 @@ class BookmarksList extends Component {
   };
 
   render() {
-    const { bookmarks, isEditable } = this.props;
+    const {
+      bookmarks,
+      isEditable,
+      currentProfile,
+    } = this.props;
     const getColor = colorGenerator();
     const { showDeletePopup, onDelete, onCancel } = this;
 
-    return (
-      <div className="bookmarks">
+    return bookmarks.map(g => (
+      <div
+        key={g.parentId}
+        className={cs('bookmarks', {
+          bookmarks_show: currentProfile.id === g.parentId,
+        })}
+      >
         {
-          bookmarks.map((b, i) => (
+          g.items.map((b, i) => (
             <BookmarksItem
               key={b.id}
               id={b.id}
@@ -159,7 +169,7 @@ class BookmarksList extends Component {
         }
         <AskDeletePopup onDelete={onDelete} onCancel={onCancel} />
       </div>
-    );
+    ));
   }
 }
 
@@ -171,6 +181,7 @@ BookmarksList.propTypes = {
   showPopup: PropTypes.func.isRequired,
   hidePopup: PropTypes.func.isRequired,
   removeBookmark: PropTypes.func.isRequired,
+  currentProfile: PropTypes.shape().isRequired,
 };
 
 function mapStateToProps(state) {
@@ -178,6 +189,8 @@ function mapStateToProps(state) {
     bookmarks: state.Bookmarks.bookmarks,
     isEditable: state.Bookmarks.isBookmarksEditable,
     isLoaded: state.Bookmarks.isBookmarksLoaded,
+    profiles: state.Profiles.data,
+    currentProfile: state.Profiles.current,
   };
 }
 

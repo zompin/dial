@@ -1,35 +1,6 @@
-import { ACTIONS, TYPES, NAMES } from '../constants';
+import { ACTIONS, TYPES } from '../constants';
 import { bookmarks as browserBookmarks } from '../utils';
-
-const getRootFolder = async () => {
-  const rootBookmarks = await browserBookmarks.getChildren(NAMES.ROOT_FOLDER);
-  let dialFolder = rootBookmarks.find(b => b.title === NAMES.APP_FOLDER && b.type === TYPES.FOLDER);
-
-  if (!dialFolder) {
-    dialFolder = await browserBookmarks.create({
-      title: NAMES.APP_FOLDER,
-      parentId: NAMES.ROOT_FOLDER,
-    });
-  }
-
-  return dialFolder;
-};
-
-const getProfiles = async (rootFolder) => {
-  let children = await browserBookmarks.getChildren(rootFolder.id);
-  children = children.filter(c => c.type === TYPES.FOLDER);
-
-  if (!children.length) {
-    const tmp = await browserBookmarks.create({
-      title: NAMES.PROFILES_DEFAULT,
-      parentId: rootFolder.id,
-    });
-
-    children.push(tmp);
-  }
-
-  return children;
-};
+import { getProfilesAction } from "./Profiles";
 
 export const toggleBookmarksAction = () => ({
   type: ACTIONS.BOOKMARKS_TOGGLE,
@@ -52,13 +23,23 @@ const bookmarksRequestErrorAction = error => ({
 
 export const getBookmarksAction = () => (
   async (dispatch) => {
+    const profiles = await dispatch(getProfilesAction());
     dispatch(bookmarksRequestAction());
 
     try {
-      const rootFolder = await getRootFolder();
-      const bookmarks = await browserBookmarks.getChildren(rootFolder.id);
+      let bookmarks = await Promise.all(profiles.reduce((acc, item) => {
+        acc.push(browserBookmarks.getChildren(item.id));
 
-      dispatch(bookmarksRequestSuccessAction(bookmarks, rootFolder));
+        return acc;
+      }, []));
+
+      bookmarks = bookmarks.map((g, i) => ({
+        parentId: profiles[i].id,
+        items: g,
+      }));
+      // console.log(bookmarks)
+
+      dispatch(bookmarksRequestSuccessAction(bookmarks));
     } catch (e) {
       dispatch(bookmarksRequestErrorAction(e));
     }
@@ -155,7 +136,3 @@ export const updateBookmarkAction = (id, url, title) => (
     }
   }
 );
-
-export const bookmarkCleanAction = () => ({
-  type: ACTIONS.BOOKMARK_CLEAN,
-});

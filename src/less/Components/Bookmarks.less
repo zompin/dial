@@ -1,8 +1,12 @@
 .bookmarks {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   padding: 15px 0 0 15px;
   margin: auto;
+
+  &_show {
+    display: flex;
+  }
 
   @media (max-width: 444px) {
     width: 230px;

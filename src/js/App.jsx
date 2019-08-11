@@ -7,6 +7,7 @@ import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
 import Preloader from './Components/Preloader';
 import SlideCheckbox from './Components/SlideCheckbox';
+import Profiles from './Components/Profiles';
 import { getBookmarksAction, toggleBookmarksAction } from './Actions/Bookmarks';
 
 class App extends Component {
@@ -22,6 +23,7 @@ class App extends Component {
       <div>
         <SlideCheckbox name="isEditable" checked={isEditable} onChange={toggleEditable} />
         <Preloader />
+        <Profiles />
         <BookmarksList />
         <AddPopup />
         <EditPopup />
