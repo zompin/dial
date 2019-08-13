@@ -33,10 +33,10 @@ class AddPopup extends Component {
   };
 
   onAdd = () => {
-    const { onAdd, folder, hidePopup } = this.props;
+    const { onAdd, hidePopup } = this.props;
     const { url, title } = this.state;
 
-    onAdd(url, title, folder.id);
+    onAdd(url, title);
     hidePopup('add');
 
     this.setState({
@@ -105,21 +105,15 @@ AddPopup.propTypes = {
   show: PropTypes.bool.isRequired,
   onAdd: PropTypes.func.isRequired,
   history: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  folder: PropTypes.shape(),
   getHistory: PropTypes.func.isRequired,
   hidePopup: PropTypes.func.isRequired,
   enableClose: PropTypes.func.isRequired,
   disableClose: PropTypes.func.isRequired,
 };
 
-AddPopup.defaultProps = {
-  folder: {},
-};
-
 function mapStateToProps(state) {
   return {
     show: state.Popup.show.add || false,
-    folder: state.Bookmarks.bookmarksFolder,
     history: state.History.history,
   };
 }

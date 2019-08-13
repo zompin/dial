@@ -30,7 +30,15 @@ const BookmarksReducer = (state = initState, action) => {
   case ACTIONS.BOOKMARK_ADD_SUCCESS:
     return {
       ...state,
-      bookmarks: [...state.bookmarks, action.bookmark],
+      bookmarks: state.bookmarks.map((g) => {
+        if (g.parentId !== action.parentId) {
+          return g;
+        }
+
+        const items = [...g.items, action.bookmark];
+
+        return { ...g, items };
+      }),
     };
   case ACTIONS.BOOKMARK_UPDATE_SUCCESS:
     return {
@@ -46,7 +54,11 @@ const BookmarksReducer = (state = initState, action) => {
   case ACTIONS.BOOKMARK_REMOVE_SUCCESS:
     return {
       ...state,
-      bookmarks: state.bookmarks.filter(b => b.id !== action.id),
+      bookmarks: state.bookmarks.map((g) => {
+        const items = g.items.filter(b => b.id !== action.id);
+
+        return { ...g, items };
+      }),
     };
   case ACTIONS.BOOKMARK_CLEAN:
     return {

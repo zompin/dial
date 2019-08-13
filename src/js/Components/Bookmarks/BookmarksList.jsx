@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cs from 'classnames';
@@ -142,8 +142,7 @@ class BookmarksList extends Component {
     } = this.props;
     const getColor = colorGenerator();
     const { showDeletePopup, onDelete, onCancel } = this;
-
-    return bookmarks.map(g => (
+    const groupedBookmarks = bookmarks.map(g => (
       <div
         key={g.parentId}
         className={cs('bookmarks', {
@@ -167,9 +166,15 @@ class BookmarksList extends Component {
         {
           isEditable && <BookmarkAdd />
         }
-        <AskDeletePopup onDelete={onDelete} onCancel={onCancel} />
       </div>
     ));
+
+    return (
+      <Fragment>
+        {groupedBookmarks}
+        <AskDeletePopup onDelete={onDelete} onCancel={onCancel} />
+      </Fragment>
+    );
   }
 }
 

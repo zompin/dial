@@ -1,6 +1,6 @@
 import { ACTIONS, TYPES } from '../constants';
 import { bookmarks as browserBookmarks } from '../utils';
-import { getProfilesAction } from "./Profiles";
+import { getProfilesAction } from './Profiles';
 
 export const toggleBookmarksAction = () => ({
   type: ACTIONS.BOOKMARKS_TOGGLE,
@@ -37,7 +37,6 @@ export const getBookmarksAction = () => (
         parentId: profiles[i].id,
         items: g,
       }));
-      // console.log(bookmarks)
 
       dispatch(bookmarksRequestSuccessAction(bookmarks));
     } catch (e) {
@@ -50,9 +49,10 @@ const bookmarkAddAction = () => ({
   type: ACTIONS.BOOKMARK_ADD,
 });
 
-const bookmarkAddSuccessAction = bookmark => ({
+const bookmarkAddSuccessAction = (bookmark, parentId) => ({
   type: ACTIONS.BOOKMARK_ADD_SUCCESS,
   bookmark,
+  parentId,
 });
 
 const bookmarkAddError = error => ({
@@ -60,19 +60,20 @@ const bookmarkAddError = error => ({
   error,
 });
 
-export const addBookmarkAction = (url, title, parentId) => (
-  async (dispatch) => {
+export const addBookmarkAction = (url, title) => (
+  async (dispatch, getState) => {
     dispatch(bookmarkAddAction());
+    const { id } = getState().Profiles.current;
 
     try {
       const bookmark = await browserBookmarks.create({
         type: TYPES.BOOKMARK,
-        parentId,
+        parentId: id,
         title,
         url,
       });
 
-      dispatch(bookmarkAddSuccessAction(bookmark));
+      dispatch(bookmarkAddSuccessAction(bookmark, id));
     } catch (e) {
       dispatch(bookmarkAddError(e));
     }
