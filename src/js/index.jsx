@@ -7,7 +7,7 @@ import store from './Reducers';
 import '../less/style.less';
 
 render(
-  <Provider store={store} >
+  <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('root'),
