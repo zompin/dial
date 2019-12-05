@@ -1,0 +1,99 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Popup from './Popup';
+import Input from './Input';
+import Button from './ButtonDefault';
+import { hidePopupAction } from '../Actions/Popup';
+import { updateBookmark, cleanBookmark } from '../Actions/Bookmarks';
+import { getLocaleMessage } from '../utils';
+
+class EditPopup extends Component {
+  state = {
+    url: '',
+    title: '',
+  };
+
+  componentWillReceiveProps({ bookmark }) {
+    const { url, title } = bookmark;
+
+    if (url && title) {
+      this.setState({
+        url,
+        title,
+      });
+    }
+  }
+
+  onChange = (name, value) => {
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  onEdit = () => {
+    const { onEdit, onClose, bookmark: { id } } = this.props;
+    const { url, title } = this.state;
+
+    onEdit(id, url, title);
+    onClose();
+  };
+
+  render() {
+    const { onChange, onEdit } = this;
+    const { show, onClose } = this.props;
+    const { url, title } = this.state;
+
+    return (
+      <Popup name="edit" onClose={onClose}>
+        <div className="popup__header">
+          {getLocaleMessage('editBookmark')}
+        </div>
+        <Input
+          name="url"
+          value={url}
+          onChange={onChange}
+          placeholder={getLocaleMessage('url')}
+          className="popup"
+          focus={show}
+        />
+        <Input
+          name="title"
+          value={title}
+          onChange={onChange}
+          placeholder={getLocaleMessage('title')}
+          className="popup"
+        />
+        <Button onClick={onEdit} primary>
+          {getLocaleMessage('save')}
+        </Button>
+      </Popup>
+    );
+  }
+}
+
+EditPopup.propTypes = {
+  show: PropTypes.bool.isRequired,
+  bookmark: PropTypes.shape().isRequired,
+  onClose: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    show: state.Popup.show.edit || false,
+    bookmark: state.Bookmarks.currentBookmark,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onEdit: (id, url, title) => dispatch(updateBookmark(id, url, title)),
+    onClose: () => {
+      dispatch(hidePopupAction('edit'));
+      dispatch(cleanBookmark());
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPopup);

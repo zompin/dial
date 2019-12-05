@@ -23,6 +23,9 @@ module.exports = (_, { mode }) => {
 
     resolve: {
       extensions: ['.jsx', '.js', 'less'],
+      alias: {
+        'react-dom': '@hot-loader/react-dom',
+      },
     },
 
     module: {
