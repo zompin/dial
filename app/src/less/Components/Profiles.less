@@ -1,0 +1,92 @@
+.profiles {
+  text-align: center;
+
+  &__inner {
+    display: inline-flex;
+    position: relative;
+    justify-content: center;
+    padding: 0 50px;
+  }
+
+  &__item {
+    font-family: inherit;
+    font-size: inherit;
+    border-radius: 0;
+    background: none;
+    border: 1px solid #ccc;
+    padding: 12px 20px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+
+    &:not(:first-child) {
+      border-left-color: transparent;
+    }
+
+    &_active {
+      background-color: #ccc;
+      color: white;
+      cursor: default;
+    }
+  }
+
+  &__form {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding-top: 50px;
+    padding-left: 50px;
+  }
+
+  &__input {
+    display: none;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+
+    &_show {
+      display: block;
+    }
+  }
+
+  &__add {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  &__add-line {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    height: 2px;
+    width: 80%;
+    background-color: #000;
+
+    &_1 {
+      transform: rotate(0);
+    }
+
+    &_1-close {
+      transform: rotate(45deg);
+    }
+
+    &_2 {
+      transform: rotate(90deg);
+    }
+
+    &_2-close {
+      transform: rotate(135deg);
+    }
+  }
+}
