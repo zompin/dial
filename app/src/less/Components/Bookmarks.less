@@ -50,9 +50,14 @@
     box-shadow: 0 0 3px 3px #999;
   }
 
+  &:hover .edit-button,
+  &:hover .x-button {
+    opacity: 1;
+  }
+
   .edit-button,
   .x-button {
-    transition: transform 0.3s 0.7s;
+    transition: transform 0.3s 0.7s, opacity 0.3s;
   }
 
   &__title {

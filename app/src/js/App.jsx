@@ -6,9 +6,8 @@ import BookmarksList from './Components/Bookmarks/BookmarksList';
 import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
 import Preloader from './Components/Preloader';
-import SlideCheckbox from './Components/SlideCheckbox';
 import Profiles from './Components/Profiles';
-import { getBookmarksAction, toggleBookmarksAction } from './Actions/Bookmarks';
+import { getBookmarksAction } from './Actions/Bookmarks';
 
 class App extends Component {
   componentDidMount() {
@@ -17,11 +16,8 @@ class App extends Component {
   }
 
   render() {
-    const { isEditable, toggleEditable } = this.props;
-
     return (
       <div>
-        <SlideCheckbox name="isEditable" checked={isEditable} onChange={toggleEditable} />
         <Preloader />
         <Profiles />
         <BookmarksList />
@@ -33,19 +29,15 @@ class App extends Component {
 }
 
 App.propTypes = {
-  isEditable: PropTypes.bool.isRequired,
   getBookmarks: PropTypes.func.isRequired,
-  toggleEditable: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    isEditable: state.Bookmarks.isBookmarksEditable,
     storage: state.Storage,
   };
 }
 
 export default connect(mapStateToProps, {
   getBookmarks: getBookmarksAction,
-  toggleEditable: toggleBookmarksAction,
 })(hot(App));

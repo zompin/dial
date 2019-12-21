@@ -7,7 +7,6 @@ export const ACTIONS = keyMirror({
   POPUP_ENABLE_CLOSE: undefined,
   POPUP_SHOW: undefined,
   POPUP_HIDE: undefined,
-  BOOKMARKS_TOGGLE: undefined,
   BOOKMARKS_REQUEST: undefined,
   BOOKMARKS_REQUEST_SUCCESS: undefined,
   BOOKMARKS_REQUEST_ERROR: undefined,

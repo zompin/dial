@@ -11,7 +11,6 @@ const BookmarkItem = ({
   title,
   onDelete,
   onEdit,
-  isEditable,
   color,
   index,
 }) => {
@@ -34,17 +33,11 @@ const BookmarkItem = ({
           </div>
         </div>
       </a>
-      {
-        isEditable && (
-          <div>
-            <XButton
-              onClick={() => onDelete(id)}
-              className="bookmark"
-            />
-            <EditButton onClick={() => onEdit(id)} className="bookmark" />
-          </div>
-        )
-      }
+      <XButton
+        onClick={() => onDelete(id)}
+        className="bookmark"
+      />
+      <EditButton onClick={() => onEdit(id)} className="bookmark" />
       {
         index < 10 && (
           <div
@@ -64,7 +57,6 @@ BookmarkItem.propTypes = {
   title: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
-  isEditable: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
 };

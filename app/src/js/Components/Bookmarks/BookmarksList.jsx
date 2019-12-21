@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cs from 'classnames';
 import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
 import AskDeletePopup from '../AskDeletePopup';
-import { toggleBookmarksAction, removeBookmarkAction } from '../../Actions/Bookmarks';
+import { removeBookmarkAction } from '../../Actions/Bookmarks';
 import { hidePopupAction, showPopupAction } from '../../Actions/Popup';
 import { commands } from '../../utils';
 
@@ -50,19 +50,6 @@ class BookmarksList extends Component {
   componentDidMount() {
     commands.onCommand.addListener(this.numberPress);
     // browser.commands.onCommand.addListener(this.numberPress);
-  }
-
-  componentDidUpdate(prevProps) {
-    const {
-      isEditable,
-      isLoaded,
-      bookmarks,
-      toggleBookmarks,
-    } = this.props;
-
-    if (isLoaded && !prevProps.isLoaded && !isEditable && !bookmarks.length) {
-      toggleBookmarks();
-    }
   }
 
   componentWillUnmount() {
@@ -139,12 +126,11 @@ class BookmarksList extends Component {
   render() {
     const {
       bookmarks,
-      isEditable,
       currentProfile,
     } = this.props;
     const getColor = colorGenerator();
     const { showDeletePopup, onDelete, onCancel } = this;
-    const groupedBookmarks = bookmarks.map(g => (
+    const groupedBookmarks = bookmarks.map((g) => (
       <div
         key={g.parentId}
         className={cs('bookmarks', {
@@ -158,33 +144,27 @@ class BookmarksList extends Component {
               id={b.id}
               url={b.url}
               title={b.title}
-              isEditable={isEditable}
               color={getColor(b.url)}
               index={i}
               onDelete={showDeletePopup}
             />
           ))
         }
-        {
-          isEditable && <BookmarkAdd />
-        }
+        <BookmarkAdd />
       </div>
     ));
 
     return (
-      <Fragment>
+      <>
         {groupedBookmarks}
         <AskDeletePopup onDelete={onDelete} onCancel={onCancel} />
-      </Fragment>
+      </>
     );
   }
 }
 
 BookmarksList.propTypes = {
   bookmarks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  isEditable: PropTypes.bool.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  toggleBookmarks: PropTypes.func.isRequired,
   showPopup: PropTypes.func.isRequired,
   hidePopup: PropTypes.func.isRequired,
   removeBookmark: PropTypes.func.isRequired,
@@ -194,7 +174,6 @@ BookmarksList.propTypes = {
 function mapStateToProps(state) {
   return {
     bookmarks: state.Bookmarks.bookmarks,
-    isEditable: state.Bookmarks.isBookmarksEditable,
     isLoaded: state.Bookmarks.isBookmarksLoaded,
     profiles: state.Profiles.data,
     currentProfile: state.Profiles.current,
@@ -202,7 +181,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  toggleBookmarks: toggleBookmarksAction,
   removeBookmark: removeBookmarkAction,
   hidePopup: hidePopupAction,
   showPopup: showPopupAction,

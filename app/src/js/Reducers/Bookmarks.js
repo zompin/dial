@@ -4,17 +4,11 @@ const initState = {
   bookmarks: [],
   bookmarksFolder: null,
   isBookmarksLoaded: false,
-  isBookmarksEditable: false,
   currentBookmark: {},
 };
 
 const BookmarksReducer = (state = initState, action) => {
   switch (action.type) {
-  case ACTIONS.BOOKMARKS_TOGGLE:
-    return {
-      ...state,
-      isBookmarksEditable: !state.isBookmarksEditable,
-    };
   case ACTIONS.BOOKMARKS_REQUEST:
     return {
       ...state,
@@ -55,7 +49,7 @@ const BookmarksReducer = (state = initState, action) => {
     return {
       ...state,
       bookmarks: state.bookmarks.map((g) => {
-        const items = g.items.filter(b => b.id !== action.id);
+        const items = g.items.filter((b) => b.id !== action.id);
 
         return { ...g, items };
       }),

@@ -2,10 +2,6 @@ import { ACTIONS, TYPES } from '../constants';
 import { bookmarks as browserBookmarks } from '../utils';
 import { getProfilesAction } from './Profiles';
 
-export const toggleBookmarksAction = () => ({
-  type: ACTIONS.BOOKMARKS_TOGGLE,
-});
-
 const bookmarksRequestAction = () => ({
   type: ACTIONS.BOOKMARKS_REQUEST,
 });
@@ -16,7 +12,7 @@ const bookmarksRequestSuccessAction = (bookmarks, bookmarksFolder) => ({
   bookmarksFolder,
 });
 
-const bookmarksRequestErrorAction = error => ({
+const bookmarksRequestErrorAction = (error) => ({
   type: ACTIONS.BOOKMARKS_REQUEST_ERROR,
   error,
 });
@@ -55,7 +51,7 @@ const bookmarkAddSuccessAction = (bookmark, parentId) => ({
   parentId,
 });
 
-const bookmarkAddError = error => ({
+const bookmarkAddError = (error) => ({
   type: ACTIONS.BOOKMARK_ADD_ERROR,
   error,
 });
@@ -84,17 +80,17 @@ const bookmarkRemoveAction = () => ({
   type: ACTIONS.BOOKMARK_REMOVE,
 });
 
-const bookmarkRemoveSuccessAction = id => ({
+const bookmarkRemoveSuccessAction = (id) => ({
   type: ACTIONS.BOOKMARK_REMOVE_SUCCESS,
   id,
 });
 
-const bookmarkRemoveErrorAction = error => ({
+const bookmarkRemoveErrorAction = (error) => ({
   type: ACTIONS.BOOKMARK_REMOVE_ERROR,
   error,
 });
 
-export const removeBookmarkAction = bookmarkId => (
+export const removeBookmarkAction = (bookmarkId) => (
   async (dispatch) => {
     dispatch(bookmarkRemoveAction());
 
@@ -111,12 +107,12 @@ const bookmarkUpdateAction = () => ({
   type: ACTIONS.BOOKMARK_UPDATE,
 });
 
-const bookmarkUpdateSuccessAction = bookmark => ({
+const bookmarkUpdateSuccessAction = (bookmark) => ({
   type: ACTIONS.BOOKMARK_UPDATE_SUCCESS,
   bookmark,
 });
 
-const bookmarkUpdateErrorAction = error => ({
+const bookmarkUpdateErrorAction = (error) => ({
   type: ACTIONS.BOOKMARK_UPDATE_ERROR,
   error,
 });
