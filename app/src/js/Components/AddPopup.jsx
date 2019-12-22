@@ -1,127 +1,81 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Popup from './Popup';
 import Input from './Input';
 import ComboBox from './ComboBox';
 import Button from './ButtonDefault';
-import { getHistory } from '../Actions/History';
-import { addBookmarkAction } from '../Actions/Bookmarks';
-import { hidePopupAction, disableCloseAction, enableCloseAction } from '../Actions/Popup';
-import { getLocaleMessage } from '../utils';
+import { addBookmark, setBookmarkParentId } from '../Actions/Bookmarks';
+import { bookmarks as browserBookmarks, getLocaleMessage } from '../utils';
+import { TYPES } from '../constants';
 
-class AddPopup extends Component {
-  state = {
-    url: '',
-    title: '',
-    showComboBox: false,
+const AddPopup = () => {
+  const dispatch = useDispatch();
+  const parentId = useSelector((state) => state.Bookmarks.bookmarkParentId);
+  const [url, setUrl] = useState('');
+  const [title, setTitle] = useState('');
+  const [history, setHistory] = useState([]);
+  const [isSelect, setSelect] = useState(false);
+
+  const onInputChange = (_, v) => {
+    setUrl(v);
+    setSelect(true);
+
+    browser.history.search({
+      text: v,
+      maxResults: 10,
+    })
+      .then((data) => setHistory(data));
   };
 
-  onChange = (name, value) => {
-    const { getHistory } = this.props;
-
-    this.setState({
-      [name]: value,
-    });
-
-    if (name === 'url') {
-      getHistory(value);
-      this.setState({
-        showComboBox: true,
-      });
-    }
-  };
-
-  onAdd = () => {
-    const { onAdd, hidePopup } = this.props;
-    const { url, title } = this.state;
-
-    onAdd(url, title);
-    hidePopup('add');
-
-    this.setState({
-      url: '',
-      title: '',
-    });
-  };
-
-  onComboSelect = (id) => {
-    const { history } = this.props;
-    const item = history.find(i => i.id === id);
+  const onComboSelect = (id) => {
+    const item = history.find((i) => i.id === id);
 
     if (item) {
-      this.setState({
-        url: item.url,
-        title: item.title,
-        showComboBox: false,
-      });
+      setUrl(item.url);
+      setTitle(item.title);
+      setSelect(false);
     }
   };
 
-  render() {
-    const {
-      onChange,
-      onComboSelect,
-      onAdd,
-    } = this;
-    const { title, url, showComboBox } = this.state;
-    const {
-      show,
-      history,
-      disableClose,
-      enableClose,
-    } = this.props;
-    const onEnableClose = () => setTimeout(enableClose, 100);
+  const onAdd = () => {
+    browserBookmarks.create({
+      type: TYPES.BOOKMARK,
+      parentId,
+      title,
+      url,
+    })
+      .then((b) => {
+        dispatch(addBookmark(b));
+        dispatch(setBookmarkParentId(''));
+      });
+  };
 
-    return (
-      <Popup name="add">
-        <div className="popup__header">{getLocaleMessage('addBookmark')}</div>
-        <ComboBox
-          name="url"
-          value={url}
-          placeholder={getLocaleMessage('url')}
-          onInputChange={onChange}
-          items={showComboBox ? history : []}
-          onComboItemSelect={onComboSelect}
-          className="popup"
-          focus={show}
-          onShow={disableClose}
-          onHide={onEnableClose}
-        />
-        <Input
-          name="title"
-          value={title}
-          onChange={onChange}
-          placeholder={getLocaleMessage('title')}
-          className="popup"
-        />
-        <Button onClick={onAdd} primary>{getLocaleMessage('add')}</Button>
-      </Popup>
-    );
-  }
-}
+  const onClose = () => {
+    dispatch(setBookmarkParentId(''));
+  };
 
-AddPopup.propTypes = {
-  show: PropTypes.bool.isRequired,
-  onAdd: PropTypes.func.isRequired,
-  history: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  getHistory: PropTypes.func.isRequired,
-  hidePopup: PropTypes.func.isRequired,
-  enableClose: PropTypes.func.isRequired,
-  disableClose: PropTypes.func.isRequired,
+  return (
+    <Popup isOpen={!!parentId} onClose={onClose}>
+      <div className="popup__header">{getLocaleMessage('addBookmark')}</div>
+      <ComboBox
+        name="url"
+        value={url}
+        placeholder={getLocaleMessage('url')}
+        onInputChange={onInputChange}
+        items={isSelect ? history : []}
+        onComboItemSelect={onComboSelect}
+        className="popup"
+      />
+      <Input
+        name="title"
+        value={title}
+        onChange={(_, v) => setTitle(v)}
+        placeholder={getLocaleMessage('title')}
+        className="popup"
+      />
+      <Button onClick={onAdd} primary>{getLocaleMessage('add')}</Button>
+    </Popup>
+  );
 };
 
-function mapStateToProps(state) {
-  return {
-    show: state.Popup.show.add || false,
-    history: state.History.history,
-  };
-}
-
-export default connect(mapStateToProps, {
-  getHistory,
-  onAdd: addBookmarkAction,
-  hidePopup: hidePopupAction,
-  enableClose: enableCloseAction,
-  disableClose: disableCloseAction,
-})(AddPopup);
+export default AddPopup;

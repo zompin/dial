@@ -1,22 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import XButton from '../XButton';
 import EditButton from '../EditButton';
-import { showPopupAction } from '../../Actions/Popup';
+import { setBookmarkEditId, setBookmarkDeleteId } from '../../Actions/Bookmarks';
 
 const BookmarkItem = ({
   id,
   url,
   title,
-  onDelete,
-  onEdit,
   color,
   index,
 }) => {
+  const dispatch = useDispatch();
   const urlPosStart = url.indexOf('//');
   const urlPosEnd = url.indexOf('/', urlPosStart + 2);
   const filteredUrl = url.substring(urlPosStart + 2, urlPosEnd);
+
+  const onEdit = (bookmarkId) => {
+    dispatch(setBookmarkEditId(bookmarkId));
+  };
+
+  const onDelete = (bookmarkId) => {
+    dispatch(setBookmarkDeleteId(bookmarkId));
+  };
 
   return (
     <div
@@ -55,18 +62,8 @@ BookmarkItem.propTypes = {
   id: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
   color: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onEdit: (id) => {
-      dispatch(showPopupAction('edit', { id }));
-    },
-  };
-}
-
-export default connect(null, mapDispatchToProps)(BookmarkItem);
+export default BookmarkItem;

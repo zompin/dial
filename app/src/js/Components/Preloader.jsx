@@ -1,23 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import cs from 'classnames';
 
-const Preloader = ({ show }) => (
-  <div className={cs('preloader', { preloader_show: show })}>
-    <div className="preloader__b preloader__b_1" />
-    <div className="preloader__b preloader__b_2" />
-  </div>
-);
-
-Preloader.propTypes = {
-  show: PropTypes.bool.isRequired,
+const Preloader = () => {
+  const isLoaded = useSelector((state) => state.Bookmarks.isLoaded);
+  return (
+    <div className={cs('preloader', { preloader_show: !isLoaded })}>
+      <div className="preloader__b preloader__b_1" />
+      <div className="preloader__b preloader__b_2" />
+    </div>
+  );
 };
 
-function mapStateToProps(state) {
-  return {
-    show: !state.Bookmarks.isBookmarksLoaded,
-  };
-}
-
-export default connect(mapStateToProps)(Preloader);
+export default Preloader;

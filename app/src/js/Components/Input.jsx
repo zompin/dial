@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Input extends Component {
-  componentWillReceiveProps(nextProps) {
-    const { focus } = this.props;
-
-    if (!focus && nextProps.focus) {
-      setTimeout(() => this.input.focus(), 500);
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const { focus } = this.props;
+  //
+  //   if (!focus && nextProps.focus) {
+  //     setTimeout(() => this.input.focus(), 500);
+  //   }
+  // }
 
   onChange = (e) => {
     const { onChange, name } = this.props;

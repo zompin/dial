@@ -1,15 +1,35 @@
-import { ACTIONS, TYPES } from '../constants';
+import { ACTIONS, NAMES } from '../constants';
 import { bookmarks as browserBookmarks } from '../utils';
-import { getProfilesAction } from './Profiles';
+
+const getAppFolder = (() => {
+  let dialFolder = null;
+
+  return async () => {
+    if (dialFolder) {
+      return dialFolder;
+    }
+
+    const rootBookmarks = await browserBookmarks.getChildren(NAMES.ROOT_FOLDER);
+    dialFolder = rootBookmarks.find((b) => b.title === NAMES.APP_FOLDER && !b.url);
+
+    if (!dialFolder) {
+      dialFolder = await browserBookmarks.create({
+        title: NAMES.APP_FOLDER,
+        parentId: NAMES.ROOT_FOLDER,
+      });
+    }
+
+    return dialFolder;
+  };
+})();
 
 const bookmarksRequestAction = () => ({
   type: ACTIONS.BOOKMARKS_REQUEST,
 });
 
-const bookmarksRequestSuccessAction = (bookmarks, bookmarksFolder) => ({
+const bookmarksRequestSuccessAction = (data) => ({
   type: ACTIONS.BOOKMARKS_REQUEST_SUCCESS,
-  bookmarks,
-  bookmarksFolder,
+  data,
 });
 
 const bookmarksRequestErrorAction = (error) => ({
@@ -17,119 +37,51 @@ const bookmarksRequestErrorAction = (error) => ({
   error,
 });
 
-export const getBookmarksAction = () => (
+export const getBookmarks = () => (
   async (dispatch) => {
-    const profiles = await dispatch(getProfilesAction());
     dispatch(bookmarksRequestAction());
 
     try {
-      let bookmarks = await Promise.all(profiles.reduce((acc, item) => {
-        acc.push(browserBookmarks.getChildren(item.id));
+      const appFolder = await getAppFolder();
+      const folders = await browserBookmarks.getChildren(appFolder.id);
+      const promises = folders.filter((f) => !f.url).map((f) => browserBookmarks.getChildren(f.id));
+      const bookmarks = await Promise.all(promises);
 
-        return acc;
-      }, []));
-
-      bookmarks = bookmarks.map((g, i) => ({
-        parentId: profiles[i].id,
-        items: g,
-      }));
-
-      dispatch(bookmarksRequestSuccessAction(bookmarks));
+      dispatch(bookmarksRequestSuccessAction(bookmarks.flat().filter((b) => !!b.url)));
     } catch (e) {
       dispatch(bookmarksRequestErrorAction(e));
     }
   }
 );
 
-const bookmarkAddAction = () => ({
+export const addBookmark = (bookmark) => ({
   type: ACTIONS.BOOKMARK_ADD,
-});
-
-const bookmarkAddSuccessAction = (bookmark, parentId) => ({
-  type: ACTIONS.BOOKMARK_ADD_SUCCESS,
   bookmark,
-  parentId,
 });
 
-const bookmarkAddError = (error) => ({
-  type: ACTIONS.BOOKMARK_ADD_ERROR,
-  error,
+export const updateBookmark = (id, title, url) => ({
+  type: ACTIONS.BOOKMARK_UPDATE,
+  id,
+  title,
+  url,
 });
 
-export const addBookmarkAction = (url, title) => (
-  async (dispatch, getState) => {
-    dispatch(bookmarkAddAction());
-    const { id } = getState().Profiles.current;
-
-    try {
-      const bookmark = await browserBookmarks.create({
-        type: TYPES.BOOKMARK,
-        parentId: id,
-        title,
-        url,
-      });
-
-      dispatch(bookmarkAddSuccessAction(bookmark, id));
-    } catch (e) {
-      dispatch(bookmarkAddError(e));
-    }
-  }
-);
-
-const bookmarkRemoveAction = () => ({
+export const removeBookmark = (id) => ({
   type: ACTIONS.BOOKMARK_REMOVE,
-});
-
-const bookmarkRemoveSuccessAction = (id) => ({
-  type: ACTIONS.BOOKMARK_REMOVE_SUCCESS,
   id,
 });
 
-const bookmarkRemoveErrorAction = (error) => ({
-  type: ACTIONS.BOOKMARK_REMOVE_ERROR,
-  error,
+export const setBookmarkEditId = (bookmarkEditId) => ({
+  type: ACTIONS.BOOKMARK_SET_EDIT_ID,
+  bookmarkEditId,
 });
 
-export const removeBookmarkAction = (bookmarkId) => (
-  async (dispatch) => {
-    dispatch(bookmarkRemoveAction());
-
-    try {
-      await browserBookmarks.remove(bookmarkId);
-      dispatch(bookmarkRemoveSuccessAction(bookmarkId));
-    } catch (e) {
-      dispatch(bookmarkRemoveErrorAction());
-    }
-  }
-);
-
-const bookmarkUpdateAction = () => ({
-  type: ACTIONS.BOOKMARK_UPDATE,
+export const setBookmarkDeleteId = (bookmarkDeleteId) => ({
+  type: ACTIONS.BOOKMARK_SET_DELETE_ID,
+  bookmarkDeleteId,
 });
 
-const bookmarkUpdateSuccessAction = (bookmark) => ({
-  type: ACTIONS.BOOKMARK_UPDATE_SUCCESS,
-  bookmark,
+export const setBookmarkParentId = (bookmarkParentId) => ({
+  type: ACTIONS.BOOKMARK_SET_PARENT_ID,
+  bookmarkParentId,
 });
-
-const bookmarkUpdateErrorAction = (error) => ({
-  type: ACTIONS.BOOKMARK_UPDATE_ERROR,
-  error,
-});
-
-export const updateBookmarkAction = (id, url, title) => (
-  async (dispatch) => {
-    dispatch(bookmarkUpdateAction());
-
-    try {
-      const bookmark = await browserBookmarks.update(id, {
-        url,
-        title,
-      });
-
-      dispatch(bookmarkUpdateSuccessAction(bookmark));
-    } catch (e) {
-      dispatch(bookmarkUpdateErrorAction(e));
-    }
-  }
-);

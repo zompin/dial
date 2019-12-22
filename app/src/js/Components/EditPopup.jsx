@@ -1,108 +1,68 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Popup from './Popup';
 import Input from './Input';
 import Button from './ButtonDefault';
-import { hidePopupAction } from '../Actions/Popup';
-import { updateBookmarkAction } from '../Actions/Bookmarks';
+import { setBookmarkEditId, updateBookmark } from '../Actions/Bookmarks';
 import { getLocaleMessage } from '../utils';
 
-class EditPopup extends Component {
-  state = {
-    url: '',
-    title: '',
-    id: '',
+const EditPopup = () => {
+  const dispatch = useDispatch();
+  const bookmarkEditId = useSelector((state) => state.Bookmarks.bookmarkEditId);
+  const bookmarks = useSelector((state) => state.Bookmarks.data);
+  const [url, setUrl] = useState('');
+  const [title, setTitle] = useState('');
+
+  const onEdit = () => {
+    browser.bookmarks.update(bookmarkEditId, { url, title })
+      .then(() => {
+        dispatch(updateBookmark(bookmarkEditId, title, url));
+        dispatch(setBookmarkEditId(''));
+      });
+  };
+  const onClose = () => {
+    dispatch(setBookmarkEditId(''));
   };
 
-  componentDidUpdate(prevProps) {
-    const { payload } = this.props;
-    const prevPayload = prevProps.payload;
-
-    if (!prevPayload.edit && payload.edit) {
-      this.setBookmark(payload.edit.id);
-    }
-  }
-
-  setBookmark = (id) => {
-    const { bookmarks } = this.props;
-    const bookmarkForEdit = bookmarks.find(b => b.id === id);
-
-    if (!bookmarkForEdit) {
+  useEffect(() => {
+    if (!bookmarkEditId) {
       return;
     }
 
-    this.setState({
-      url: bookmarkForEdit.url,
-      title: bookmarkForEdit.title,
-      id: bookmarkForEdit.id,
-    });
-  };
+    const foundBookmark = bookmarks.find((b) => b.id === bookmarkEditId);
 
-  onChange = (name, value) => {
-    this.setState({
-      [name]: value,
-    });
-  };
+    if (!foundBookmark) {
+      return;
+    }
 
-  onEdit = () => {
-    const { updateBookmark, hidePopup } = this.props;
-    const { id, url, title } = this.state;
+    setUrl(foundBookmark.url);
+    setTitle(foundBookmark.title);
+  }, [bookmarkEditId]);
 
-    updateBookmark(id, url, title);
-    hidePopup('edit');
-  };
-
-  render() {
-    const { onChange, onEdit } = this;
-    const { show, hidePopup } = this.props;
-    const { url, title } = this.state;
-
-    return (
-      <Popup name="edit" onClose={() => hidePopup('edit')}>
-        <div className="popup__header">
-          {getLocaleMessage('editBookmark')}
-        </div>
-        <Input
-          name="url"
-          value={url}
-          onChange={onChange}
-          placeholder={getLocaleMessage('url')}
-          className="popup"
-          focus={show}
-        />
-        <Input
-          name="title"
-          value={title}
-          onChange={onChange}
-          placeholder={getLocaleMessage('title')}
-          className="popup"
-        />
-        <Button onClick={onEdit} primary>
-          {getLocaleMessage('save')}
-        </Button>
-      </Popup>
-    );
-  }
-}
-
-EditPopup.propTypes = {
-  show: PropTypes.bool.isRequired,
-  updateBookmark: PropTypes.func.isRequired,
-  hidePopup: PropTypes.func.isRequired,
-  payload: PropTypes.shape().isRequired,
-  bookmarks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  return (
+    <Popup isOpen={!!bookmarkEditId} onClose={onClose}>
+      <div className="popup__header">
+        {getLocaleMessage('editBookmark')}
+      </div>
+      <Input
+        name="url"
+        value={url}
+        onChange={(_, value) => setUrl(value)}
+        placeholder={getLocaleMessage('url')}
+        className="popup"
+      />
+      <Input
+        name="title"
+        value={title}
+        onChange={(_, value) => setTitle(value)}
+        placeholder={getLocaleMessage('title')}
+        className="popup"
+      />
+      <Button onClick={onEdit} primary>
+        {getLocaleMessage('save')}
+      </Button>
+    </Popup>
+  );
 };
 
-function mapStateToProps(state) {
-  return {
-    show: state.Popup.show.edit || false,
-    payload: state.Popup.payload || {},
-    bookmarks: state.Bookmarks.bookmarks,
-  };
-}
-
-export default connect(mapStateToProps, {
-  updateBookmark: updateBookmarkAction,
-  hidePopup: hidePopupAction,
-})(EditPopup);
+export default EditPopup;

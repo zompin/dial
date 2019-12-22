@@ -1,43 +1,32 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { hot } from 'react-hot-loader/root';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import BookmarksList from './Components/Bookmarks/BookmarksList';
 import AddPopup from './Components/AddPopup';
 import EditPopup from './Components/EditPopup';
+import DeletePopup from './Components/DeletePopup';
 import Preloader from './Components/Preloader';
 import Profiles from './Components/Profiles';
-import { getBookmarksAction } from './Actions/Bookmarks';
+import { getBookmarks } from './Actions/Bookmarks';
+import { getProfilesAction } from './Actions/Profiles';
 
-class App extends Component {
-  componentDidMount() {
-    const { getBookmarks } = this.props;
-    getBookmarks();
-  }
+const App = () => {
+  const dispatch = useDispatch();
 
-  render() {
-    return (
-      <div>
-        <Preloader />
-        <Profiles />
-        <BookmarksList />
-        <AddPopup />
-        <EditPopup />
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    dispatch(getBookmarks());
+    dispatch(getProfilesAction());
+  }, []);
 
-App.propTypes = {
-  getBookmarks: PropTypes.func.isRequired,
+  return (
+    <div>
+      <Preloader />
+      <Profiles />
+      <BookmarksList />
+      <AddPopup />
+      <DeletePopup />
+      <EditPopup />
+    </div>
+  );
 };
 
-function mapStateToProps(state) {
-  return {
-    storage: state.Storage,
-  };
-}
-
-export default connect(mapStateToProps, {
-  getBookmarks: getBookmarksAction,
-})(hot(App));
+export default App;

@@ -10,7 +10,7 @@ const getRootFolder = (() => {
     }
 
     const rootBookmarks = await browserBookmarks.getChildren(NAMES.ROOT_FOLDER);
-    dialFolder = rootBookmarks.find((b) => b.title === NAMES.APP_FOLDER && b.type === TYPES.FOLDER);
+    dialFolder = rootBookmarks.find((b) => b.title === NAMES.APP_FOLDER && !b.url);
 
     if (!dialFolder) {
       dialFolder = await browserBookmarks.create({
@@ -72,86 +72,59 @@ const profileAddAction = () => ({
   type: ACTIONS.PROFILE_ADD,
 });
 
-const profileAddSuccessAction = (profile) => ({
-  type: ACTIONS.PROFILE_ADD_SUCCESS,
-  profile,
-});
+// export const addProfileAction = (title) => async (dispatch) => {
+//   dispatch(profileAddAction());
+//
+//   try {
+//     const rootFolder = await getRootFolder();
+//     const profile = await browserBookmarks.create({
+//       title,
+//       parentId: rootFolder.id,
+//     });
+//
+//     dispatch(profileAddSuccessAction(profile));
+//   } catch (e) {
+//     dispatch(profileAddErrorAction(e));
+//   }
+// };
 
-const profileAddErrorAction = (error) => ({
-  type: ACTIONS.PROFILE_ADD_ERROR,
-  error,
-});
-
-export const addProfileAction = (title) => async (dispatch) => {
-  dispatch(profileAddAction());
-
-  try {
-    const rootFolder = await getRootFolder();
-    const profile = await browserBookmarks.create({
-      title,
-      parentId: rootFolder.id,
-    });
-
-    dispatch(profileAddSuccessAction(profile));
-  } catch (e) {
-    dispatch(profileAddErrorAction(e));
-  }
-};
-
-const profileUpdateAction = () => ({
+const profileUpdate = (id, title) => ({
   type: ACTIONS.PROFILE_UPDATE,
+  id,
+  title,
 });
 
-const profileUpdateSuccessAction = (profile) => ({
-  type: ACTIONS.PROFILE_UPDATE_SUCCESS,
-  profile,
-});
+// export const updateProfileAction = (id, title) => async (dispatch) => {
+//   dispatch(profileUpdateAction());
+//
+//   try {
+//     const profile = await browserBookmarks.update({
+//       id,
+//       title,
+//     });
+//     dispatch(profileUpdateSuccessAction(profile));
+//   } catch (e) {
+//     dispatch(profileUpdateErrorAction(e));
+//   }
+// };
 
-const profileUpdateErrorAction = (error) => ({
-  type: ACTIONS.PROFILE_UPDATE_ERROR,
-  error,
-});
-
-export const updateProfileAction = (id, title) => async (dispatch) => {
-  dispatch(profileUpdateAction());
-
-  try {
-    const profile = await browserBookmarks.update({
-      id,
-      title,
-    });
-    dispatch(profileUpdateSuccessAction(profile));
-  } catch (e) {
-    dispatch(profileUpdateErrorAction(e));
-  }
-};
-
-const profileRemoveAction = () => ({
+const profileRemove = (id) => ({
   type: ACTIONS.PROFILE_REMOVE,
-});
-
-const profileRemoveSuccess = (id) => ({
-  type: ACTIONS.PROFILE_REMOVE_SUCCESS,
   id,
 });
 
-const profileRemoveError = (error) => ({
-  type: ACTIONS.PROFILE_REMOVE_ERROR,
-  error,
-});
+// export const removeProfileAction = (id) => async (dispatch) => {
+//   dispatch(profileRemoveAction());
+//
+//   try {
+//     await browserBookmarks.remove(id);
+//     dispatch(profileRemoveSuccess(id));
+//   } catch (e) {
+//     dispatch(profileRemoveError(e));
+//   }
+// };
 
-export const removeProfileAction = (id) => async (dispatch) => {
-  dispatch(profileRemoveAction());
-
-  try {
-    await browserBookmarks.remove(id);
-    dispatch(profileRemoveSuccess(id));
-  } catch (e) {
-    dispatch(profileRemoveError(e));
-  }
-};
-
-export const setProfileAction = (id) => ({
+export const setProfile = (id) => ({
   type: ACTIONS.PROFILE_SET,
   id,
 });

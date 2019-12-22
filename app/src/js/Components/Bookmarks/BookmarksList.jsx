@@ -1,13 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import cs from 'classnames';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
-import AskDeletePopup from '../AskDeletePopup';
-import { removeBookmarkAction } from '../../Actions/Bookmarks';
-import { hidePopupAction, showPopupAction } from '../../Actions/Popup';
-import { commands } from '../../utils';
 
 const colorGenerator = () => {
   const colorsStore = [
@@ -42,103 +36,62 @@ const colorGenerator = () => {
   };
 };
 
-class BookmarksList extends Component {
-  state = {
-    bookmarkForDelete: '',
-  };
-
-  componentDidMount() {
-    commands.onCommand.addListener(this.numberPress);
-    // browser.commands.onCommand.addListener(this.numberPress);
+const onCommand = (command, bookmarks) => {
+  if (command.indexOf('-') === -1) {
+    return;
   }
 
-  componentWillUnmount() {
-    commands.onCommand.removeListener(this.numberPress);
-    // browser.commands.onCommand.removeListener(this.numberPress);
+  const pieces = command.split('-');
+  const numberString = pieces[1];
+
+  if (!numberString) {
+    return;
   }
 
-  numberPress = (command) => {
-    const { bookmarks } = this.props;
+  let number = +numberString;
 
-    if (command.indexOf('-') === -1) {
-      return;
-    }
+  if (typeof number !== 'number') {
+    return;
+  }
 
-    const pieces = command.split('-');
-    const numberString = pieces[1];
-
-    if (!numberString) {
-      return;
-    }
-
-    let number = +numberString;
-
-    if (typeof number !== 'number') {
-      return;
-    }
-
-    if (number === 0) {
-      number = 9;
-    } else {
-      number -= 1;
-    }
+  if (number === 0) {
+    number = 9;
+  } else {
+    number -= 1;
+  }
 
 
-    if (!bookmarks[number] || !bookmarks[number].url) {
-      return;
-    }
+  if (!bookmarks[number] || !bookmarks[number].url) {
+    return;
+  }
 
-    location.href = bookmarks[number].url;
+  location.href = bookmarks[number].url;
+};
+
+const BookmarksList = () => {
+  const bookmarks = useSelector((state) => state.Bookmarks.data);
+  const isLoaded = useSelector((state) => state.Bookmarks.isLoaded);
+  const parentId = useSelector((state) => state.Profiles.current);
+  const getColor = colorGenerator();
+
+  const onNum = (command) => {
+    onCommand(command, bookmarks);
   };
 
-  showDeletePopup = (bookmarkForDelete) => {
-    const { showPopup } = this.props;
+  useEffect(() => {
+    browser.commands.onCommand.addListener(onNum);
 
-    showPopup('ask-delete');
+    return () => {
+      browser.commands.onCommand.removeListener(onNum);
+    };
+  }, []);
 
-    this.setState({
-      bookmarkForDelete,
-    });
-  };
-
-  onDelete = () => {
-    const { hidePopup, removeBookmark } = this.props;
-    const { bookmarkForDelete } = this.state;
-
-    hidePopup('ask-delete');
-    removeBookmark(bookmarkForDelete);
-
-    this.setState({
-      bookmarkForDelete: '',
-    });
-  };
-
-  onCancel = () => {
-    const { hidePopup } = this.props;
-
-    hidePopup('ask-delete');
-
-    this.setState({
-      bookmarkForDelete: '',
-    });
-  };
-
-  render() {
-    const {
-      bookmarks,
-      currentProfile,
-    } = this.props;
-    const getColor = colorGenerator();
-    const { showDeletePopup, onDelete, onCancel } = this;
-    const groupedBookmarks = bookmarks.map((g) => (
-      <div
-        key={g.parentId}
-        className={cs('bookmarks', {
-          bookmarks_show: currentProfile.id === g.parentId,
-        })}
-      >
-        {
-          g.items.map((b, i) => (
+  return (
+    <div className="bookmarks">
+      {
+        bookmarks
+          .filter((b) => b.parentId === parentId)
+          .map((b, i) => (
             <BookmarksItem
               key={b.id}
               id={b.id}
@@ -146,42 +99,16 @@ class BookmarksList extends Component {
               title={b.title}
               color={getColor(b.url)}
               index={i}
-              onDelete={showDeletePopup}
             />
           ))
-        }
-        <BookmarkAdd />
-      </div>
-    ));
-
-    return (
-      <>
-        {groupedBookmarks}
-        <AskDeletePopup onDelete={onDelete} onCancel={onCancel} />
-      </>
-    );
-  }
-}
-
-BookmarksList.propTypes = {
-  bookmarks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  showPopup: PropTypes.func.isRequired,
-  hidePopup: PropTypes.func.isRequired,
-  removeBookmark: PropTypes.func.isRequired,
-  currentProfile: PropTypes.shape().isRequired,
+      }
+      {
+        isLoaded && (
+          <BookmarkAdd />
+        )
+      }
+    </div>
+  );
 };
 
-function mapStateToProps(state) {
-  return {
-    bookmarks: state.Bookmarks.bookmarks,
-    isLoaded: state.Bookmarks.isBookmarksLoaded,
-    profiles: state.Profiles.data,
-    currentProfile: state.Profiles.current,
-  };
-}
-
-export default connect(mapStateToProps, {
-  removeBookmark: removeBookmarkAction,
-  hidePopup: hidePopupAction,
-  showPopup: showPopupAction,
-})(BookmarksList);
+export default BookmarksList;

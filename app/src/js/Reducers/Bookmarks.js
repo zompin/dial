@@ -1,63 +1,69 @@
 import { ACTIONS } from '../constants';
 
 const initState = {
-  bookmarks: [],
-  bookmarksFolder: null,
-  isBookmarksLoaded: false,
-  currentBookmark: {},
+  data: [],
+  isLoaded: false,
+  bookmarkEditId: '',
+  bookmarkDeleteId: '',
+  bookmarkParentId: '',
 };
 
 const BookmarksReducer = (state = initState, action) => {
-  switch (action.type) {
+  const {
+    type, data, bookmarkEditId, bookmarkDeleteId, bookmarkParentId, bookmark, id, title, url,
+  } = action;
+  switch (type) {
   case ACTIONS.BOOKMARKS_REQUEST:
     return {
       ...state,
-      isBookmarksLoaded: false,
+      data: [],
+      isLoaded: false,
     };
   case ACTIONS.BOOKMARKS_REQUEST_SUCCESS:
     return {
       ...state,
-      bookmarks: action.bookmarks,
-      isBookmarksLoaded: true,
-      bookmarksFolder: action.bookmarksFolder,
+      isLoaded: true,
+      data,
     };
-  case ACTIONS.BOOKMARK_ADD_SUCCESS:
+  case ACTIONS.BOOKMARK_SET_EDIT_ID:
     return {
       ...state,
-      bookmarks: state.bookmarks.map((g) => {
-        if (g.parentId !== action.parentId) {
-          return g;
+      bookmarkEditId,
+    };
+  case ACTIONS.BOOKMARK_SET_DELETE_ID:
+    return {
+      ...state,
+      bookmarkDeleteId,
+    };
+  case ACTIONS.BOOKMARK_SET_PARENT_ID:
+    return {
+      ...state,
+      bookmarkParentId,
+    };
+  case ACTIONS.BOOKMARK_ADD:
+    return {
+      ...state,
+      data: [...state.data, bookmark],
+    };
+  case ACTIONS.BOOKMARK_UPDATE:
+    return {
+      ...state,
+      data: state.data.map((d) => {
+        if (d.id === id) {
+          return {
+            ...d,
+            title,
+            url,
+          };
         }
 
-        const items = [...g.items, action.bookmark];
-
-        return { ...g, items };
+        return d;
       }),
     };
-  case ACTIONS.BOOKMARK_UPDATE_SUCCESS:
+  case ACTIONS.BOOKMARK_REMOVE:
     return {
       ...state,
-      bookmarks: state.bookmarks.map((b) => {
-        if (b.id === action.bookmark.id) {
-          return action.bookmark;
-        }
-
-        return b;
-      }),
-    };
-  case ACTIONS.BOOKMARK_REMOVE_SUCCESS:
-    return {
-      ...state,
-      bookmarks: state.bookmarks.map((g) => {
-        const items = g.items.filter((b) => b.id !== action.id);
-
-        return { ...g, items };
-      }),
-    };
-  case ACTIONS.BOOKMARK_CLEAN:
-    return {
-      ...state,
-      currentBookmark: {},
+      data: state.data.filter((d) => d.id !== id),
     };
   default: return state;
   }
