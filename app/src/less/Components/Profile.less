@@ -1,0 +1,69 @@
+.profile {
+  border: 1px solid #015e7a;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+  transition: border-radius 0.3s;
+
+  &_expand {
+    border-radius: 4px 4px 0 0;
+  }
+
+  &__name {
+    padding: 13px 20px;
+  }
+
+  &__input {
+    padding: 13px 20px;
+    font-family: inherit;
+    font-size: inherit;
+    border: none;
+    background-color: transparent;
+  }
+
+  &:hover &__control:not(&__control_hide) {
+    transform: translateX(-100%);
+  }
+
+  &__control {
+    position: absolute;
+    top: 0;
+    right: -80px;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s;
+    background-color: #015e7a;
+  }
+
+  &__dialog {
+    height: 0;
+    transform: scale(0);
+    opacity: 0;
+    overflow: hidden;
+    transition: height 0.3s, transform 0.3s, opacity 0.3s;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+
+    &_show {
+      height: 52px;
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .button-default {
+      border-top: none;
+      &:first-child {
+        border-radius: 0 0 0 4px;
+        border-right: none;
+      }
+
+      &:last-child {
+        border-radius: 0 0 4px 0;
+      }
+    }
+  }
+}

@@ -34,5 +34,8 @@
   },
   "save": {
     "message": "Сохранить"
+  },
+  "profiles": {
+    "message": "Профили"
   }
 }

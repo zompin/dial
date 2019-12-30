@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import cs from 'classnames';
 
 class Input extends Component {
-  // componentWillReceiveProps(nextProps) {
-  //   const { focus } = this.props;
-  //
-  //   if (!focus && nextProps.focus) {
-  //     setTimeout(() => this.input.focus(), 500);
-  //   }
-  // }
-
   onChange = (e) => {
     const { onChange, name } = this.props;
     const { value } = e.target;
@@ -32,15 +25,12 @@ class Input extends Component {
       name,
       className,
     } = this.props;
-    const placeHolderClasslist = ['input__placeholder'];
-
-    if (!value) {
-      placeHolderClasslist.push('input__placeholder_empty');
-    }
 
     return (
       <div className={`input input_${className}`}>
-        <div className={placeHolderClasslist.join(' ')}>{placeholder}</div>
+        <div className={cs('input__placeholder', { input__placeholder_empty: !value })}>
+          {placeholder}
+        </div>
         <input
           className="input__value"
           value={value}
@@ -57,18 +47,17 @@ class Input extends Component {
 Input.propTypes = {
   value: PropTypes.string,
   name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   className: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  focus: PropTypes.bool,
   onFocus: PropTypes.func,
 };
 
 Input.defaultProps = {
   value: '',
   className: '',
-  focus: false,
   onFocus: null,
+  placeholder: '',
 };
 
 export default Input;

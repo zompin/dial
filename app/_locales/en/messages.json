@@ -34,5 +34,8 @@
   },
   "save": {
     "message": "Save"
+  },
+  "profiles": {
+    "message": "Profiles"
   }
 }

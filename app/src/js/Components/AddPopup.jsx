@@ -5,7 +5,7 @@ import Input from './Input';
 import ComboBox from './ComboBox';
 import Button from './ButtonDefault';
 import { addBookmark, setBookmarkParentId } from '../Actions/Bookmarks';
-import { bookmarks as browserBookmarks, getLocaleMessage } from '../utils';
+import { getLocaleMessage } from '../utils';
 import { TYPES } from '../constants';
 
 const AddPopup = () => {
@@ -38,7 +38,7 @@ const AddPopup = () => {
   };
 
   const onAdd = () => {
-    browserBookmarks.create({
+    browser.bookmarks.create({
       type: TYPES.BOOKMARK,
       parentId,
       title,

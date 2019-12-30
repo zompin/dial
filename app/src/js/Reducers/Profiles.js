@@ -43,7 +43,7 @@ export default (state = initState, action) => {
     return {
       ...state,
       data: state.data.map((d) => {
-        if (d) {
+        if (d.id === id) {
           return {
             ...d,
             title,

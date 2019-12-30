@@ -4,11 +4,12 @@
   right: 0;
   bottom: 0;
   left: 0;
-  display: flex;
   z-index: 1;
+  transform: translateX(0);
+  transition: transform 0.3s;
 
   &_hidden {
-    display: none;
+    transform: translateX(-100%);
   }
 
   &__cover {
@@ -18,17 +19,25 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.7);
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+
+  &_hidden &__cover {
+    opacity: 0;
   }
 
   &__inner {
     width: 100%;
     max-width: 400px;
-    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
     background-color: @WHITE;
     padding: 15px;
-    position: relative;
     color: @GRAY;
-    border-radius: 4px;
 
     &:before {
       content: '';

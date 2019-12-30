@@ -1,27 +1,5 @@
-import { ACTIONS, NAMES } from '../constants';
-import { bookmarks as browserBookmarks } from '../utils';
-
-const getAppFolder = (() => {
-  let dialFolder = null;
-
-  return async () => {
-    if (dialFolder) {
-      return dialFolder;
-    }
-
-    const rootBookmarks = await browserBookmarks.getChildren(NAMES.ROOT_FOLDER);
-    dialFolder = rootBookmarks.find((b) => b.title === NAMES.APP_FOLDER && !b.url);
-
-    if (!dialFolder) {
-      dialFolder = await browserBookmarks.create({
-        title: NAMES.APP_FOLDER,
-        parentId: NAMES.ROOT_FOLDER,
-      });
-    }
-
-    return dialFolder;
-  };
-})();
+import { ACTIONS } from '../constants';
+import { getAppFolder } from '../utils';
 
 const bookmarksRequestAction = () => ({
   type: ACTIONS.BOOKMARKS_REQUEST,
@@ -43,8 +21,9 @@ export const getBookmarks = () => (
 
     try {
       const appFolder = await getAppFolder();
-      const folders = await browserBookmarks.getChildren(appFolder.id);
-      const promises = folders.filter((f) => !f.url).map((f) => browserBookmarks.getChildren(f.id));
+      const folders = await browser.bookmarks.getChildren(appFolder.id);
+      const promises = folders.filter((f) => !f.url)
+        .map((f) => browser.bookmarks.getChildren(f.id));
       const bookmarks = await Promise.all(promises);
 
       dispatch(bookmarksRequestSuccessAction(bookmarks.flat().filter((b) => !!b.url)));
