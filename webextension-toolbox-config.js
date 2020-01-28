@@ -18,7 +18,7 @@ module.exports = {
         VENDOR: JSON.stringify(vendor),
       }),
     );
-    config.plugins.push(new HotModuleReplacementPlugin());
+    // config.plugins.push(new HotModuleReplacementPlugin());
 
     module.rules.push({
       test: /\.less$/,
