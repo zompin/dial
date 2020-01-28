@@ -26,10 +26,7 @@ const BookmarkItem = ({
   };
 
   return (
-    <div
-      className="bookmark"
-      style={{ backgroundColor: color }}
-    >
+    <div className={`bookmark bookmark_${color}`}>
       <a className="bookmark__link" href={url}>
         <div className="bookmark__title">
           {title}

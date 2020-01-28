@@ -1,63 +1,62 @@
-import React, { Component } from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import cs from 'classnames';
+import { useField } from 'react-final-form';
 
-class Input extends Component {
-  onChange = (e) => {
-    const { onChange, name } = this.props;
-    const { value } = e.target;
+const Input = forwardRef(({
+  name, placeholder, className, onFocus, onChange, onBlur,
+}, ref) => {
+  const { input, meta } = useField(name);
 
-    onChange(name, value);
+  const onInputFocus = (e) => {
+    onFocus(e);
+    input.onFocus(e);
   };
 
-  onFocus = (e) => {
-    const { onFocus, name } = this.props;
-
-    if (onFocus) {
-      onFocus(e, name);
-    }
+  const onInputChange = (e) => {
+    onChange(e);
+    input.onChange(e);
   };
 
-  render() {
-    const {
-      value,
-      placeholder,
-      name,
-      className,
-    } = this.props;
+  const onInputBlur = (e) => {
+    onBlur(e);
+    input.onBlur(e);
+  };
 
-    return (
-      <div className={`input input_${className}`}>
-        <div className={cs('input__placeholder', { input__placeholder_empty: !value })}>
-          {placeholder}
-        </div>
-        <input
-          className="input__value"
-          value={value}
-          name={name}
-          onChange={this.onChange}
-          onFocus={this.onFocus}
-          ref={(e) => { this.input = e; }}
-        />
+  return (
+    <div className={`input input_${className}`}>
+      <div className={cs('input__placeholder', { input__placeholder_empty: !input.value })}>
+        {placeholder}
       </div>
-    );
-  }
-}
+      <input
+        className="input__value"
+        ref={ref}
+        name={name}
+        value={input.value}
+        onFocus={onInputFocus}
+        onChange={onInputChange}
+        onBlur={onInputBlur}
+      />
+      <div className={cs('input__error', { input__error_show: meta.touched && meta.error })}>{meta.error}</div>
+    </div>
+  );
+});
 
 Input.propTypes = {
-  value: PropTypes.string,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   className: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 Input.defaultProps = {
-  value: '',
   className: '',
-  onFocus: null,
   placeholder: '',
+  onFocus: () => {},
+  onChange: () => {},
+  onBlur: () => {},
 };
 
 export default Input;

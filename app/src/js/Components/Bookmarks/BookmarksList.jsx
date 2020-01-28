@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
 
 const colorGenerator = () => {
   const colorsStore = [
-    '#a83252',
-    '#3e4a41',
-    '#fe7e18',
-    '#41516b',
-    '#d41137',
-    '#53b0bd',
-    '#015e7a',
+    'purple',
+    'gray-dark',
+    'orange',
+    'gray',
+    'red',
+    'blue',
+    'blue-dark',
   ];
   let colorsAcc = [];
   let prevColor = '';
@@ -73,9 +73,11 @@ const BookmarksList = () => {
   const isLoaded = useSelector((state) => state.Bookmarks.isLoaded);
   const parentId = useSelector((state) => state.Profiles.current);
   const getColor = colorGenerator();
+  const bookmarksRef = useRef([])
+  bookmarksRef.current = bookmarks
 
   const onNum = (command) => {
-    onCommand(command, bookmarks);
+    onCommand(command, bookmarksRef.current);
   };
 
   useEffect(() => {

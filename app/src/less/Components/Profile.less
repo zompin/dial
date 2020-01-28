@@ -1,21 +1,21 @@
 .profile {
   border: 1px solid #015e7a;
-  border-radius: 4px;
+  border-radius: @BORDER_RADIUS;
   position: relative;
   overflow: hidden;
   margin-top: 10px;
   transition: border-radius 0.3s;
 
   &_expand {
-    border-radius: 4px 4px 0 0;
+    border-radius: @BORDER_RADIUS @BORDER_RADIUS 0 0;
   }
 
   &__name {
-    padding: 13px 20px;
+    padding: 12px 20px;
   }
 
   &__input {
-    padding: 13px 20px;
+    padding: 12px 20px;
     font-family: inherit;
     font-size: inherit;
     border: none;
@@ -57,12 +57,12 @@
     .button-default {
       border-top: none;
       &:first-child {
-        border-radius: 0 0 0 4px;
+        border-radius: 0 0 0 @BORDER_RADIUS;
         border-right: none;
       }
 
       &:last-child {
-        border-radius: 0 0 4px 0;
+        border-radius: 0 0 @BORDER_RADIUS 0;
       }
     }
   }

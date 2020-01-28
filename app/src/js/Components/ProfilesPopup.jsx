@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import { Form } from 'react-final-form';
 import Popup from './Popup';
 import ButtonDefault from './ButtonDefault';
 import Input from './Input';
@@ -10,9 +11,9 @@ import { getAppFolder, getLocaleMessage } from '../utils';
 
 const ProfilesPopup = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-  const [title, setTitle] = useState('');
   const data = useSelector((state) => state.Profiles.data);
-  const onAdd = async () => {
+
+  const onSubmit = async ({ title }, form) => {
     const { id } = await getAppFolder();
 
     browser.bookmarks.create({
@@ -21,8 +22,19 @@ const ProfilesPopup = ({ isOpen, onClose }) => {
     })
       .then((p) => {
         dispatch(profileAdd(p));
-        setTitle('');
+        form.change('title', '');
+        form.resetFieldState('title');
       });
+  };
+
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.title) {
+      errors.title = getLocaleMessage('requiredField');
+    }
+
+    return errors;
   };
 
   return (
@@ -35,10 +47,16 @@ const ProfilesPopup = ({ isOpen, onClose }) => {
           ))
         }
       </div>
-      <div className="profiles-popup__add">
-        <Input name="title" value={title} onChange={(_, v) => { setTitle(v); }} placeholder={getLocaleMessage('title')} />
-        <ButtonDefault onClick={onAdd}>+</ButtonDefault>
-      </div>
+      <Form onSubmit={onSubmit} initialValues={{ title: '' }} validate={validate}>
+        {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <div className="profiles-popup__add">
+              <Input name="title" placeholder={getLocaleMessage('title')} />
+              <ButtonDefault type="submit">+</ButtonDefault>
+            </div>
+          </form>
+        )}
+      </Form>
     </Popup>
   );
 };

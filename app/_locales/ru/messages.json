@@ -37,5 +37,8 @@
   },
   "profiles": {
     "message": "Профили"
+  },
+  "requiredField": {
+    "message": "Обязательное поле"
   }
 }

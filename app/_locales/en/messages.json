@@ -37,5 +37,8 @@
   },
   "profiles": {
     "message": "Profiles"
+  },
+  "requiredField": {
+    "message": "Required field"
   }
 }

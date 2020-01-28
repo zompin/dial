@@ -17,35 +17,34 @@ class ComboBox extends Component {
     document.addEventListener('keydown', onEsc);
   }
 
-  shouldComponentUpdate(prevProps, prevState) {
-    const { items, value } = this.props;
-    const { open } = this.state;
-    const { items: prevItems, value: prevValue } = prevProps;
-    const { prevOpen } = prevState.open;
-    const notEqual = items.length === prevItems.length && !items.reduce((acc, _, index) => (
-      items[index].id === prevItems[index].id && acc
-    ), true);
-
-    if (value !== prevValue) {
-      return true;
-    }
-
-    if (items.length !== prevItems.length) {
-      return true;
-    }
-
-    return open !== prevOpen || notEqual;
-  }
+  // shouldComponentUpdate(prevProps, prevState) {
+  //   const { items, value } = this.props;
+  //   const { open } = this.state;
+  //   const { items: prevItems, value: prevValue } = prevProps;
+  //   const { prevOpen } = prevState.open;
+  //   const notEqual = items.length === prevItems.length && !items.reduce((acc, _, index) => (
+  //     items[index].id === prevItems[index].id && acc
+  //   ), true);
+  //
+  //   if (value !== prevValue) {
+  //     return true;
+  //   }
+  //
+  //   if (items.length !== prevItems.length) {
+  //     return true;
+  //   }
+  //
+  //   return open !== prevOpen || notEqual;
+  // }
 
   componentDidUpdate() {
     const {
-      value,
       items,
       onHide,
       onShow,
     } = this.props;
     const { open } = this.state;
-    const popupOpenFlagCurrent = open && !!items.length && !!value;
+    const popupOpenFlagCurrent = open && !!items.length;
 
     if (popupOpenFlagCurrent === this.popupOpenFlag) {
       return;
@@ -112,12 +111,12 @@ class ComboBox extends Component {
     }
   };
 
-  onInputChange = (name, value) => {
+  onInputChange = (value) => {
     const { show } = this.state;
     const { onInputChange } = this.props;
     const { onShow } = this;
 
-    onInputChange(name, value);
+    onInputChange(value);
 
     if (!show) {
       onShow();
@@ -127,7 +126,6 @@ class ComboBox extends Component {
   render() {
     const {
       name,
-      value,
       placeholder,
       items,
       className,
@@ -140,7 +138,6 @@ class ComboBox extends Component {
       <div className={`combobox combobox_${className}`} ref={(e) => { this.combobox = e; }}>
         <Input
           name={name}
-          value={value}
           placeholder={placeholder}
           onChange={onInputChange}
           onFocus={onFocus}
@@ -148,10 +145,10 @@ class ComboBox extends Component {
         />
 
         <div
-          className={cs('combobox__list', { combobox__list_open: open && value.length })}
+          className={cs('combobox__list', { combobox__list_open: open })}
         >
           {
-            items.map(i => (
+            items.map((i) => (
               <div className="combobox-item" key={i.id} data-id={i.id} onClick={onComboSelect}>
                 <div className="combobox-item__url">{i.url}</div>
                 <div className="combobox-item__title">{i.title}</div>
@@ -166,7 +163,6 @@ class ComboBox extends Component {
 
 ComboBox.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape()).isRequired,
@@ -178,7 +174,6 @@ ComboBox.propTypes = {
 };
 
 ComboBox.defaultProps = {
-  value: '',
   className: '',
   focus: false,
   onShow: null,

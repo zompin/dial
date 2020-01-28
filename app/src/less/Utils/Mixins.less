@@ -16,3 +16,13 @@
     box-shadow: 0 0 1px, 0 0 1px inset;
   }
 }
+
+.bookmark-hover(@COLOR) {
+  background-color: @COLOR;
+  transition: box-shadow 0.3s;
+  will-change: box-shadow;
+
+  &:hover {
+    box-shadow: 0 0 4px 1px @COLOR;
+  }
+}

@@ -26,7 +26,7 @@
     position: relative;
     z-index: 1;
     color: #015e7a;
-    background: #fff;
+    background: @WHITE;
     transition: color 0.3s, background-color 0.3s;
 
     &:not(:first-child) {
@@ -34,16 +34,16 @@
     }
 
     &:first-child {
-      border-radius: 4px 0 0 4px;
+      border-radius: @BORDER_RADIUS 0 0 @BORDER_RADIUS;
     }
 
     &:last-child {
-      border-radius: 0 4px 4px 0;
+      border-radius: 0 @BORDER_RADIUS @BORDER_RADIUS 0;
     }
 
     &_active {
       background-color: #015e7a;
-      color: #fff;
+      color: @WHITE;
       cursor: default;
     }
   }
