@@ -1,50 +1,18 @@
-import { ACTIONS, NAMES, TYPES } from '../constants';
-import { getAppFolder } from '../utils';
+import { ACTIONS } from '../constants';
 
-const getProfiles = async () => {
-  const rootFolder = await getAppFolder();
-  let children = await browser.bookmarks.getChildren(rootFolder.id);
-  children = children.filter((c) => c.type === TYPES.FOLDER);
-
-  if (!children.length) {
-    const tmp = await browser.bookmarks.create({
-      title: NAMES.PROFILES_DEFAULT,
-      parentId: rootFolder.id,
-    });
-
-    children.push(tmp);
-  }
-
-  return children;
-};
-
-const profilesRequestAction = () => ({
+export const profilesRequestAction = () => ({
   type: ACTIONS.PROFILES_REQUEST,
 });
 
-const profilesRequestSuccessAction = (data) => ({
+export const profilesRequestSuccessAction = (data) => ({
   type: ACTIONS.PROFILES_REQUEST_SUCCESS,
   data,
 });
 
-const profilesRequestErrorAction = (error) => ({
+export const profilesRequestErrorAction = (error) => ({
   type: ACTIONS.PROFILES_REQUEST_ERROR,
   error,
 });
-
-export const getProfilesAction = () => async (dispatch) => {
-  let profiles;
-  dispatch(profilesRequestAction());
-
-  try {
-    profiles = await getProfiles();
-    dispatch(profilesRequestSuccessAction(profiles));
-  } catch (e) {
-    dispatch(profilesRequestErrorAction(e));
-  }
-
-  return profiles;
-};
 
 export const profileAdd = (profile) => ({
   type: ACTIONS.PROFILE_ADD,

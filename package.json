@@ -39,6 +39,7 @@
     "redux-thunk": "^2.3.0",
     "rimraf": "^3.0.0",
     "style-loader": "^1.0.0",
-    "webextension-toolbox": "^3.0.0"
+    "webextension-toolbox": "^3.0.0",
+    "webpack": "^4.41.5"
   }
 }

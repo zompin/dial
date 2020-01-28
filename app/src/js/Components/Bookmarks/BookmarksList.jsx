@@ -69,9 +69,10 @@ const onCommand = (command, bookmarks) => {
 };
 
 const BookmarksList = () => {
-  const bookmarks = useSelector((state) => state.Bookmarks.data);
-  const isLoaded = useSelector((state) => state.Bookmarks.isLoaded);
   const parentId = useSelector((state) => state.Profiles.current);
+  const bookmarks = useSelector((state) => state.Bookmarks.data)
+    .filter((b) => b.parentId === parentId);
+  const isLoaded = useSelector((state) => state.Bookmarks.isLoaded);
   const getColor = colorGenerator();
   const bookmarksRef = useRef([])
   bookmarksRef.current = bookmarks
@@ -92,7 +93,6 @@ const BookmarksList = () => {
     <div className="bookmarks">
       {
         bookmarks
-          .filter((b) => b.parentId === parentId)
           .map((b, i) => (
             <BookmarksItem
               key={b.id}

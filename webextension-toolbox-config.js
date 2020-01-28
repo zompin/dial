@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
-const { HotModuleReplacementPlugin, DefinePlugin } = require('webpack');
+const { DefinePlugin } = require('webpack');
 
 module.exports = {
   webpack: (config, { dev, vendor }) => {
@@ -18,7 +18,6 @@ module.exports = {
         VENDOR: JSON.stringify(vendor),
       }),
     );
-    // config.plugins.push(new HotModuleReplacementPlugin());
 
     module.rules.push({
       test: /\.less$/,

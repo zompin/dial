@@ -1,5 +1,7 @@
+import { batch } from 'react-redux';
 import { ACTIONS } from '../constants';
 import { getAppFolder } from '../utils';
+import { profilesRequestAction, profilesRequestSuccessAction, profilesRequestErrorAction } from './Profiles';
 
 const bookmarksRequestAction = () => ({
   type: ACTIONS.BOOKMARKS_REQUEST,
@@ -17,17 +19,45 @@ const bookmarksRequestErrorAction = (error) => ({
 
 export const getBookmarks = () => (
   async (dispatch) => {
-    dispatch(bookmarksRequestAction());
+    batch(() => {
+      dispatch(bookmarksRequestAction());
+      dispatch(profilesRequestAction());
+    });
 
     try {
       const appFolder = await getAppFolder();
-      const folders = await browser.bookmarks.getChildren(appFolder.id);
-      const promises = folders.filter((f) => !f.url)
-        .map((f) => browser.bookmarks.getChildren(f.id));
-      const bookmarks = await Promise.all(promises);
+      const tree = (await browser.bookmarks.getSubTree(appFolder.id))
+        .reduce((acc, item) => {
+          item.children.forEach((p) => {
+            if (!p.url) {
+              acc.profiles.push({
+                id: p.id,
+                parentId: p.parentId,
+                title: p.title,
+              });
+            }
 
-      dispatch(bookmarksRequestSuccessAction(bookmarks.flat().filter((b) => !!b.url)));
+            p.children.forEach((b) => {
+              if (b.url) {
+                acc.bookmarks.push({
+                  id: b.id,
+                  parentId: b.parentId,
+                  title: b.title,
+                  url: b.url,
+                });
+              }
+            });
+          });
+
+          return acc;
+        }, { profiles: [], bookmarks: [] });
+
+      batch(() => {
+        dispatch(profilesRequestSuccessAction(tree.profiles));
+        dispatch(bookmarksRequestSuccessAction(tree.bookmarks));
+      });
     } catch (e) {
+      dispatch(profilesRequestErrorAction(e));
       dispatch(bookmarksRequestErrorAction(e));
     }
   }
