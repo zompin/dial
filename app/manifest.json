@@ -97,6 +97,16 @@
       "suggested_key": {
         "default": "Ctrl+0"
       }
+    },
+    "profile-next": {
+      "suggested_key": {
+        "default": "Ctrl+Right"
+      }
+    },
+    "profile-prev": {
+      "suggested_key": {
+        "default": "Ctrl+Left"
+      }
     }
   },
 
