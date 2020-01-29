@@ -30,7 +30,11 @@ export const profileRemove = (id) => ({
   id,
 });
 
-export const setProfile = (id) => ({
-  type: ACTIONS.PROFILE_SET,
-  id,
-});
+export const setProfile = (id) => (dispatch) => {
+  browser.storage.local.set({ selectedProfile: id });
+
+  dispatch({
+    type: ACTIONS.PROFILE_SET,
+    id,
+  });
+};

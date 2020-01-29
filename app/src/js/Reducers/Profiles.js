@@ -25,7 +25,7 @@ export default (state = initState, action) => {
       isLoaded: true,
       error: null,
       data,
-      current: action.data.length ? action.data[0].id : '',
+      current: state.current || (action.data.length ? action.data[0].id : ''),
     };
   case ACTIONS.PROFILES_REQUEST_ERROR:
     return {
