@@ -25,7 +25,6 @@ export default (state = initState, action) => {
       isLoaded: true,
       error: null,
       data,
-      current: state.current || (action.data.length ? action.data[0].id : ''),
     };
   case ACTIONS.PROFILES_REQUEST_ERROR:
     return {
@@ -61,7 +60,7 @@ export default (state = initState, action) => {
   case ACTIONS.PROFILE_SET:
     return {
       ...state,
-      current: id,
+      current: state.data.find((d) => d.id === id) ? id : state.data[0].id,
     };
   default:
     return state;

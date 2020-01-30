@@ -55,9 +55,9 @@ const setData = (state) => async (dispatch) => {
 
 
   batch(() => {
-    dispatch(setProfile(selectedProfile));
     dispatch(profilesRequestSuccessAction(bookmarksTree.profiles));
     dispatch(bookmarksRequestSuccessAction(bookmarksTree.bookmarks));
+    dispatch(setProfile(selectedProfile));
   });
 };
 
