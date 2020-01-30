@@ -1,7 +1,9 @@
 import { batch } from 'react-redux';
-import {profilesRequestAction, profilesRequestErrorAction, profilesRequestSuccessAction, setProfile} from './Profiles';
+import {
+  profilesRequestAction, profilesRequestErrorAction, profilesRequestSuccessAction, setProfile,
+} from './Profiles';
 import { bookmarksRequestAction, bookmarksRequestErrorAction, bookmarksRequestSuccessAction } from './Bookmarks';
-import { getAppFolder } from '../utils';
+import { getAppFolder, getLocaleMessage } from '../utils';
 
 const resetState = () => (dispatch) => {
   batch(() => {
@@ -10,8 +12,8 @@ const resetState = () => (dispatch) => {
   });
 };
 
-const setData = (state) => (dispatch) => {
-  const { selectedProfile } = state[1]
+const setData = (state) => async (dispatch) => {
+  const { selectedProfile } = state[1];
   const bookmarksTree = state[0].reduce((acc, item) => {
     item.children.forEach((p) => {
       if (!p.url) {
@@ -36,6 +38,20 @@ const setData = (state) => (dispatch) => {
 
     return acc;
   }, { profiles: [], bookmarks: [] });
+
+  if (!bookmarksTree.profiles.length) {
+    const appFolder = await getAppFolder();
+    const defaultProfile = await browser.bookmarks.create({
+      parentId: appFolder.id,
+      title: getLocaleMessage('defaultProfileName'),
+    });
+
+    bookmarksTree.profiles.push({
+      id: defaultProfile.id,
+      parentId: defaultProfile.parentId,
+      title: defaultProfile.title,
+    });
+  }
 
 
   batch(() => {
@@ -68,4 +84,4 @@ const getAppData = () => (
   }
 );
 
-export default getAppData
+export default getAppData;

@@ -34,11 +34,13 @@
     }
 
     &:first-child {
-      border-radius: @BORDER_RADIUS 0 0 @BORDER_RADIUS;
+      border-top-left-radius: @BORDER_RADIUS;
+      border-bottom-left-radius: @BORDER_RADIUS;
     }
 
     &:last-child {
-      border-radius: 0 @BORDER_RADIUS @BORDER_RADIUS 0;
+      border-top-right-radius: @BORDER_RADIUS;
+      border-bottom-right-radius: @BORDER_RADIUS;
     }
 
     &_active {
@@ -53,7 +55,8 @@
   }
 
   &__inner:hover &__item:last-child {
-    border-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   &__inner:hover .edit-button_profiles {

@@ -40,5 +40,8 @@
   },
   "requiredField": {
     "message": "Required field"
+  },
+  "defaultProfileName": {
+    "message": "Default profile"
   }
 }

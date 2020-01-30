@@ -40,5 +40,8 @@
   },
   "requiredField": {
     "message": "Обязательное поле"
+  },
+  "defaultProfileName": {
+    "message": "Профиль по умолчанию"
   }
 }
