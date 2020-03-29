@@ -1,10 +1,11 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const { DefinePlugin } = require('webpack');
+const path = require('path');
 
 module.exports = {
   webpack: (config, { dev, vendor }) => {
-    const entry = './src/js/index.jsx';
+    const entry = './src/js/index.tsx';
     const module = { ...config.module };
 
     if (!Array.isArray(module.rules)) {
@@ -33,6 +34,19 @@ module.exports = {
         'less-loader',
       ],
     });
+    module.rules.push({
+      test: /\.tsx?$/,
+      loader: 'ts-loader',
+      exclude: path.resolve(__dirname, 'node_modules'),
+    });
+    module.rules.push({
+      test: /\.[tj]sx?$/,
+      loader: 'eslint-loader',
+      exclude: path.resolve(__dirname, 'node_modules'),
+    });
+
+    config.resolve.extensions.push('.ts');
+    config.resolve.extensions.push('.tsx');
 
     return {
       ...config,

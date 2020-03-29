@@ -1,13 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setBookmarkParentId } from '../../Actions/Bookmarks';
+import { bookmarkSetParentId } from '../../Actions/bookmarks';
+import { IStore } from '../../Reducers';
 
 const BookmarkAdd = () => {
   const dispatch = useDispatch();
-  const currentProfile = useSelector((state) => state.Profiles.current);
+  const currentProfile = useSelector((state: IStore) => state.profiles.current);
 
   const onAdd = () => {
-    dispatch(setBookmarkParentId(currentProfile));
+    dispatch(bookmarkSetParentId(currentProfile));
   };
 
   return (

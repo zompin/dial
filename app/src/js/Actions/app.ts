@@ -1,18 +1,19 @@
 import { batch } from 'react-redux';
-import {
-  profilesRequestAction, profilesRequestErrorAction, profilesRequestSuccessAction, setProfile,
-} from './Profiles';
-import { bookmarksRequestAction, bookmarksRequestErrorAction, bookmarksRequestSuccessAction } from './Bookmarks';
+import { browser, Bookmarks } from 'webextension-polyfill-ts';
+import { Dispatch } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { profilesRequest, profilesRequestError, profilesRequestSuccess, setProfile } from './profiles';
+import { bookmarksRequest, bookmarksRequestError, bookmarksRequestSuccess } from './bookmarks';
 import { getAppFolder, getLocaleMessage } from '../utils';
 
-const resetState = () => (dispatch) => {
+const resetState = () => (dispatch: Dispatch) => {
   batch(() => {
-    dispatch(bookmarksRequestAction());
-    dispatch(profilesRequestAction());
+    dispatch(bookmarksRequest());
+    dispatch(profilesRequest());
   });
 };
 
-const setData = (state) => async (dispatch) => {
+const setData = (state: [Bookmarks.BookmarkTreeNode[], { selectedProfile: string }]) => async (dispatch: ThunkDispatch<any, any, any>) => {
   const { selectedProfile } = state[1];
   const bookmarksTree = state[0].reduce((acc, item) => {
     item.children.forEach((p) => {
@@ -55,19 +56,19 @@ const setData = (state) => async (dispatch) => {
 
 
   batch(() => {
-    dispatch(profilesRequestSuccessAction(bookmarksTree.profiles));
-    dispatch(bookmarksRequestSuccessAction(bookmarksTree.bookmarks));
+    dispatch(profilesRequestSuccess(bookmarksTree.profiles));
+    dispatch(bookmarksRequestSuccess(bookmarksTree.bookmarks));
     dispatch(setProfile(selectedProfile));
   });
 };
 
-const setError = (error) => (dispatch) => {
-  dispatch(profilesRequestErrorAction(error));
-  dispatch(bookmarksRequestErrorAction(error));
+const setError = (error: any) => (dispatch: Dispatch) => {
+  dispatch(profilesRequestError(error));
+  dispatch(bookmarksRequestError(error));
 };
 
 const getAppData = () => (
-  async (dispatch) => {
+  async (dispatch: ThunkDispatch<any, any, any>) => {
     dispatch(resetState());
     const appFolder = await getAppFolder();
 
@@ -77,7 +78,7 @@ const getAppData = () => (
         browser.storage.local.get(),
       ]);
 
-      dispatch(setData(data));
+      await dispatch(setData(data as any));
     } catch (e) {
       dispatch(setError(e));
     }

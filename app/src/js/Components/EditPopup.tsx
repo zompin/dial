@@ -1,33 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-final-form';
+import { browser } from 'webextension-polyfill-ts';
 import Popup from './Popup';
 import Input from './Input';
 import Button from './ButtonDefault';
-import { setBookmarkEditId, updateBookmark } from '../Actions/Bookmarks';
+import { bookmarkSetEditId, bookmarkUpdate } from '../Actions/bookmarks';
 import { getLocaleMessage } from '../utils';
+import { IStore } from '../Reducers';
+
+interface IForm {
+  title: string
+  url: string
+}
 
 const EditPopup = () => {
   const dispatch = useDispatch();
-  const bookmarkEditId = useSelector((state) => state.Bookmarks.bookmarkEditId);
-  const bookmarks = useSelector((state) => state.Bookmarks.data);
-  const [url, setUrl] = useState('');
-  const [title, setTitle] = useState('');
+  const bookmarkEditId = useSelector((state: IStore) => state.bookmarks.bookmarkEditId);
+  const bookmarks = useSelector((state: IStore) => state.bookmarks.data);
+  const [url, setUrl] = React.useState('');
+  const [title, setTitle] = React.useState('');
 
-  const onSubmit = (values) => {
+  const onSubmit = (values: IForm) => {
     browser.bookmarks.update(bookmarkEditId, { url: values.url, title: values.title })
       .then(() => {
-        dispatch(updateBookmark(bookmarkEditId, title, url));
-        dispatch(setBookmarkEditId(''));
+        dispatch(bookmarkUpdate({ id: bookmarkEditId, title: values.title, url: values.url }));
+        dispatch(bookmarkSetEditId(''));
       });
   };
 
   const onClose = () => {
-    dispatch(setBookmarkEditId(''));
+    dispatch(bookmarkSetEditId(''));
   };
 
-  const validate = (values) => {
-    const errors = {};
+  const validate = (values: IForm) => {
+    const errors: {
+      url?: string
+      title?: string
+    } = {};
 
     if (!values.url) {
       errors.url = getLocaleMessage('requiredField');
@@ -40,7 +50,7 @@ const EditPopup = () => {
     return errors;
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!bookmarkEditId) {
       return;
     }

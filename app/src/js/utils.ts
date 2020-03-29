@@ -1,23 +1,12 @@
+import { browser } from 'webextension-polyfill-ts';
 import { NAMES } from './constants';
 
-export const getLocaleMessage = (name, content) => (
+export const getLocaleMessage = (name: string, content?: string | string[]) => (
   browser.i18n.getMessage(name, content)
 );
 
-export const getConstant = (name) => {
-  const constants = {
-    BOOKMARKS_ROOT: {
-      chrome: '2',
-      firefox: 'unfiled_____',
-    },
-  };
-
-  return constants[name][VENDOR];
-};
-
-
 export const getAppFolder = (() => {
-  let dialFolder = null;
+  let dialFolder: IProfile | null = null;
 
   return async () => {
     if (dialFolder) {

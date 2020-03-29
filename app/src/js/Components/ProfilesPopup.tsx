@@ -1,19 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-final-form';
+import { browser } from 'webextension-polyfill-ts';
+import { FormApi } from 'final-form';
 import Popup from './Popup';
 import ButtonDefault from './ButtonDefault';
 import Input from './Input';
 import Profile from './Profile';
-import { profileAdd } from '../Actions/Profiles';
+import { profileAdd } from '../Actions/profiles';
 import { getAppFolder, getLocaleMessage } from '../utils';
+import { IStore } from '../Reducers';
 
-const ProfilesPopup = ({ isOpen, onClose }) => {
+interface IProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+interface IForm {
+  title: string
+}
+
+const ProfilesPopup = ({ isOpen, onClose }: IProps) => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.Profiles.data);
+  const data = useSelector((state: IStore) => state.profiles.data);
 
-  const onSubmit = async ({ title }, form) => {
+  const onSubmit = async ({ title }: IForm, form: FormApi<IForm>) => {
     const { id } = await getAppFolder();
 
     browser.bookmarks.create({
@@ -27,8 +38,10 @@ const ProfilesPopup = ({ isOpen, onClose }) => {
       });
   };
 
-  const validate = (values) => {
-    const errors = {};
+  const validate = (values: IForm) => {
+    const errors: {
+      title?: string
+    } = {};
 
     if (!values.title) {
       errors.title = getLocaleMessage('requiredField');
@@ -59,11 +72,6 @@ const ProfilesPopup = ({ isOpen, onClose }) => {
       </Form>
     </Popup>
   );
-};
-
-ProfilesPopup.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default ProfilesPopup;

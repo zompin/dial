@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { browser } from 'webextension-polyfill-ts';
 import BookmarksItem from './BookmarkItem';
 import BookmarkAdd from './BookmarkAdd';
+import { IStore } from '../../Reducers';
 
 const colorGenerator = () => {
   const colorsStore = [
@@ -13,17 +15,17 @@ const colorGenerator = () => {
     'blue',
     'blue-dark',
   ];
-  let colorsAcc = [];
+  let colorsAcc: string[] = [];
   let prevColor = '';
 
-  return (url) => {
+  return (url: string) => {
     if (colorsAcc.length === 0) {
       colorsAcc = colorsStore.slice();
     }
 
     let colorIndex = [].reduce.call(
       url,
-      (acc, ch) => ch.charCodeAt(0) + acc, 0,
+      (acc: string, ch: string) => ch.charCodeAt(0) + acc, 0,
     ) % colorsAcc.length;
 
     if (prevColor !== '' && prevColor === colorsAcc[colorIndex]) {
@@ -36,7 +38,7 @@ const colorGenerator = () => {
   };
 };
 
-const onCommand = (command, bookmarks) => {
+const onCommand = (command: string, bookmarks: IBookmark[]) => {
   if (command.indexOf('-') === -1) {
     return;
   }
@@ -60,7 +62,6 @@ const onCommand = (command, bookmarks) => {
     number -= 1;
   }
 
-
   if (!bookmarks[number] || !bookmarks[number].url) {
     return;
   }
@@ -69,19 +70,19 @@ const onCommand = (command, bookmarks) => {
 };
 
 const BookmarksList = () => {
-  const parentId = useSelector((state) => state.Profiles.current);
-  const bookmarks = useSelector((state) => state.Bookmarks.data)
+  const parentId = useSelector((state: IStore) => state.profiles.current);
+  const bookmarks = useSelector((state: IStore) => state.bookmarks.data)
     .filter((b) => b.parentId === parentId);
-  const isLoaded = useSelector((state) => state.Bookmarks.isLoaded);
+  const isLoaded = useSelector((state: IStore) => state.bookmarks.isLoaded);
   const getColor = colorGenerator();
-  const bookmarksRef = useRef([])
-  bookmarksRef.current = bookmarks
+  const bookmarksRef = React.useRef([]);
+  bookmarksRef.current = bookmarks;
 
-  const onNum = (command) => {
+  const onNum = (command: string) => {
     onCommand(command, bookmarksRef.current);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     browser.commands.onCommand.addListener(onNum);
 
     return () => {

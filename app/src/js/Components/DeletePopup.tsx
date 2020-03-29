@@ -1,25 +1,26 @@
-import React from 'react';
+import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {browser} from 'webextension-polyfill-ts';
 import Popup from './Popup';
 import { getLocaleMessage } from '../utils';
 import ButtonDefault from './ButtonDefault';
-import {removeBookmark, setBookmarkDeleteId} from '../Actions/Bookmarks';
-
+import { bookmarkRemove, bookmarkSetDeleteId } from '../Actions/bookmarks';
+import {IStore} from '../Reducers';
 
 const DeletePopup = () => {
   const dispatch = useDispatch();
-  const bookmarkDeleteId = useSelector((state) => state.Bookmarks.bookmarkDeleteId);
+  const bookmarkDeleteId = useSelector((state: IStore) => state.bookmarks.bookmarkDeleteId);
 
   const onDelete = () => {
     browser.bookmarks.remove(bookmarkDeleteId)
       .then(() => {
-        dispatch(removeBookmark(bookmarkDeleteId));
-        dispatch(setBookmarkDeleteId(''));
+        dispatch(bookmarkRemove(bookmarkDeleteId));
+        dispatch(bookmarkSetDeleteId(''));
       });
   };
 
   const onCancel = () => {
-    dispatch(setBookmarkDeleteId(''));
+    dispatch(bookmarkSetDeleteId(''));
   };
 
   return (

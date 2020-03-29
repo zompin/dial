@@ -1,21 +1,26 @@
-import React, { useEffect } from 'react';
+import * as React from 'react';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 import cs from 'classnames';
 import XButton from './XButton';
 
-const Popup = ({ children, isOpen, onClose }) => {
+interface IProps {
+  children: React.ReactElement | Array<React.ReactElement>
+  isOpen: boolean
+  onClose: () => void
+}
+
+const Popup = ({ children, isOpen, onClose }: IProps) => {
   const onPopupClose = () => {
     onClose();
   };
 
-  const onEsc = (e) => {
+  const onEsc = (e: KeyboardEvent) => {
     if (e.keyCode === 27) {
       onClose();
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.addEventListener('keydown', onEsc);
     return () => {
       document.removeEventListener('keydown', onEsc);
@@ -32,12 +37,6 @@ const Popup = ({ children, isOpen, onClose }) => {
     </div>,
     document.body,
   );
-};
-
-Popup.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default Popup;

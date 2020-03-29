@@ -1,21 +1,29 @@
 import { Form } from 'react-final-form';
-import React, { useState } from 'react';
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { browser } from 'webextension-polyfill-ts';
+import { FormApi } from 'final-form';
 import Popup from './Popup';
 import Input from './Input';
+// @ts-ignore
 import ComboBox from './ComboBox';
 import Button from './ButtonDefault';
-import { addBookmark, setBookmarkParentId } from '../Actions/Bookmarks';
+import { bookmarkAdd, bookmarkSetParentId } from '../Actions/bookmarks';
 import { getLocaleMessage } from '../utils';
-import { TYPES } from '../constants';
+import { IStore } from '../Reducers';
+
+interface IForm {
+  title: string
+  url: string
+}
 
 const AddPopup = () => {
   const dispatch = useDispatch();
-  const parentId = useSelector((state) => state.Bookmarks.bookmarkParentId);
-  const [history, setHistory] = useState([]);
-  const [isSelect, setSelect] = useState(false);
+  const parentId = useSelector((state: IStore) => state.bookmarks.bookmarkParentId);
+  const [history, setHistory] = React.useState([]);
+  const [isSelect, setSelect] = React.useState(false);
 
-  const onInputChange = ({ target }) => {
+  const onInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setSelect(true);
 
     browser.history.search({
@@ -25,27 +33,29 @@ const AddPopup = () => {
       .then((data) => setHistory(data));
   };
 
-  const onSubmit = ({ url, title }, form) => {
+  const onSubmit = ({ url, title }: IForm, form: FormApi<IForm>) => {
     browser.bookmarks.create({
-      type: TYPES.BOOKMARK,
       parentId,
       title,
       url,
     })
       .then((b) => {
-        dispatch(addBookmark(b));
-        dispatch(setBookmarkParentId(''));
+        dispatch(bookmarkAdd(b as IBookmark));
+        dispatch(bookmarkSetParentId(''));
         form.change('url', '');
         form.change('title', '');
       });
   };
 
   const onClose = () => {
-    dispatch(setBookmarkParentId(''));
+    dispatch(bookmarkSetParentId(''));
   };
 
-  const validate = (values) => {
-    const errors = {};
+  const validate = (values: IForm) => {
+    const errors: {
+      url?: string
+      title?: string
+    } = {};
 
     if (!values.url) {
       errors.url = getLocaleMessage('requiredField');
@@ -70,7 +80,7 @@ const AddPopup = () => {
               items={isSelect ? history : []}
               onInputChange={onInputChange}
               className="popup"
-              onComboItemSelect={(id) => {
+              onComboItemSelect={(id: string) => {
                 const item = history.find((i) => i.id === id);
 
                 if (item) {

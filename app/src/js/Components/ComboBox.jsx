@@ -17,26 +17,6 @@ class ComboBox extends Component {
     document.addEventListener('keydown', onEsc);
   }
 
-  // shouldComponentUpdate(prevProps, prevState) {
-  //   const { items, value } = this.props;
-  //   const { open } = this.state;
-  //   const { items: prevItems, value: prevValue } = prevProps;
-  //   const { prevOpen } = prevState.open;
-  //   const notEqual = items.length === prevItems.length && !items.reduce((acc, _, index) => (
-  //     items[index].id === prevItems[index].id && acc
-  //   ), true);
-  //
-  //   if (value !== prevValue) {
-  //     return true;
-  //   }
-  //
-  //   if (items.length !== prevItems.length) {
-  //     return true;
-  //   }
-  //
-  //   return open !== prevOpen || notEqual;
-  // }
-
   componentDidUpdate() {
     const {
       items,

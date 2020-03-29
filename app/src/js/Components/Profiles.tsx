@@ -1,26 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cs from 'classnames';
+import { browser } from 'webextension-polyfill-ts';
 import EditButton from './EditButton';
 import ProfilesPopup from './ProfilesPopup';
-import { setProfile } from '../Actions/Profiles';
+import { setProfile } from '../Actions/profiles';
+import { IStore } from '../Reducers';
 
 const Profiles = () => {
-  const [isPopup, setPopup] = useState(false);
-  const dataRef = useRef([]);
-  const currentRef = useRef('');
+  const [isPopup, setPopup] = React.useState(false);
+  const dataRef = React.useRef([]);
+  const currentRef = React.useRef('');
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.Profiles.data);
-  const isLoaded = useSelector((state) => state.Profiles.isLoaded);
-  const currentProfile = useSelector((state) => state.Profiles.current);
+  const data = useSelector((state: IStore) => state.profiles.data);
+  const isLoaded = useSelector((state: IStore) => state.profiles.isLoaded);
+  const currentProfile = useSelector((state: IStore) => state.profiles.current);
   dataRef.current = data;
   currentRef.current = currentProfile;
 
-  const onSelect = (id) => {
+  const onSelect = (id: string) => {
     dispatch(setProfile(id));
   };
 
-  const onCommand = (command) => {
+  const onCommand = (command: string) => {
     const index = dataRef.current.findIndex((p) => p.id === currentRef.current);
 
     if (index === -1) {
@@ -36,7 +38,7 @@ const Profiles = () => {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     browser.commands.onCommand.addListener(onCommand);
 
     return () => {
