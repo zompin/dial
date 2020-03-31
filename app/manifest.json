@@ -100,12 +100,7 @@
     },
     "profile-next": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Right"
-      }
-    },
-    "profile-prev": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+Left"
+        "default": "Ctrl+Space"
       }
     }
   },

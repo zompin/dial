@@ -29,12 +29,14 @@ const Profiles = () => {
       return;
     }
 
-    if (command === 'profile-next' && index < dataRef.current.length - 1) {
-      onSelect(dataRef.current[index + 1].id);
-    }
+    if (command === 'profile-next') {
+      let nextIndex = index + 1;
 
-    if (command === 'profile-prev' && index > 0) {
-      onSelect(dataRef.current[index - 1].id);
+      if (nextIndex >= dataRef.current.length) {
+        nextIndex = 0;
+      }
+
+      onSelect(dataRef.current[nextIndex].id);
     }
   };
 
