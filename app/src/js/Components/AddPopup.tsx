@@ -5,7 +5,6 @@ import { browser } from 'webextension-polyfill-ts';
 import { FormApi } from 'final-form';
 import Popup from './Popup';
 import Input from './Input';
-// @ts-ignore
 import ComboBox from './ComboBox';
 import Button from './ButtonDefault';
 import { bookmarkAdd, bookmarkSetParentId } from '../Actions/bookmarks';
@@ -21,16 +20,18 @@ const AddPopup = () => {
   const dispatch = useDispatch();
   const parentId = useSelector((state: IStore) => state.bookmarks.bookmarkParentId);
   const [history, setHistory] = React.useState([]);
-  const [isSelect, setSelect] = React.useState(false);
+  const isOpenRef = React.useRef(false);
 
-  const onInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setSelect(true);
-
+  const onSearch = (text: string) => {
     browser.history.search({
-      text: target.value,
+      text: text,
       maxResults: 10,
     })
       .then((data) => setHistory(data));
+  };
+
+  const onInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch(target.value);
   };
 
   const onSubmit = ({ url, title }: IForm, form: FormApi<IForm>) => {
@@ -48,7 +49,9 @@ const AddPopup = () => {
   };
 
   const onClose = () => {
-    dispatch(bookmarkSetParentId(''));
+    if (!isOpenRef.current) {
+      dispatch(bookmarkSetParentId(''));
+    }
   };
 
   const validate = (values: IForm) => {
@@ -77,17 +80,15 @@ const AddPopup = () => {
             <ComboBox
               name="url"
               placeholder={getLocaleMessage('url')}
-              items={isSelect ? history : []}
-              onInputChange={onInputChange}
+              items={history}
+              onChange={onInputChange}
+              onHide={() => isOpenRef.current = false}
+              onShow={() => isOpenRef.current = true}
               className="popup"
-              onComboItemSelect={(id: string) => {
-                const item = history.find((i) => i.id === id);
-
-                if (item) {
-                  form.change('url', item.url);
-                  form.change('title', item.title);
-                  setSelect(false);
-                }
+              onSelect={(b) => {
+                form.change('url', b.url);
+                form.change('title', b.title);
+                // onSearch(b.title);
               }}
             />
             <Input

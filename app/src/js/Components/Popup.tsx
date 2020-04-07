@@ -21,9 +21,9 @@ const Popup = ({ children, isOpen, onClose }: IProps) => {
   };
 
   React.useEffect(() => {
-    document.addEventListener('keydown', onEsc);
+    document.addEventListener('keydown', onEsc, true);
     return () => {
-      document.removeEventListener('keydown', onEsc);
+      document.removeEventListener('keydown', onEsc, true);
     };
   }, []);
 
