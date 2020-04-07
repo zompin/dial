@@ -1,36 +1,26 @@
 .popup {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-  transform: translateX(0);
-  transition: transform 0.3s;
-
-  &_hidden {
-    transform: translateX(-100%);
-  }
-
   &__cover {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    opacity: 1;
-    transition: opacity 0.3s;
-  }
-
-  &_hidden &__cover {
     opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 1;
+
+    &_show {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
   &__inner {
     width: 100%;
     max-width: 400px;
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
@@ -38,6 +28,13 @@
     background-color: @WHITE;
     padding: 15px;
     color: @GRAY;
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+    z-index: 2;
+
+    &_show {
+      transform: translateX(0);
+    }
 
     &:before {
       content: '';

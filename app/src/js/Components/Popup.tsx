@@ -28,9 +28,12 @@ const Popup = ({ children, isOpen, onClose }: IProps) => {
   }, []);
 
   return createPortal(
-    <div className={cs('popup', { popup_hidden: !isOpen })}>
-      <div className="popup__cover" onClick={onPopupClose} />
-      <div className="popup__inner">
+    <div className="popup">
+      <div
+        className={cs('popup__cover', { popup__cover_show: isOpen })}
+        onClick={onPopupClose}
+      />
+      <div className={cs('popup__inner', { popup__inner_show: isOpen })}>
         <XButton onClick={onPopupClose} action="close" className="popup" />
         {children}
       </div>
