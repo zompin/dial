@@ -15,23 +15,37 @@
     font-size: 16px;
     max-height: 300px;
     overflow-y: auto;
-    transform: scale(0);
+    transition: transform 0.3s;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    scroll-behavior: smooth;
 
     &_open {
-      transform: scale(1);
+      transform: scaleY(1);
     }
   }
-}
 
-.combobox-item {
-  opacity: 0.8;
-  cursor: pointer;
-  user-select: none;
-  padding: 15px;
+  &__item {
+    cursor: pointer;
+    user-select: none;
+    padding: 15px;
+    border: none;
+    font-size: inherit;
+    font-family: inherit;
+    width: 100%;
+    background-color: transparent;
+    text-align: left;
+    transition: color 0.3s, background-color 0.3s, transform 0.3s;
 
-  &:hover,
-  &_active {
-    opacity: 1;
+    &:hover {
+      background-color: @BLUE_DARK;
+      color: @WHITE;
+    }
+
+    &_active {
+      background-color: @BLUE;
+      color: @WHITE;
+    }
   }
 
   &__url,
