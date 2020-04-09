@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { bookmarkSetParentId } from '../../Actions/bookmarks';
 import { IStore } from '../../Reducers';
 
-const BookmarkAdd = () => {
+interface IProps {
+  index: number
+}
+
+const BookmarkAdd = ({ index }: IProps) => {
   const dispatch = useDispatch();
   const currentProfile = useSelector((state: IStore) => state.profiles.current);
 
@@ -12,7 +16,13 @@ const BookmarkAdd = () => {
   };
 
   return (
-    <button className="bookmark-add" onClick={onAdd}>
+    <button
+      className="bookmark-add"
+      onClick={onAdd}
+      style={{
+        animationDelay: `${index * 0.02}s`,
+      }}
+    >
       <div className="bookmark-add__l bookmark-add__l_1" />
       <div className="bookmark-add__l bookmark-add__l_2" />
     </button>

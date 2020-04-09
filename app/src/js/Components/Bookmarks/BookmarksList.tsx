@@ -107,7 +107,7 @@ const BookmarksList = () => {
       }
       {
         isLoaded && (
-          <BookmarkAdd />
+          <BookmarkAdd index={bookmarks.length} />
         )
       }
     </div>

@@ -33,7 +33,12 @@ const BookmarkItem = ({
   };
 
   return (
-    <div className={`bookmark bookmark_${color}`}>
+    <div
+      className={`bookmark bookmark_${color}`}
+      style={{
+        animationDelay: `${index * 0.02}s`,
+      }}
+    >
       <a className="bookmark__link" href={url}>
         <div className="bookmark__title">
           {title}
