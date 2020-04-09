@@ -11,6 +11,7 @@ interface IProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onShow?: () => void
   onHide?: () => void
+  focus?: boolean
 }
 
 const ComboBox = ({
@@ -22,6 +23,7 @@ const ComboBox = ({
   onChange,
   onShow,
   onHide,
+  focus,
 }: IProps) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [activeItem, setActiveItem] = React.useState<IBookmark | undefined>();
@@ -109,7 +111,7 @@ const ComboBox = ({
     }
   };
 
-  const onFocus = React.useCallback(() => {
+  const onClick = React.useCallback(() => {
     if (items.length) {
       onShowHandler();
     }
@@ -160,24 +162,26 @@ const ComboBox = ({
         name={name}
         placeholder={placeholder}
         onChange={onChangeHandler}
-        onFocus={onFocus}
+        onClick={onClick}
+        focus={focus}
       />
       <div className={cs('combobox__list', { combobox__list_open: isOpen })}>
         {
           items.map((i) => (
-            <div
+            <button
               key={i.id}
+              type="button"
               onClick={() => onSelectHandler(i)}
               onKeyDown={(e) => onSelectHandlerByKey(e, i)}
-              onMouseEnter={() => setActiveItem(i)}
-              tabIndex={isOpen ? 0 : undefined}
+              onMouseEnter={() => { setActiveItem(i); activeItemRef.current = i; }}
+              disabled={!isOpen}
               className={cs('combobox__item', {
                 combobox__item_active: activeItem && activeItem.id === i.id,
               })}
             >
               <div className="combobox__url">{i.url}</div>
               <div className="combobox__title">{i.title}</div>
-            </div>
+            </button>
           ))
         }
       </div>

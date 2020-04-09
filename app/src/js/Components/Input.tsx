@@ -9,6 +9,8 @@ interface IProps {
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onClick?: (e: React.MouseEvent) => void
+  focus?: boolean
 }
 
 const Input = React.forwardRef(({
@@ -18,8 +20,11 @@ const Input = React.forwardRef(({
   onFocus,
   onBlur,
   onChange,
-}: IProps, ref: React.Ref<HTMLInputElement>) => {
+  onClick,
+  focus,
+}: IProps, inputRef: React.Ref<HTMLInputElement>) => {
   const { input, meta } = useField(name);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const onInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (onFocus) {
@@ -42,19 +47,34 @@ const Input = React.forwardRef(({
     input.onBlur(e);
   };
 
+  React.useEffect(() => {
+    if (!focus || !ref.current) {
+      return;
+    }
+
+    const input = ref.current.querySelector('input');
+
+    if (input) {
+      setTimeout(() => {
+        input.focus();
+      }, 100);
+    }
+  }, [focus]);
+
   return (
-    <div className={`input input_${className}`}>
+    <div className={`input input_${className}`} ref={ref}>
       <div className={cs('input__placeholder', { input__placeholder_empty: !input.value })}>
         {placeholder}
       </div>
       <input
         className="input__value"
-        ref={ref}
+        ref={inputRef}
         name={name}
         value={input.value}
         onFocus={onInputFocus}
         onChange={onInputChange}
         onBlur={onInputBlur}
+        onClick={onClick}
       />
       <div className={cs('input__error', { input__error_show: meta.touched && meta.error })}>{meta.error}</div>
     </div>

@@ -85,6 +85,7 @@ const AddPopup = () => {
               onHide={() => isOpenRef.current = false}
               onShow={() => isOpenRef.current = true}
               className="popup"
+              focus={!!parentId}
               onSelect={(b) => {
                 form.change('url', b.url);
                 form.change('title', b.title);
