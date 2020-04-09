@@ -2,9 +2,14 @@
   position: relative;
   border: 1px solid @GRAY;
   border-radius: @BORDER_RADIUS;
+  transition: border-radius 0.3s;
 
   &_popup {
     margin-bottom: 12px;
+  }
+
+  &_combobox {
+    border-radius: @BORDER_RADIUS @BORDER_RADIUS 0 0;
   }
 
   &__placeholder {

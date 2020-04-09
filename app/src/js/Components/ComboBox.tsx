@@ -164,6 +164,7 @@ const ComboBox = ({
         onChange={onChangeHandler}
         onClick={onClick}
         focus={focus}
+        className={cs({ input_combobox: isOpen })}
       />
       <div className={cs('combobox__list', { combobox__list_open: isOpen })}>
         {

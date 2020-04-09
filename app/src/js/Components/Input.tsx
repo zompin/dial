@@ -62,7 +62,7 @@ const Input = React.forwardRef(({
   }, [focus]);
 
   return (
-    <div className={`input input_${className}`} ref={ref}>
+    <div className={`input ${className}`} ref={ref}>
       <div className={cs('input__placeholder', { input__placeholder_empty: !input.value })}>
         {placeholder}
       </div>

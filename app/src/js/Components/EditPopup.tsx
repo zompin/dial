@@ -76,12 +76,12 @@ const EditPopup = () => {
             <Input
               name="url"
               placeholder={getLocaleMessage('url')}
-              className="popup"
+              className="input_popup"
             />
             <Input
               name="title"
               placeholder={getLocaleMessage('title')}
-              className="popup"
+              className="input_popup"
             />
             <Button type="submit" primary>
               {getLocaleMessage('save')}

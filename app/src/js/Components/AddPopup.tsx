@@ -36,7 +36,6 @@ const AddPopup = () => {
   };
 
   const onSubmit = ({ url, title }: IForm, form: FormApi<IForm>) => {
-    console.log('sub');
     browser.bookmarks.create({
       parentId,
       title,
@@ -104,7 +103,7 @@ const AddPopup = () => {
             <Input
               name="title"
               placeholder={getLocaleMessage('title')}
-              className="popup"
+              className="input_popup"
               ref={titleRef}
             />
             <Button type="submit" primary>{getLocaleMessage('add')}</Button>
