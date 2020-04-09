@@ -21,6 +21,7 @@ const AddPopup = () => {
   const parentId = useSelector((state: IStore) => state.bookmarks.bookmarkParentId);
   const [history, setHistory] = React.useState([]);
   const isOpenRef = React.useRef(false);
+  const titleRef = React.useRef<HTMLInputElement>(null);
 
   const onSearch = (text: string) => {
     browser.history.search({
@@ -35,6 +36,7 @@ const AddPopup = () => {
   };
 
   const onSubmit = ({ url, title }: IForm, form: FormApi<IForm>) => {
+    console.log('sub');
     browser.bookmarks.create({
       parentId,
       title,
@@ -51,6 +53,17 @@ const AddPopup = () => {
   const onClose = () => {
     if (!isOpenRef.current) {
       dispatch(bookmarkSetParentId(''));
+    }
+  };
+
+  const onSelect = (form: FormApi<IForm>, b: IBookmark) => {
+    form.change('url', b.url);
+    form.change('title', b.title);
+
+    if (titleRef.current) {
+      setTimeout(() => {
+        titleRef.current.focus();
+      }, 100);
     }
   };
 
@@ -86,16 +99,13 @@ const AddPopup = () => {
               onShow={() => isOpenRef.current = true}
               className="popup"
               focus={!!parentId}
-              onSelect={(b) => {
-                form.change('url', b.url);
-                form.change('title', b.title);
-                // onSearch(b.title);
-              }}
+              onSelect={(b) => onSelect(form, b)}
             />
             <Input
               name="title"
               placeholder={getLocaleMessage('title')}
               className="popup"
+              ref={titleRef}
             />
             <Button type="submit" primary>{getLocaleMessage('add')}</Button>
           </form>

@@ -122,7 +122,7 @@ const ComboBox = ({
     onSelect(b);
   };
 
-  const onSelectHandlerByKey = ({ key, target }: React.KeyboardEvent, b: IBookmark) => {
+  const onSelectHandlerByKey = ({ key }: React.KeyboardEvent, b: IBookmark) => {
     if (key === 'Enter' || key === ' ') {
       onSelectHandler(b);
     }
