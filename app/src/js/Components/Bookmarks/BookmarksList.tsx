@@ -43,11 +43,11 @@ const BookmarksList = () => {
     data: bookmarks.filter(b => b.parentId === p.id),
   })), [bookmarks, profiles]);
   const index = bookmarksGrouped.findIndex(g => g.profile.id === current);
-  // const bookmarksRef = React.useRef([]);
-  // bookmarksRef.current = bookmarks.c;
+  const bookmarksRef = React.useRef([]);
+  bookmarksRef.current = bookmarks.filter(b => b.parentId === current);
 
   const onNum = (command: string) => {
-    // onCommand(command, bookmarksRef.current);
+    onCommand(command, bookmarksRef.current);
   };
 
   React.useEffect(() => {
