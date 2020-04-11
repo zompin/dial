@@ -4,7 +4,6 @@ import BookmarkAdd from '../Bookmarks/BookmarkAdd';
 import { useSelector } from 'react-redux';
 import { IStore } from '../../Reducers';
 import './BookmarksGroup.less';
-import {setIn} from 'final-form';
 
 const colorGenerator = () => {
   const colorsStore = [
@@ -54,13 +53,11 @@ const BookmarksGroup = ({
   isOpen,
 }: IProps) => {
   const isLoaded = useSelector((state: IStore) => state.bookmarks.isLoaded);
-  const intervalRef = React.useRef<ReturnType<typeof setInterval>>();
   const innerRef = React.useRef<HTMLDivElement>(null);
-  const [maxHeight, setMaxHeight] = React.useState<number | 'none'>('none');
+  const [maxHeight, setMaxHeight] = React.useState<number | 'none'>(isOpen ? 'none' : 0);
   const getColor = colorGenerator();
 
   React.useEffect(() => {
-    const { clientHeight, scrollHeight } = document.documentElement;
     const inner = innerRef.current;
 
     if (!inner) {
@@ -70,27 +67,8 @@ const BookmarksGroup = ({
     if (isOpen) {
       setMaxHeight(inner.clientHeight);
     } else {
-      setMaxHeight(inner.clientHeight - (scrollHeight - clientHeight));
+      setMaxHeight(0);
     }
-  }, [isOpen]);
-
-  React.useEffect(() => {
-    const { clientHeight, scrollHeight } = document.documentElement;
-    const inner = innerRef.current;
-
-    if (!inner) {
-      return;
-    }
-
-    intervalRef.current = setInterval(() => {
-      if (isOpen) {
-        setMaxHeight(inner.clientHeight);
-      } else {
-        setMaxHeight(inner.clientHeight - (scrollHeight - clientHeight));
-      }
-    }, 50);
-
-    return () => clearInterval(intervalRef.current);
   }, [isOpen]);
 
   return (
