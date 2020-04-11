@@ -16,14 +16,14 @@ const App = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Preloader />
       <Profiles />
       <BookmarksList />
       <AddPopup />
       <DeletePopup />
       <EditPopup />
-    </div>
+    </>
   );
 };
 

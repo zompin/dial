@@ -1,42 +1,8 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { browser } from 'webextension-polyfill-ts';
-import BookmarksItem from './BookmarkItem';
-import BookmarkAdd from './BookmarkAdd';
+import BookmarksGroup from '../BookmarksGroup/BookmarksGroup';
 import { IStore } from '../../Reducers';
-
-const colorGenerator = () => {
-  const colorsStore = [
-    'purple',
-    'gray-dark',
-    'orange',
-    'gray',
-    'red',
-    'blue',
-    'blue-dark',
-  ];
-  let colorsAcc: string[] = [];
-  let prevColor = '';
-
-  return (url: string) => {
-    if (colorsAcc.length === 0) {
-      colorsAcc = colorsStore.slice();
-    }
-
-    let colorIndex = [].reduce.call(
-      url,
-      (acc: string, ch: string) => ch.charCodeAt(0) + acc, 0,
-    ) % colorsAcc.length;
-
-    if (prevColor !== '' && prevColor === colorsAcc[colorIndex]) {
-      colorIndex -= 1;
-    }
-
-    [prevColor] = colorsAcc.splice(colorIndex, 1);
-
-    return prevColor;
-  };
-};
 
 const onCommand = (command: string, bookmarks: IBookmark[]) => {
   if (command.indexOf('-') === -1) {
@@ -70,16 +36,18 @@ const onCommand = (command: string, bookmarks: IBookmark[]) => {
 };
 
 const BookmarksList = () => {
-  const parentId = useSelector((state: IStore) => state.profiles.current);
-  const bookmarks = useSelector((state: IStore) => state.bookmarks.data)
-    .filter((b) => b.parentId === parentId);
-  const isLoaded = useSelector((state: IStore) => state.bookmarks.isLoaded);
-  const getColor = colorGenerator();
-  const bookmarksRef = React.useRef([]);
-  bookmarksRef.current = bookmarks;
+  const { current , data: profiles } = useSelector((state: IStore) => state.profiles);
+  const bookmarks = useSelector((state: IStore) => state.bookmarks.data);
+  const bookmarksGrouped = React.useMemo(() => profiles.map((p) => ({
+    profile: p,
+    data: bookmarks.filter(b => b.parentId === p.id),
+  })), [bookmarks, profiles]);
+  const index = bookmarksGrouped.findIndex(g => g.profile.id === current);
+  // const bookmarksRef = React.useRef([]);
+  // bookmarksRef.current = bookmarks.c;
 
   const onNum = (command: string) => {
-    onCommand(command, bookmarksRef.current);
+    // onCommand(command, bookmarksRef.current);
   };
 
   React.useEffect(() => {
@@ -93,22 +61,14 @@ const BookmarksList = () => {
   return (
     <div className="bookmarks">
       {
-        bookmarks
-          .map((b, i) => (
-            <BookmarksItem
-              key={b.id}
-              id={b.id}
-              url={b.url}
-              title={b.title}
-              color={getColor(b.url)}
-              index={i}
-            />
-          ))
-      }
-      {
-        isLoaded && (
-          <BookmarkAdd index={bookmarks.length} />
-        )
+        bookmarksGrouped.map((g, i) => (
+          <BookmarksGroup
+            key={g.profile.id}
+            selectedIndex={index}
+            group={g}
+            isOpen={i === index}
+          />
+        ))
       }
     </div>
   );

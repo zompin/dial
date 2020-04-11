@@ -2,16 +2,9 @@ import { batch } from 'react-redux';
 import { browser, Bookmarks } from 'webextension-polyfill-ts';
 import { Dispatch } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { profilesRequest, profilesRequestError, profilesRequestSuccess, setProfile } from './profiles';
-import { bookmarksRequest, bookmarksRequestError, bookmarksRequestSuccess } from './bookmarks';
+import { profilesRequestError, profilesRequestSuccess, setProfile } from './profiles';
+import { bookmarksRequestError, bookmarksRequestSuccess } from './bookmarks';
 import { getAppFolder, getLocaleMessage } from '../utils';
-
-const resetState = () => (dispatch: Dispatch) => {
-  batch(() => {
-    dispatch(bookmarksRequest());
-    dispatch(profilesRequest());
-  });
-};
 
 const setData = (state: [Bookmarks.BookmarkTreeNode[], { selectedProfile: string }]) => async (dispatch: ThunkDispatch<any, any, any>) => {
   const { selectedProfile } = state[1];
@@ -69,7 +62,6 @@ const setError = (error: any) => (dispatch: Dispatch) => {
 
 const getAppData = () => (
   async (dispatch: ThunkDispatch<any, any, any>) => {
-    dispatch(resetState());
     const appFolder = await getAppFolder();
 
     try {

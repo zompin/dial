@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { bookmarkSetParentId } from '../../Actions/bookmarks';
-import { IStore } from '../../Reducers';
 
 interface IProps {
   index: number
+  profile: string
 }
 
-const BookmarkAdd = ({ index }: IProps) => {
+const BookmarkAdd = ({ index, profile }: IProps) => {
   const dispatch = useDispatch();
-  const currentProfile = useSelector((state: IStore) => state.profiles.current);
 
   const onAdd = () => {
-    dispatch(bookmarkSetParentId(currentProfile));
+    dispatch(bookmarkSetParentId(profile));
   };
 
   return (
@@ -20,7 +19,7 @@ const BookmarkAdd = ({ index }: IProps) => {
       className="bookmark-add"
       onClick={onAdd}
       style={{
-        animationDelay: `${index * 0.02}s`,
+        animationDelay: `${index * 0.007}s`,
       }}
     >
       <div className="bookmark-add__l bookmark-add__l_1" />

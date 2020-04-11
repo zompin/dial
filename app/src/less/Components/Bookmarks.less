@@ -9,34 +9,10 @@
 }
 
 .bookmarks {
+  width: 1090px;
   display: flex;
-  flex-wrap: wrap;
-  padding: 15px 0 0 15px;
+  overflow: hidden;
   margin: auto;
-
-  @media (max-width: 444px) {
-    width: 230px;
-  }
-
-  @media (min-width: 445px) and (max-width: 659px) {
-    width: 445px;
-  }
-
-  @media (min-width: 660px) and (max-width: 874px) {
-    width: 660px;
-  }
-
-  @media (min-width: 875px) and (max-width: 1089px) {
-    width: 875px;
-  }
-
-  @media (min-width: 1090px) {
-    width: 1090px;
-  }
-}
-
-.bookmarks_saturate .bookmark:not(.bookmark_hover) {
-  opacity: 0.5;
 }
 
 .bookmark {
