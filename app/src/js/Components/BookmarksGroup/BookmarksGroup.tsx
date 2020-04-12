@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { browser } from 'webextension-polyfill-ts';
 import BookmarksItem from '../Bookmarks/BookmarkItem';
 import BookmarkAdd from '../Bookmarks/BookmarkAdd';
-import { useSelector } from 'react-redux';
+import { bookmarksRequestSuccess } from '../../Actions/bookmarks';
 import { IStore } from '../../Reducers';
 import './BookmarksGroup.less';
 
@@ -52,10 +54,54 @@ const BookmarksGroup = ({
   selectedIndex,
   isOpen,
 }: IProps) => {
-  const isLoaded = useSelector((state: IStore) => state.bookmarks.isLoaded);
+  const dispatch = useDispatch();
+  const { isLoaded, data: bookmarks } = useSelector((state: IStore) => state.bookmarks);
+  const currentProfile = useSelector((state: IStore) => state.profiles.current);
   const innerRef = React.useRef<HTMLDivElement>(null);
   const [maxHeight, setMaxHeight] = React.useState<number | 'none'>(isOpen ? 'none' : 0);
   const getColor = colorGenerator();
+
+  const onSelect = (source: string, target: string) => {
+    if (source === target) {
+      return;
+    }
+    const newBookmarkTree = bookmarks.reduce<IBookmark[]>((acc, b, i) => {
+      if (b.id === target || b.id === source) {
+        const sourceBookmarkIndex = bookmarks.findIndex(fb => fb.id === source);
+        const targetBookmarkIndex = bookmarks.findIndex(fb => fb.id === target);
+
+        if (sourceBookmarkIndex === -1 || targetBookmarkIndex === -1) {
+          return acc;
+        }
+
+        const sourceBookmark = bookmarks[sourceBookmarkIndex];
+        const targetBookmark = bookmarks[targetBookmarkIndex];
+
+        if (b.id === target) {
+          if (sourceBookmarkIndex > targetBookmarkIndex) {
+            acc.push(sourceBookmark);
+            acc.push(targetBookmark);
+          }
+
+          if (sourceBookmarkIndex < targetBookmarkIndex) {
+            acc.push(targetBookmark);
+            acc.push(sourceBookmark);
+          }
+        }
+      } else {
+        acc.push(b);
+      }
+
+      return acc;
+    }, []);
+    dispatch(bookmarksRequestSuccess(newBookmarkTree));
+    const index = newBookmarkTree.filter(b => b.parentId === currentProfile).findIndex(b => b.id === source);
+    browser.bookmarks.move(source, { index });
+  };
+
+  const onPreSelect = () => {
+
+  };
 
   React.useEffect(() => {
     const inner = innerRef.current;
@@ -90,6 +136,8 @@ const BookmarksGroup = ({
               title={b.title}
               color={getColor(b.url)}
               index={i}
+              onSelect={onSelect}
+              onPreSelect={onPreSelect}
             />
           ))
         }
