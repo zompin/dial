@@ -8,6 +8,7 @@ import { getAppFolder, getLocaleMessage } from '../utils';
 
 const setData = (state: [Bookmarks.BookmarkTreeNode[], { selectedProfile: string }]) => async (dispatch: ThunkDispatch<any, any, any>) => {
   const { selectedProfile } = state[1];
+  const bookmarksInAppFolder: IBookmark[] = [];
   const bookmarksTree = state[0].reduce((acc, item) => {
     item.children.forEach((p) => {
       if (!p.url) {
@@ -18,16 +19,20 @@ const setData = (state: [Bookmarks.BookmarkTreeNode[], { selectedProfile: string
         });
       }
 
-      p.children.forEach((b) => {
-        if (b.url) {
-          acc.bookmarks.push({
-            id: b.id,
-            parentId: b.parentId,
-            title: b.title,
-            url: b.url,
-          });
-        }
-      });
+      if (p.children) {
+        p.children.forEach((b) => {
+          if (b.url) {
+            acc.bookmarks.push({
+              id: b.id,
+              parentId: b.parentId,
+              title: b.title,
+              url: b.url,
+            });
+          }
+        });
+      } else {
+        bookmarksInAppFolder.push(p as IBookmark);
+      }
     });
 
     return acc;
@@ -47,6 +52,9 @@ const setData = (state: [Bookmarks.BookmarkTreeNode[], { selectedProfile: string
     });
   }
 
+  bookmarksInAppFolder.forEach((b) => {
+    browser.bookmarks.move(b.id, { parentId: bookmarksTree.profiles[0].id });
+  });
 
   batch(() => {
     dispatch(profilesRequestSuccess(bookmarksTree.profiles));
