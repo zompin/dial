@@ -1,3 +1,43 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
 .popup {
   &__cover {
     position: fixed;
@@ -6,14 +46,14 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
+    animation-name: fadeIn;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
     z-index: 1;
 
-    &_show {
-      opacity: 1;
-      pointer-events: auto;
+    &_hide {
+      animation-name: fadeOut;
+      pointer-events: none;
     }
   }
 
@@ -28,12 +68,13 @@
     background-color: @WHITE;
     padding: 15px;
     color: @GRAY;
-    transform: translateX(-100%);
-    transition: transform 0.3s;
+    animation-name: slideIn;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
     z-index: 2;
 
-    &_show {
-      transform: translateX(0);
+    &_hide {
+      animation-name: slideOut;
     }
 
     &:before {
