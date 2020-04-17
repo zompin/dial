@@ -58,6 +58,8 @@ const BookmarksGroup = ({
   const { isLoaded, data: bookmarks } = useSelector((state: IStore) => state.bookmarks);
   const currentProfile = useSelector((state: IStore) => state.profiles.current);
   const innerRef = React.useRef<HTMLDivElement>(null);
+  const profilesRef = React.useRef<HTMLDivElement>(null);
+  const timerRef = React.useRef<ReturnType<typeof setInterval>>();
   const [maxHeight, setMaxHeight] = React.useState<number | 'none'>(isOpen ? 'none' : 0);
   const getColor = colorGenerator();
 
@@ -105,17 +107,25 @@ const BookmarksGroup = ({
 
   React.useEffect(() => {
     const inner = innerRef.current;
+    const profiles = profilesRef.current;
 
-    if (!inner) {
+    if (!inner || !profiles) {
       return;
     }
 
-    if (isOpen) {
-      setMaxHeight(inner.clientHeight);
-    } else {
-      setMaxHeight(0);
-    }
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      if (isOpen) {
+        setMaxHeight(inner.clientHeight);
+      } else {
+        setMaxHeight(window.innerHeight - profiles.clientHeight);
+      }
+    }, 20);
   }, [isOpen]);
+
+  React.useEffect(() => {
+    profilesRef.current = document.querySelector('.profiles');
+  }, []);
 
   return (
     <div
