@@ -27,6 +27,7 @@ const ComboBox = ({
 }: IProps) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [activeItem, setActiveItem] = React.useState<IBookmark | undefined>();
+  const isOpenRef = React.useRef(false);
   const ref = React.useRef<HTMLDivElement>(null);
   const itemsRef = React.useRef<IBookmark[]>([]);
   const activeItemRef = React.useRef<IBookmark | undefined>();
@@ -36,6 +37,7 @@ const ComboBox = ({
       onShow();
     }
 
+    isOpenRef.current = true;
     setIsOpen(true);
   };
 
@@ -44,6 +46,7 @@ const ComboBox = ({
       onHide();
     }
 
+    isOpenRef.current = false;
     setIsOpen(false);
   };
 
@@ -106,7 +109,7 @@ const ComboBox = ({
   };
 
   const onOutsideClick = ({ target }: MouseEvent) => {
-    if (ref.current && !ref.current.contains(target as Node)) {
+    if (isOpenRef.current && ref.current && !ref.current.contains(target as Node)) {
       onHideHandler();
     }
   };
