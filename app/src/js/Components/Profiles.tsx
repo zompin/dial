@@ -40,6 +40,12 @@ const Profiles = () => {
     }
   };
 
+  const onKeyUp = (e: React.KeyboardEvent) => {
+    if (e.key === ' ' && e.ctrlKey) {
+      e.preventDefault();
+    }
+  };
+
   React.useEffect(() => {
     browser.commands.onCommand.addListener(onCommand);
 
@@ -58,6 +64,7 @@ const Profiles = () => {
                 onClick={() => onSelect(p.id)}
                 key={p.id}
                 type="button"
+                onKeyUp={onKeyUp}
                 className={cs('profiles__item', {
                   profiles__item_active: currentProfile === p.id,
                 })}
