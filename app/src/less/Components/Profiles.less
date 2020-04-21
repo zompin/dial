@@ -36,7 +36,7 @@
     transition: color 0.3s, background-color 0.3s;
 
     &:not(:first-child) {
-      border-left-color: transparent;
+      border-left: none;
     }
 
     &:first-child {
@@ -53,6 +53,14 @@
       background-color: #015e7a;
       color: @WHITE;
       cursor: default;
+    }
+
+    &::-moz-focus-inner {
+      border: none;
+    }
+
+    &:focus {
+      box-shadow: 0 0 1px, 0 0 1px inset;
     }
   }
 

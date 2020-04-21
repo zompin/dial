@@ -65,6 +65,7 @@ const Profiles = () => {
                 key={p.id}
                 type="button"
                 onKeyUp={onKeyUp}
+                disabled={currentProfile === p.id}
                 className={cs('profiles__item', {
                   profiles__item_active: currentProfile === p.id,
                 })}
