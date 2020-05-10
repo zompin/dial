@@ -5,8 +5,11 @@ const path = require('path');
 
 module.exports = {
   webpack: (config, { dev, vendor }) => {
-    const entry = './src/js/index.tsx';
     const module = { ...config.module };
+    const entry = {
+      main: './src/js/index.tsx',
+      background: './background.ts',
+    };
 
     if (!Array.isArray(module.rules)) {
       module.rules = [];

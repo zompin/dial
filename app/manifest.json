@@ -20,6 +20,10 @@
     }
   },
 
+  "background": {
+    "scripts": ["background.js"]
+  },
+
   "__chrome__": {
     "bookmark-1": {
       "suggested_key": {
@@ -105,5 +109,5 @@
     }
   },
 
-  "permissions": ["bookmarks", "history", "storage"]
+  "permissions": ["bookmarks", "history", "storage", "tabs"]
 }

@@ -26,3 +26,9 @@ export const getAppFolder = (() => {
     return dialFolder;
   };
 })();
+
+export const getHostFromUrl = (url: string): string => {
+  const urlPosStart = url.indexOf('//');
+  const urlPosEnd = url.indexOf('/', urlPosStart + 2);
+  return url.substring(urlPosStart + 2, urlPosEnd);
+};

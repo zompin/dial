@@ -5,9 +5,12 @@ import { ThunkDispatch } from 'redux-thunk';
 import { profilesRequestError, profilesRequestSuccess, setProfile } from './profiles';
 import { bookmarksRequestError, bookmarksRequestSuccess } from './bookmarks';
 import { getAppFolder, getLocaleMessage } from '../utils';
+import { faviconsSuccess } from './favicons';
 
-const setData = (state: [Bookmarks.BookmarkTreeNode[], { selectedProfile: string }]) => async (dispatch: ThunkDispatch<any, any, any>) => {
-  const { selectedProfile } = state[1];
+const setData = (state: [Bookmarks.BookmarkTreeNode[], Record<string, any>]) => async (dispatch: ThunkDispatch<any, any, any>) => {
+  const storage = state[1];
+  console.log(storage);
+  const { selectedProfile } = storage;
   const bookmarksInAppFolder: IBookmark[] = [];
   const bookmarksTree = state[0].reduce((acc, item) => {
     item.children.forEach((p) => {
@@ -38,6 +41,18 @@ const setData = (state: [Bookmarks.BookmarkTreeNode[], { selectedProfile: string
     return acc;
   }, { profiles: [], bookmarks: [] });
 
+  const favicons = Object.keys(storage).reduce<Record<string, IFavicon>>((acc, k) => {
+    if (k.indexOf('favicon-') === 0 && storage[k] && storage[k].image) {
+      const id = k.split('-')[1];
+
+      if (id) {
+        acc[id] = storage[k];
+      }
+    }
+
+    return acc;
+  }, {});
+
   if (!bookmarksTree.profiles.length) {
     const appFolder = await getAppFolder();
     const defaultProfile = await browser.bookmarks.create({
@@ -57,6 +72,7 @@ const setData = (state: [Bookmarks.BookmarkTreeNode[], { selectedProfile: string
   });
 
   batch(() => {
+    dispatch(faviconsSuccess(favicons));
     dispatch(profilesRequestSuccess(bookmarksTree.profiles));
     dispatch(bookmarksRequestSuccess(bookmarksTree.bookmarks));
     dispatch(setProfile(selectedProfile));

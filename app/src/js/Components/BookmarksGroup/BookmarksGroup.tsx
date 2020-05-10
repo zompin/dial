@@ -6,6 +6,7 @@ import BookmarkAdd from '../Bookmarks/BookmarkAdd';
 import { bookmarksRequestSuccess } from '../../Actions/bookmarks';
 import { IStore } from '../../Reducers';
 import './BookmarksGroup.less';
+import { getHostFromUrl } from '../../utils';
 
 const colorGenerator = () => {
   const colorsStore = [
@@ -56,6 +57,7 @@ const BookmarksGroup = ({
 }: IProps) => {
   const dispatch = useDispatch();
   const { isLoaded, data: bookmarks } = useSelector((state: IStore) => state.bookmarks);
+  const { data: favicons } = useSelector((state: IStore) => state.favicons);
   const currentProfile = useSelector((state: IStore) => state.profiles.current);
   const innerRef = React.useRef<HTMLDivElement>(null);
   const profilesRef = React.useRef<HTMLDivElement>(null);
@@ -148,6 +150,7 @@ const BookmarksGroup = ({
               index={i}
               onSelect={onSelect}
               onPreSelect={onPreSelect}
+              favicon={favicons[getHostFromUrl(b.url)]}
             />
           ))
         }

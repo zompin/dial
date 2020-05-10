@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import XButton from '../XButton';
 import EditButton from '../EditButton';
 import { bookmarkSetEditId, bookmarkSetDeleteId } from '../../Actions/bookmarks';
+import { getHostFromUrl } from '../../utils';
 
 interface IProps {
   id: string
@@ -12,6 +13,7 @@ interface IProps {
   index: number
   onSelect: (source: string, target: string) => void
   onPreSelect: (source: string, target: string) => void
+  favicon?: IFavicon
 }
 
 const BookmarkItem = ({
@@ -22,12 +24,11 @@ const BookmarkItem = ({
   index,
   onSelect,
   onPreSelect,
+  favicon,
 }: IProps) => {
   const dispatch = useDispatch();
   const [isDraggable, setIsDraggable] = React.useState(false);
-  const urlPosStart = url.indexOf('//');
-  const urlPosEnd = url.indexOf('/', urlPosStart + 2);
-  const filteredUrl = url.substring(urlPosStart + 2, urlPosEnd);
+  const filteredUrl = getHostFromUrl(url);
 
   const onEdit = (bookmarkId: string) => {
     dispatch(bookmarkSetEditId(bookmarkId));
@@ -78,6 +79,11 @@ const BookmarkItem = ({
         }}
       >
         <div className="bookmark__title">
+          {
+            favicon && favicon.image && (
+              <img className="bookmark__favicon" src={favicon.image} alt={title} />
+            )
+          }
           {title}
         </div>
         <div className="bookmark__url">

@@ -9,3 +9,8 @@ interface IBookmark {
   url: string
   parentId: string
 }
+
+interface IFavicon {
+  timestamp: number
+  image: string
+}
