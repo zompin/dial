@@ -59,6 +59,37 @@ const BookmarkItem = ({
     onSelect(source, id);
   };
 
+  if (favicon) {
+    let { image } = favicon;
+    if (image.indexOf('data:image/png;base64,') === 0) {
+      // console.log(atob(image.substr('data:image/png;base64,'.length)))
+      const tmp = image.substr('data:image/png;base64,'.length);
+      const tmp2 = atob(tmp);
+      const buff = new ArrayBuffer(tmp2.length);
+      const arr = new Uint8Array(buff);
+
+      // console.log(image)
+
+      arr.forEach((_, index) => {
+        arr[index] = tmp2.charCodeAt(index);
+        // console.log(index)
+
+        if (index > 0 && index < 4) {
+        }
+      });
+
+      // console.log(image.substr('data:image/png;base64,'.length))
+      // console.log(tmp2)
+
+      // console.log(tmp2.charCodeAt(1), tmp2.charCodeAt(2), tmp2.charCodeAt(3))
+      // for (let i = 0; i < tmp.length; i++) {
+      //   console.log(tmp.charCodeAt(i))
+      // }
+
+    }
+    // console.log(btoa(favicon.image))
+  }
+
   return (
     <div
       className={`bookmark bookmark_${color}`}

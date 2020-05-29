@@ -13,4 +13,8 @@ interface IBookmark {
 interface IFavicon {
   timestamp: number
   image: string
+  colors: Array<{
+    color: number[]
+    count: number
+  }>
 }

@@ -32,3 +32,5 @@ export const getHostFromUrl = (url: string): string => {
   const urlPosEnd = url.indexOf('/', urlPosStart + 2);
   return url.substring(urlPosStart + 2, urlPosEnd);
 };
+
+
