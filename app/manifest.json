@@ -16,12 +16,16 @@
 
   "applications": {
     "gecko": {
-      "id": "{e568b43b-659b-4ff6-bcc0-12c4cd82c490}"
+      "id": "dial@rokot"
     }
   },
 
   "background": {
     "scripts": ["background.js"]
+  },
+
+  "icons": {
+    "48": "logo.svg"
   },
 
   "__chrome__": {
