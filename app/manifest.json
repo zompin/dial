@@ -2,12 +2,11 @@
 
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "default_locale": "en",
 
   "author": "__MSG_extensionAuthor__",
   "homepage_url": "https://github.com/zompin/dial",
-
   "description": "__MSG_extensionDescription__",
 
   "chrome_url_overrides": {
@@ -16,7 +15,7 @@
 
   "applications": {
     "gecko": {
-      "id": "dial@rokot"
+      "id": "{e568b43b-659b-4ff6-bcc0-12c4cd82c490}"
     }
   },
 
