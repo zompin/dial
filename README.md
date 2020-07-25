@@ -1,10 +1,16 @@
+### Install dependencies
+
+```
+yarn
+```
+
 ### Start
 
 ```
 yarn dev:firefox
 ```
 
-### Pack extension
+### Build extension
 
 ```
 yarn build:firefox
