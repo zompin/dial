@@ -1,11 +1,11 @@
 ### Start
 
 ```
-yarn start
+yarn dev:firefox
 ```
 
 ### Pack extension
 
 ```
-yarn run pack
+yarn build:firefox
 ```
