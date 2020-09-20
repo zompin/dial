@@ -1,3 +1,7 @@
+### Requirements
+
+Node.js v14
+
 ### Install dependencies
 
 ```
