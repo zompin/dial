@@ -9,7 +9,6 @@ import { faviconsSuccess } from './favicons';
 
 const setData = (state: [Bookmarks.BookmarkTreeNode[], Record<string, any>]) => async (dispatch: ThunkDispatch<any, any, any>) => {
   const storage = state[1];
-  console.log(storage);
   const { selectedProfile } = storage;
   const bookmarksInAppFolder: IBookmark[] = [];
   const bookmarksTree = state[0].reduce((acc, item) => {

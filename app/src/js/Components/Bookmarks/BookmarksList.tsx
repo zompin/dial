@@ -9,18 +9,8 @@ const onCommand = (command: string, bookmarks: IBookmark[]) => {
     return;
   }
 
-  const pieces = command.split('-');
-  const numberString = pieces[1];
-
-  if (!numberString) {
-    return;
-  }
-
-  let number = +numberString;
-
-  if (typeof number !== 'number') {
-    return;
-  }
+  const [_, n] = command.split('-');
+  let number = +n;
 
   if (number === 0) {
     number = 9;
@@ -28,11 +18,14 @@ const onCommand = (command: string, bookmarks: IBookmark[]) => {
     number -= 1;
   }
 
-  if (!bookmarks[number] || !bookmarks[number].url) {
-    return;
-  }
-
-  location.href = bookmarks[number].url;
+  Promise.all([
+    browser.tabs.getCurrent(),
+    browser.tabs.query({active: true})
+  ]).then(([current, [active]]) => {
+    if (current.id === active.id) {
+      (document.querySelector(`[href="${bookmarks[number]?.url}"]`) as HTMLAnchorElement)?.click();
+    }
+  });
 };
 
 const BookmarksList = () => {
