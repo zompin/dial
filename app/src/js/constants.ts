@@ -1,8 +1,9 @@
 // @ts-ignore
-const isDevelopment = process.env.NODE_ENV === 'development';
+const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
+const IS_CHROME = process.env.VENDOR === 'chrome';
 
 export const NAMES = {
-  ROOT_FOLDER: 'unfiled_____',
-  APP_FOLDER: isDevelopment ? 'Rokot Dial Dev' : 'Rokot Dial',
+  ROOT_FOLDER: IS_CHROME ? '2' : 'unfiled_____',
+  APP_FOLDER: IS_DEVELOPMENT ? 'Rokot Dial Dev' : 'Rokot Dial',
   PROFILES_DEFAULT: 'Default',
 };

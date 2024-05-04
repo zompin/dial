@@ -1,5 +1,5 @@
 import { browser } from 'webextension-polyfill-ts';
-import { NAMES } from './constants';
+import {NAMES} from './constants';
 
 export const getLocaleMessage = (name: string, content?: string | string[]) => (
   browser.i18n.getMessage(name, content)
@@ -14,6 +14,7 @@ export const getAppFolder = (() => {
     }
 
     const rootBookmarks = await browser.bookmarks.getChildren(NAMES.ROOT_FOLDER);
+
     dialFolder = rootBookmarks.find((b) => b.title === NAMES.APP_FOLDER && !b.url);
 
     if (!dialFolder) {

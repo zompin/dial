@@ -25,31 +25,28 @@ module.exports = {
 
     module.rules.push({
       test: /\.less$/,
-      loaders: [
+      use: [
         MiniCssExtractPlugin.loader,
         'css-loader',
         {
           loader: 'postcss-loader',
           options: {
-            plugins: [autoprefixer],
+            postcssOptions: {
+              plugins: [autoprefixer],
+            }
           },
         },
         'less-loader',
       ],
     });
+
     module.rules.push({
       test: /\.tsx?$/,
-      loader: 'ts-loader',
-      exclude: path.resolve(__dirname, 'node_modules'),
-    });
-    module.rules.push({
-      test: /\.[tj]sx?$/,
-      loader: 'eslint-loader',
+      use: 'ts-loader',
       exclude: path.resolve(__dirname, 'node_modules'),
     });
 
-    config.resolve.extensions.push('.ts');
-    config.resolve.extensions.push('.tsx');
+    config.resolve.extensions.push('.ts', '.tsx');
 
     return {
       ...config,
