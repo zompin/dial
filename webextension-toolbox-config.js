@@ -1,9 +1,8 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
-const { DefinePlugin } = require('webpack');
-const path = require('path');
 
 module.exports = {
+  copyIgnore: ['**/*.less'],
   webpack: (config, { dev, vendor }) => {
     const module = { ...config.module };
     const entry = {
@@ -16,12 +15,6 @@ module.exports = {
     }
 
     config.plugins.push(new MiniCssExtractPlugin());
-    config.plugins.push(
-      new DefinePlugin({
-        NODE_ENV: dev ? JSON.stringify('development') : JSON.stringify('production'),
-        VENDOR: JSON.stringify(vendor),
-      }),
-    );
 
     module.rules.push({
       test: /\.less$/,
@@ -39,14 +32,6 @@ module.exports = {
         'less-loader',
       ],
     });
-
-    module.rules.push({
-      test: /\.tsx?$/,
-      use: 'ts-loader',
-      exclude: path.resolve(__dirname, 'node_modules'),
-    });
-
-    config.resolve.extensions.push('.ts', '.tsx');
 
     return {
       ...config,

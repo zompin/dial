@@ -1,19 +1,19 @@
 {
   "name": "dial",
   "version": "1.0.2",
-  "main": "index.dev.html",
+  "main": "index.html",
   "author": "Ilya Altukhov",
   "license": "MIT",
   "scripts": {
     "lint": "npx eslint app/src/js/**/*.*",
     "lint:fix": "npx eslint --fix app/src/js/**/*.*",
-    "dev:firefox": "NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=development npx webextension-toolbox dev firefox -c webextension-toolbox-config.js",
-    "dev:chrome": "NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=development npx webextension-toolbox dev chrome -c webextension-toolbox-config.js",
-    "build:firefox": "NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=production npx webextension-toolbox build firefox && cd dist/firefox && zip -r dial-firefox-$(date +%y%m%d).zip manifest.json main.js main.css index.html background.js _locales/** logo.svg && cp *.zip ../ && cd .. && rimraf rm -rf ./firefox",
-    "build:chrome": "cross-env NODE_ENV=production npx webextension-toolbox build chrome && cd dist/chrome && zip -r dial-chrome-$(date +%y%m%d).zip manifest.json main.js main.css index.html _locales/** && cp *.zip ../ && cd .. && rimraf rm -rf ./chrome"
+    "dev:firefox": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox dev firefox -c webextension-toolbox-config.js",
+    "dev:chrome": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox dev chrome -c webextension-toolbox-config.js",
+    "build:firefox": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox build firefox -c webextension-toolbox-config.js",
+    "build:chrome": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox build chrome -c webextension-toolbox-config.js"
   },
   "dependencies": {
-    "autoprefixer": "^9.7.0",
+    "autoprefixer": "^10.4.19",
     "classnames": "^2.2.6",
     "final-form": "^4.18.7",
     "react": "^17.0.2",
@@ -22,9 +22,8 @@
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
     "redux-act": "^1.8.0",
-    "redux-devtools": "^3.5.0",
     "redux-thunk": "^2.3.0",
-    "webextension-polyfill-ts": "^0.14.0"
+    "webextension-polyfill-ts": "^0.26.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.1",
@@ -32,6 +31,7 @@
     "@types/react-redux": "^7.1.33",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
+    "@webextension-toolbox/webextension-toolbox": "^7.1.1",
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.1",
     "eslint": "^9.2.0",
@@ -48,7 +48,6 @@
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
-    "webextension-toolbox": "^4.0.3",
     "webpack": "^5.91.0"
   }
 }
