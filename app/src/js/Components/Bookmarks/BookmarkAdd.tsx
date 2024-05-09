@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { bookmarkSetParentId } from '../../Actions/bookmarks';
+import cn from 'classnames'
+import * as style from './Bookmarks.module.scss'
 
 interface IProps {
   index: number
@@ -16,14 +18,14 @@ const BookmarkAdd = ({ index, profile }: IProps) => {
 
   return (
     <button
-      className="bookmark-add"
+      className={style.bookmarkAdd}
       onClick={onAdd}
       style={{
         animationDelay: `${index * 0.007}s`,
       }}
     >
-      <div className="bookmark-add__l bookmark-add__l_1" />
-      <div className="bookmark-add__l bookmark-add__l_2" />
+      <div className={cn(style.bookmarkAdd__l, style.bookmarkAdd__l_1)} />
+      <div className={cn(style.bookmarkAdd__l, style.bookmarkAdd__l_2)} />
     </button>
   );
 };

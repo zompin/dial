@@ -1,9 +1,11 @@
 import * as React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import XButton from '../XButton';
-import EditButton from '../EditButton';
+import {useDispatch} from 'react-redux';
+import XButton from '../XButton/XButton';
+import EditButton from '../EditButton/EditButton';
 import { bookmarkSetEditId, bookmarkSetDeleteId } from '../../Actions/bookmarks';
 import { getHostFromUrl } from '../../utils';
+import cn from 'classnames'
+import * as style from './Bookmarks.module.scss'
 
 interface IProps {
   id: string
@@ -61,7 +63,15 @@ const BookmarkItem = ({
 
   return (
     <div
-      className={`bookmark bookmark_${color}`}
+      className={cn(style.bookmark, {
+        [style.bookmark_red]: color === 'red',
+        [style.bookmark_gray]: color === 'gray',
+        [style.bookmark_grayDark]: color === 'gray-dark',
+        [style.bookmark_orange]: color === 'orange',
+        [style.bookmark_blue]: color === 'blue',
+        [style.bookmark_purple]: color === 'purple',
+        [style.bookmark_blueDark]: color === 'blue-dark',
+      })}
       onDrop={onDrop}
       onDragOver={onDragOver}
       style={{
@@ -69,7 +79,7 @@ const BookmarkItem = ({
       }}
     >
       <a
-        className="bookmark__link"
+        className={style.bookmark__link}
         href={url}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
@@ -78,32 +88,32 @@ const BookmarkItem = ({
           opacity: isDraggable ? 0 : undefined,
         }}
       >
-        <div className="bookmark__title">
+        <div className={style.bookmark__title}>
           {
             favicon && favicon.image && (
-              <img className="bookmark__favicon" src={favicon.image} alt={title} />
+              <img className={style.bookmark__favicon} src={favicon.image} alt={title} />
             )
           }
           {title}
         </div>
-        <div className="bookmark__url">
-          <div className="bookmark__url-inner">
+        <div className={style.bookmark__url}>
+          <div className={style.bookmark__urlInner}>
             {filteredUrl}
           </div>
         </div>
       </a>
       <XButton
         onClick={() => onDelete(id)}
-        className="bookmark"
+        className={style.bookmark__remove}
       />
       <EditButton
         onClick={() => onEdit(id)}
-        className="bookmark"
+        className={style.bookmark__edit}
       />
       {
         index < 10 && (
           <div
-            className="bookmark__code"
+            className={style.bookmark__code}
           >
             {`CTRL + ${(index + 1) % 10}`}
           </div>

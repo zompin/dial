@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { browser } from 'webextension-polyfill-ts';
 import BookmarksGroup from '../BookmarksGroup/BookmarksGroup';
 import { IStore } from '../../Reducers';
+import * as style from './Bookmarks.module.scss'
 
 const onCommand = (command: string, bookmarks: IBookmark[]) => {
   if (command.indexOf('-') === -1) {
@@ -52,7 +53,7 @@ const BookmarksList = () => {
   }, []);
 
   return (
-    <div className="bookmarks">
+    <div className={style.bookmarks}>
       {
         bookmarksGrouped.map((g, i) => (
           <BookmarksGroup

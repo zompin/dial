@@ -1,0 +1,92 @@
+.profiles {
+  padding: 50px 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  mask-image: linear-gradient(to top, transparent 0, #000 30px, #000 100%);
+  mask-repeat: no-repeat;
+  background-color: var(--white);
+
+  &__inner {
+    position: relative;
+  }
+
+  &__items {
+    display: inline-flex;
+    justify-content: center;
+    padding: 0 60px;
+    min-height: 50px;
+  }
+
+  &__item {
+    font-family: inherit;
+    font-size: inherit;
+    border-radius: 0;
+    background: none;
+    border: 1px solid #015e7a;
+    padding: 12px 20px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    color: #015e7a;
+    background: var(--white);
+    transition: color 0.3s, background-color 0.3s;
+
+    &:not(:first-child) {
+      border-left: none;
+    }
+
+    &:first-child {
+      border-top-left-radius: var(--border-radius);
+      border-bottom-left-radius: var(--border-radius);
+    }
+
+    &:last-child {
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+    }
+
+    &_active {
+      background-color: #015e7a;
+      color: var(--white);
+      cursor: default;
+    }
+
+    &::-moz-focus-inner {
+      border: none;
+    }
+
+    &:focus {
+      box-shadow: 0 0 1px, 0 0 1px inset;
+    }
+  }
+
+  &__item:last-child {
+    transition: border-radius 0.3s;
+  }
+
+  &__inner:hover &__item:last-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &__button {
+    background-color: #015e7a;
+    width: 50px;
+    height: 50px;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    transition: transform 0.3s;
+    transform: translateX(0);
+    position: absolute;
+    top: 0;
+    right: 60px;
+    bottom: 0;
+  }
+
+  &__inner:hover &__button {
+    transform: translateX(100%);
+  }
+}

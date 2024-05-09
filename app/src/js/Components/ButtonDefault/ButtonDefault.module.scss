@@ -1,0 +1,36 @@
+@import '../../../scss/Mixins.scss';
+
+.button {
+    @include button();
+    width: auto;
+    height: auto;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 12px 15px;
+    border: 1px solid var(--gray);
+    border-radius: var(--border-radius);
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+
+    &:hover {
+        border-color: transparent;
+        background-color: var(--gray);
+        color: var(--white);
+    }
+
+    &_primary {
+        border-color: transparent;
+        background-color: var(--orange);
+        color: var(--white);
+
+        &:hover {
+            color: var(--orange);
+            border-color: var(--orange);
+            background-color: transparent;
+        }
+    }
+
+    &_popup {
+        margin-top: 1.5em;
+        margin-right: 0.5em;
+    }
+}

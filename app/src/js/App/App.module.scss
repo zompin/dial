@@ -1,0 +1,25 @@
+*,
+:before,
+:after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: red;
+}
+
+:root {
+    --border-radius: 4px;
+    --white: #fff;
+    --orange: #fe7e18;
+    --red: #d41137;
+    --purple: #a83252;
+    --blue: #53b0bd;
+    --blue-dark: #015e7a;
+    --gray: #41516b;
+    --gray-dark: #3e4a41;
+    --black: #000;
+}

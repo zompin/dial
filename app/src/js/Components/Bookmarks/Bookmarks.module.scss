@@ -1,0 +1,213 @@
+@import '../../../scss/Mixins';
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.bookmarks {
+  width: 1090px;
+  display: flex;
+  overflow: hidden;
+  margin: auto;
+}
+
+.bookmark {
+  flex: 0 0 200px;
+  margin: 0 15px 15px 0;
+  padding: 15px;
+  position: relative;
+  color: var(--white);
+  height: 150px;
+  border-radius: var(--border-radius);
+  font-size: 12px;
+  overflow: hidden;
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+
+  &_orange {
+    @include bookmark-hover(var(--orange));
+  }
+
+  &_red {
+    @include bookmark-hover(var(--red))
+  }
+
+  &_purple {
+    @include bookmark-hover(var(--purple))
+  }
+
+  &_blue {
+    @include bookmark-hover(var(--blue));
+  }
+
+  &_blueDark {
+    @include bookmark-hover(var(--blue-dark));
+  }
+
+  &_gray {
+    @include bookmark-hover(var(--gray));
+  }
+
+  &_grayDark {
+    @include bookmark-hover(var(--gray-dark));
+  }
+
+  &__title {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__url {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &-inner {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 15px;
+    }
+  }
+
+  &__favicon {
+    width: 16px;
+    height: 16px;
+    vertical-align: bottom;
+    margin-right: 0.5em;
+  }
+
+  &__link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: inherit;
+  }
+
+  &__code {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 15px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  &:hover &__code {
+    opacity: 1;
+  }
+
+  &__remove,
+  &__edit {
+    transition: transform 0.3s 0.7s, opacity 0.3s;
+    opacity: 0;
+    top: 0;
+    position: absolute;
+  }
+
+  &__remove {
+    right: 0;
+  }
+
+  &__edit {
+    right: 40px;
+  }
+
+  &:hover &__remove,
+  &:hover &__edit {
+    opacity: 1;
+  }
+}
+
+.bookmarkAdd {
+  @include button();
+  transition: box-shadow 0.3s;
+  flex: 0 0 200px;
+  margin: 0 15px 15px 0;
+  padding: 15px;
+  position: relative;
+  color: var(--white);
+  height: 150px;
+  border-radius: var(--border-radius);
+  font-size: 12px;
+  overflow: hidden;
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+
+  &:hover {
+    box-shadow: 0 0 4px 1px var(--black);
+  }
+
+  &__l {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      height: 60px;
+      background-color: var(--gray);
+    }
+
+    &_1 {
+      &:before,
+      &:after {
+        background-color: var(--gray);
+        width: 8px;
+      }
+    }
+
+    &_2 {
+      &:before,
+      &:after {
+        background-color: var(--black);
+        width: 0;
+        transition: width 0.3s;
+      }
+    }
+
+    &:after {
+      transform: rotate(90deg);
+    }
+  }
+
+  &:hover &__l_2 {
+    &:before,
+    &:after {
+      width: 8px;
+    }
+  }
+}
+

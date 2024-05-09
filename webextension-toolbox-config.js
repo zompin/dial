@@ -1,8 +1,7 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const autoprefixer = require('autoprefixer');
 
 module.exports = {
-  copyIgnore: ['**/*.less'],
+  copyIgnore: ['**/*.css', '**/manifest.json'],
   webpack: (config, { dev, vendor }) => {
     const module = { ...config.module };
     const entry = {
@@ -17,21 +16,23 @@ module.exports = {
     config.plugins.push(new MiniCssExtractPlugin());
 
     module.rules.push({
-      test: /\.less$/,
+      test: /\.module.scss/,
       use: [
         MiniCssExtractPlugin.loader,
-        'css-loader',
         {
-          loader: 'postcss-loader',
+          loader: 'css-loader',
           options: {
-            postcssOptions: {
-              plugins: [autoprefixer],
-            }
+            esModule: true,
+            modules: {
+              namedExport: true,
+              localIdentName: '[name]__[local]__[hash:base64:5]'
+            },
           },
         },
-        'less-loader',
+        'sass-loader',
       ],
     });
+
 
     return {
       ...config,

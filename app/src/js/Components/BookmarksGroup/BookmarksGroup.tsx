@@ -5,8 +5,8 @@ import BookmarksItem from '../Bookmarks/BookmarkItem';
 import BookmarkAdd from '../Bookmarks/BookmarkAdd';
 import { bookmarksRequestSuccess } from '../../Actions/bookmarks';
 import { IStore } from '../../Reducers';
-import './BookmarksGroup.less';
 import { getHostFromUrl } from '../../utils';
+import * as style from './BookmarksGroup.module.scss'
 
 const colorGenerator = () => {
   const colorsStore = [
@@ -126,19 +126,19 @@ const BookmarksGroup = ({
   }, [isOpen]);
 
   React.useEffect(() => {
-    profilesRef.current = document.querySelector('.profiles');
+    profilesRef.current = document.querySelector('[data-current-profile="true"]');
   }, []);
 
   return (
     <div
-      className="bookmarks-group"
+      className={style.bookmarksGroup}
       key={group.profile.id}
       style={{
         transform: `translateX(${-100 * selectedIndex}%)`,
         maxHeight,
       }}
     >
-      <div className="bookmarks-group__inner" ref={innerRef}>
+      <div className={style.bookmarksGroup__inner} ref={innerRef} data-current-profile={isOpen}>
         {
           group.data.map((b, i) => (
             <BookmarksItem
