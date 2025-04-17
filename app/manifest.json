@@ -107,7 +107,7 @@
     },
     "profile-next": {
       "suggested_key": {
-        "default": "Ctrl+Space"
+        "default": "Ctrl+Alt+Space"
       }
     }
   },
