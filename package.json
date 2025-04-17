@@ -10,7 +10,8 @@
     "dev:firefox": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox dev firefox -c webextension-toolbox-config.js --no-auto-reload",
     "dev:chrome": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox dev chrome -c webextension-toolbox-config.js --no-auto-reload",
     "build:firefox": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox build firefox -c webextension-toolbox-config.js",
-    "build:chrome": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox build chrome -c webextension-toolbox-config.js"
+    "build:chrome": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx webextension-toolbox build chrome -c webextension-toolbox-config.js",
+    "build:sources": "zip sources.zip app types eslint.config.js package.json README.md tsconfig.json webextension-toolbox-config.js yarn.lock -r"
   },
   "dependencies": {
     "classnames": "^2.2.6",
