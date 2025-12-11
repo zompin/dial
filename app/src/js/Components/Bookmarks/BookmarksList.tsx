@@ -1,33 +1,9 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { browser } from 'webextension-polyfill-ts';
+import { browser, Tabs } from 'webextension-polyfill-ts';
 import BookmarksGroup from '../BookmarksGroup/BookmarksGroup';
 import { IStore } from '../../Reducers';
 import * as style from './Bookmarks.module.scss'
-
-const onCommand = (command: string, bookmarks: IBookmark[]) => {
-  if (command.indexOf('-') === -1) {
-    return;
-  }
-
-  const [_, n] = command.split('-');
-  let number = +n;
-
-  if (number === 0) {
-    number = 9;
-  } else {
-    number -= 1;
-  }
-
-  Promise.all([
-    browser.tabs.getCurrent(),
-    browser.tabs.query({active: true})
-  ]).then(([current, [active]]) => {
-    if (current.id === active.id) {
-      (document.querySelector(`[href="${bookmarks[number]?.url}"]`) as HTMLAnchorElement)?.click();
-    }
-  });
-};
 
 const BookmarksList = () => {
   const { current , data: profiles } = useSelector((state: IStore) => state.profiles);
@@ -40,16 +16,23 @@ const BookmarksList = () => {
   const bookmarksRef = React.useRef([]);
   bookmarksRef.current = bookmarks.filter(b => b.parentId === current);
 
-  const onNum = (command: string) => {
-    onCommand(command, bookmarksRef.current);
-  };
+  const onNum = React.useCallback((command: string, tab: Tabs.Tab) => {
+    if (command.indexOf('-') === -1) {
+      return;
+    }
+
+    const [_, n] = command.split('-');
+    let number = +n;
+    number = number === 0 ? 9 : number - 1;
+
+    const targetBookmark = bookmarksRef.current[number]
+    browser.tabs.update(tab.id, { url: targetBookmark.url })
+  }, [])
 
   React.useEffect(() => {
-    browser.commands.onCommand.addListener(onNum);
+    browser.commands.onCommand.addListener(onNum as any);
 
-    return () => {
-      browser.commands.onCommand.removeListener(onNum);
-    };
+    return () => browser.commands.onCommand.removeListener(onNum as any)
   }, []);
 
   return (
